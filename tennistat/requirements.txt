@@ -1,0 +1,16 @@
+django
+django-extensions
+#pygal
+#django-registration-redux
+#django-crispy-forms
+#celery
+#django-filter
+#django-celery-results
+#numpy
+#matplotlib
+Pillow
+pandas
+#git+https://github.com/Zulko/moviepy.git
+# moviepy
+#django-paypal
+
