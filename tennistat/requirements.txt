@@ -4,7 +4,8 @@ django-extensions
 #django-registration-redux
 #django-crispy-forms
 #celery
-#django-filter
+django-filter
+djangorestframework
 #django-celery-results
 #numpy
 #matplotlib

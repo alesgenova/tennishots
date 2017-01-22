@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -86,3 +87,13 @@ class SonyData(models.Model):
     ball_speed = models.FloatField()
     ball_spin = models.IntegerField()
     impact_position = models.IntegerField()
+
+class SessionLabel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    session = models.ManyToManyField(Session)
+    name = models.CharField(max_length=20)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(test, self).save(*args, **kwargs)
