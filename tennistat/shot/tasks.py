@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 #from celery import shared_task
 from shot.models import Year, Month, Week, Day, Session, Shot, SonyData
 from shot.import_sony import csv2shotsvideos
+from video.models import VideoSource
 import datetime as dt
 import pandas as pd
 from django.contrib.auth.models import User
@@ -61,7 +62,7 @@ def sony_csv_to_db(csvfile, user_id):
                                       year=yy,
                                       user=user,
                                       sensor='SO'))
-        elif False:#is_video:
+        elif is_video:
             try :
                 user.videosource_set.get(timestamp=t)
             except VideoSource.DoesNotExist:
@@ -91,7 +92,7 @@ def sony_csv_to_db(csvfile, user_id):
     SonyData.objects.bulk_create(new_sonydata)
 
     #new_shots_billed = len(new_shots)
-    #VideoSource.objects.bulk_create(new_videos)
+    VideoSource.objects.bulk_create(new_videos)
     #customer = CustomerProfile.objects.get(user=user)
     #customer.new_shots += new_shots_billed
     #customer.amount_due += new_shots_billed*customer.shot_rate
