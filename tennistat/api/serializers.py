@@ -1,5 +1,19 @@
 from rest_framework import serializers
-from shot.models import Year, Month, Week, Day, Session, SessionLabel
+from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
+
+
+class ShotSetSerializer(serializers.Serializer):
+    count = serializers.IntegerField()
+    sensor = serializers.CharField()
+    imperial_units = serializers.BooleanField()
+    strokes = serializers.ListField()
+    #strokes = SonyStrokeSerializer(many=True)
+
+class ShotSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Shot
+        fields = ['timestamp', 'sensor']
 
 class ShotFilterSerializer(serializers.Serializer):
     pass
@@ -13,9 +27,9 @@ class LabelSerializer(serializers.ModelSerializer):
 
 class SessionSerializer(serializers.ModelSerializer):
     #pk = serializers.IntegerField(read_only=True)
-    shot_count = serializers.IntegerField(source='shot_set.count',
+    shot_count = serializers.IntegerField(source='shots.count',
                                           read_only=True)
-    video_count = serializers.IntegerField(source='videosource_set.count',
+    video_count = serializers.IntegerField(source='videos.count',
                                           read_only=True)
     labels = LabelSerializer(many=True, read_only=True)
     #count = 23
