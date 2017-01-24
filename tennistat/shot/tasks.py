@@ -23,6 +23,7 @@ def sony_csv_to_db(csvfile, user_id):
         m = entry.timestamp.to_period('m').start_time.date()
         w = entry.timestamp.to_period('w').start_time.date()
         d = entry.timestamp.to_period('d').start_time.date()
+        h = entry.timestamp.to_period('H').start_time
         t = entry.timestamp
         curr_date = d
 
@@ -31,12 +32,12 @@ def sony_csv_to_db(csvfile, user_id):
             mm = Month.objects.get_or_create(timestamp=m, yy=yy, user=user)[0]
             ww = Week.objects.get_or_create(timestamp=w, user=user)[0]
             dd = Day.objects.get_or_create(timestamp=d, mm=mm, ww=ww, user=user)[0]
-            ss = Session.objects.get_or_create(timestamp=t, dd=dd, user=user)[0]
+            ss = Session.objects.get_or_create(timestamp=h, dd=dd, user=user)[0]
         else:
             # we might have more than one session per day.
             delta_t = (t - prev_timestamp).total_seconds()
             if delta_t > 7200:
-                ss = Session.objects.get_or_create(timestamp=t, day=dd, user=user)
+                ss = Session.objects.get_or_create(timestamp=h, day=dd, user=user)
 
         prev_date = curr_date
         prev_timestamp = t
@@ -46,7 +47,7 @@ def sony_csv_to_db(csvfile, user_id):
 
         if is_shot:
             try:
-                user.shot_set.get(timestamp=t)
+                user.shots.get(timestamp=t)
             except Shot.DoesNotExist:
                 new_shotdata.append({'swing_type':_shorten_swing_type(entry.swing_type),
                                      'swing_speed':entry.swing_speed,
@@ -64,7 +65,7 @@ def sony_csv_to_db(csvfile, user_id):
                                       sensor='SO'))
         elif is_video:
             try :
-                user.videosource_set.get(timestamp=t)
+                user.videos.get(timestamp=t)
             except VideoSource.DoesNotExist:
                 new_videos.append(VideoSource(timestamp=t,
                           #duration=dt.timedelta(seconds=0),

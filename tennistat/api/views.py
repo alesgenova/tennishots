@@ -1,8 +1,10 @@
+import datetime as dt
+
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from shot.models import Year, Month, Week, Day, Session, Shot
 from api.serializers import (YearSerializer, MonthSerializer,
-                             WeekSerializer, DaySerializer,
+                             WeekSerializer, DaySerializer, SessionSerializer,
             ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -51,6 +53,27 @@ class YearList(mixins.ListModelMixin,
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+class PeriodDetail(APIView):
+    def get_queryset(self, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        #period = self.kwargs['period']
+        #self.serializer_class = _str_to_serializer(period)
+        #self.object = model.objects.filter(user=requested_user)
+        #self.queryset = model.objects.filter(user=requested_user, url_name=kwargs['url_name'])
+        #self.queryset = _url_to_object(requested_user, **self.kwargs)
+        self.queryset = Day.objects.filter(user=requested_user)
+        return self.queryset
+
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        model_class, serializer_class = _str_to_model_serializer(self.kwargs['period'])
+        obj = _url_to_object(requested_user, **self.kwargs)
+        serializer = serializer_class(obj,many=False)
+
+        return Response(serializer.data)
 
 class MonthList(mixins.ListModelMixin,
                   generics.GenericAPIView):
@@ -147,3 +170,47 @@ class PeriodStrokeDetail(APIView):
         #    "complex_result": complex_result,
         #})
         #return Response(response.data)
+
+def _str_to_model_serializer(string):
+    if string == 'session':
+        return Session, SessionSerializer
+    elif string == 'day':
+        return Day, DaySerializer
+    elif string == 'week':
+        return Week, WeekSerializer
+    elif string == 'month':
+        return Month, MonthSerializer
+    elif string == 'year':
+        return Year, YearSerializer
+
+def _url_to_object(user, period='', year=None, month=None, day=None, hour=None, *args, **kwargs):
+    _y = 2016 if year is None else int(year)
+    _m = 1 if month is None else int(month)
+    _d = 1 if day is None else int(day)
+    _h = 0 if hour is None else int(hour)
+    try:
+        _datetime = dt.datetime(_y, _m, _d, _h, 0, 0)
+    except ValueError:
+        raise Http404(ValueError("Wrong DateTime Format!"))
+
+    if period =='year':
+        obj = get_object_or_404(Year, user=user, timestamp=dt.date(int(year),1,1))
+
+    elif period =='month':
+        obj = get_object_or_404(Month, user=user, timestamp=dt.date(int(year),int(month),1))
+
+    elif period =='week':
+        d = dt.date(int(year),int(month),int(day))
+        w = d - dt.timedelta(days=d.weekday())
+        obj = get_object_or_404(Week, user=user, timestamp=w)
+
+    elif period =='day':
+        obj =get_object_or_404(Day, user=user, timestamp=dt.date(int(year),int(month),int(day)))
+
+    elif period =='session':
+        obj =get_object_or_404(Session, user=user, timestamp=dt.datetime(int(year),int(month),int(day),int(hour)))
+
+    else:
+        raise Http404(ValueError("Wrong period: {}".format(kwargs)))
+
+    return obj
