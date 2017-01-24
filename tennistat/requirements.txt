@@ -6,6 +6,7 @@ django-extensions
 #celery
 django-filter
 djangorestframework
+django-rest-auth[with_social]
 #django-celery-results
 #numpy
 #matplotlib
