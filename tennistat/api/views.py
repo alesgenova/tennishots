@@ -69,11 +69,7 @@ class PeriodDetail(APIView):
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset(*args, **kwargs)
         detail_obj = SonyShotSetDetail(queryset)
-        #serializer = serializers.DictField(detail_obj)
-        #serializer = ShotSerializer(queryset,many=True)
         serializer = ShotSetSerializer(detail_obj)
-        #count = len(queryset)
-        #return Response(serializer.data)
         return Response(serializer.data)
 
 class MonthList(mixins.ListModelMixin,
