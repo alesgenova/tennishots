@@ -8,12 +8,17 @@ from django.template.defaultfilters import slugify
 
 class Period(models.Model):
     timestamp = models.DateTimeField()
+    url_name = models.CharField(max_length=20)
 
 class Year(Period):
     user = models.ForeignKey(User, related_name='years', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return str(self.timestamp.year)
+
+    def save(self, *args, **kwargs):
+        self.url_name = "year/{}".format(self.timestamp.year)
+        super(Year, self).save(*args, **kwargs)
 
 class Month(Period):
     user = models.ForeignKey(User, related_name='months', on_delete=models.CASCADE, null=False)
@@ -22,11 +27,19 @@ class Month(Period):
     def __str__(self):
         return '{}/{}'.format(self.timestamp.year, self.timestamp.month)
 
+    def save(self, *args, **kwargs):
+        self.url_name = "month/{}/{}".format(self.timestamp.year, self.timestamp.month)
+        super(Month, self).save(*args, **kwargs)
+
 class Week(Period):
     user = models.ForeignKey(User, related_name='weeks', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return '{}/{}/{}'.format(self.timestamp.year, self.timestamp.month, self.timestamp.day)
+
+    def save(self, *args, **kwargs):
+        self.url_name = "week/{}/{}/{}".format(self.timestamp.year, self.timestamp.month, self.timestamp.day)
+        super(Week, self).save(*args, **kwargs)
 
 class Day(Period):
     user = models.ForeignKey(User, related_name='days', on_delete=models.CASCADE, null=False)
@@ -35,6 +48,10 @@ class Day(Period):
 
     def __str__(self):
         return '{}/{}/{}'.format(self.timestamp.year, self.timestamp.month, self.timestamp.day)
+
+    def save(self, *args, **kwargs):
+        self.url_name = "day/{}/{}/{}".format(self.timestamp.year, self.timestamp.month, self.timestamp.day)
+        super(Day, self).save(*args, **kwargs)
 
 class SessionLabel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -52,6 +69,10 @@ class Session(Period):
 
     def __str__(self):
         return '{}/{}/{}/{}'.format(self.timestamp.year, self.timestamp.month, self.timestamp.day, self.timestamp.hour)
+
+    def save(self, *args, **kwargs):
+        self.url_name = "session/{}/{}/{}/{}".format(self.timestamp.year, self.timestamp.month, self.timestamp.day, self.timestamp.hour)
+        super(Session, self).save(*args, **kwargs)
 
 # The shot models (Sony, )
 class Shot(models.Model):

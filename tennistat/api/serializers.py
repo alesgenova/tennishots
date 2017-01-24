@@ -12,7 +12,7 @@ class LabelSerializer(serializers.ModelSerializer):
         fields = ('pk', 'user', 'name','slug')
 
 class SessionSerializer(serializers.ModelSerializer):
-    pk = serializers.IntegerField(read_only=True)
+    #pk = serializers.IntegerField(read_only=True)
     shot_count = serializers.IntegerField(source='shot_set.count',
                                           read_only=True)
     video_count = serializers.IntegerField(source='videosource_set.count',
@@ -21,15 +21,15 @@ class SessionSerializer(serializers.ModelSerializer):
     #count = 23
     class Meta:
         model = Session
-        fields = ('pk', 'user','timestamp', 'shot_count', 'video_count', 'labels')
+        fields = ('url_name', 'user','timestamp', 'shot_count', 'video_count', 'labels')
 
 class DaySerializer(serializers.ModelSerializer):
-    pk = serializers.IntegerField(read_only=True)
+    #pk = serializers.IntegerField(read_only=True)
     #date = serializers.DateField(source='timestamp.year', read_only=True)
     sessions = SessionSerializer(source='session_set', many=True, read_only=True)
     class Meta:
         model = Day
-        fields = ('pk', 'user', 'timestamp', 'sessions')
+        fields = ('url_name', 'user', 'timestamp', 'sessions')
 
 class WeekSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
