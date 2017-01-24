@@ -5,12 +5,15 @@ from django.shortcuts import get_object_or_404
 from shot.models import Year, Month, Week, Day, Session, Shot
 from api.serializers import (YearSerializer, MonthSerializer,
                              WeekSerializer, DaySerializer, SessionSerializer,
+                             ShotSerializer, ShotSetSerializer,
             ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
+from api.objects import SonyShotSetDetail
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, mixins, generics
+from rest_framework import serializers
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -58,21 +61,19 @@ class PeriodDetail(APIView):
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
-        #period = self.kwargs['period']
-        #self.serializer_class = _str_to_serializer(period)
-        #self.object = model.objects.filter(user=requested_user)
-        #self.queryset = model.objects.filter(user=requested_user, url_name=kwargs['url_name'])
-        #self.queryset = _url_to_object(requested_user, **self.kwargs)
-        self.queryset = Day.objects.filter(user=requested_user)
-        return self.queryset
+        model_class, serializer_class = _str_to_model_serializer(self.kwargs['period'])
+        period_obj = _url_to_object(requested_user, **self.kwargs)
+        queryset = period_obj.shots.all()
+        return queryset
 
     def get(self, request, *args, **kwargs):
-        username = self.kwargs['username']
-        requested_user = get_object_or_404(User, username=username)
-        model_class, serializer_class = _str_to_model_serializer(self.kwargs['period'])
-        obj = _url_to_object(requested_user, **self.kwargs)
-        serializer = serializer_class(obj,many=False)
-
+        queryset = self.get_queryset(*args, **kwargs)
+        detail_obj = SonyShotSetDetail(queryset)
+        #serializer = serializers.DictField(detail_obj)
+        #serializer = ShotSerializer(queryset,many=True)
+        serializer = ShotSetSerializer(detail_obj)
+        #count = len(queryset)
+        #return Response(serializer.data)
         return Response(serializer.data)
 
 class MonthList(mixins.ListModelMixin,
