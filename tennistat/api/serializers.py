@@ -1,6 +1,36 @@
 from rest_framework import serializers
+from sony.constants import SWING_TYPES
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 
+
+class SpinRangePickerSerializer(serializers.Serializer):
+    min = serializers.IntegerField(min_value=-10, max_value=10,required=False)
+    max = serializers.IntegerField(min_value=-10, max_value=10, required=False)
+
+class SpeedRangePickerSerializer(serializers.Serializer):
+    min = serializers.FloatField(min_value=0, required=False)
+    max = serializers.FloatField(min_value=0, required=False)
+
+class DateRangePickerSerializer(serializers.Serializer):
+    min = serializers.DateField(required=False)
+    max = serializers.DateField(required=False)
+
+class PeriodPickerSerializer(serializers.Serializer):
+    name = serializers.ChoiceField(choices=(("session","Session"),("day","Day"),("week","Week"),("month","Month"),("year","Year"),))
+    pks = serializers.ListField(child=serializers.IntegerField(min_value=1))
+
+class SonyFilterListSerializer(serializers.Serializer):
+    periods = PeriodPickerSerializer(required=False)
+    date_range = DateRangePickerSerializer(required=False)
+    swing_speed = SpeedRangePickerSerializer(required=False)
+    ball_speed = SpeedRangePickerSerializer(required=False)
+    ball_spin = SpinRangePickerSerializer(required=False)
+    swing_type = serializers.MultipleChoiceField(choices=SWING_TYPES, required=False)
+
+class SonyFilterSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    sensor = serializers.ChoiceField(choices=(("SO","Sony"),))
+    filters = SonyFilterListSerializer(required=False)
 
 class ShotSetSerializer(serializers.Serializer):
     count = serializers.IntegerField()
@@ -20,10 +50,11 @@ class ShotFilterSerializer(serializers.Serializer):
 
 class LabelSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
+    slug = serializers.SlugField(required=False, read_only=True)
 
     class Meta:
         model = SessionLabel
-        fields = ('pk', 'user', 'name','slug')
+        fields = ('pk', 'name', 'slug')
 
 class SessionSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)

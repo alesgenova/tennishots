@@ -2,12 +2,8 @@ import datetime as dt
 
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from shot.models import Year, Month, Week, Day, Session, Shot
-from api.serializers import (YearSerializer, MonthSerializer,
-                             WeekSerializer, DaySerializer, SessionSerializer,
-                             ShotSerializer, ShotSetSerializer,
-            ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
-from api.objects import SonyShotSetDetail, SonyFilter
+from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
+
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
@@ -17,6 +13,15 @@ from rest_framework import serializers
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+
+from generic.routines import str_to_periodmodel, url_to_object
+from api.serializers import (YearSerializer, MonthSerializer,
+                             WeekSerializer, DaySerializer, SessionSerializer,
+                             ShotSerializer, ShotSetSerializer,
+                             LabelSerializer, SonyFilterSerializer,
+            ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
+
+from sony.routines import apply_sonyfilter, SonyShotSetDetail
 
 class JSONResponse(HttpResponse):
     """
@@ -44,36 +49,57 @@ def TestView(request):
             pass
         return JSONResponse(data, status=201)
 
-class ShotsFromPeriods(APIView):
-    def get_queryset(self, sony_filter, *args, **kwargs):
-        username = sony_filter.filter['username']
+class ShotsFromPeriods(generics.GenericAPIView):
+    serializer_class = SonyFilterSerializer
+    def get_queryset(self, filter_serializer, *args, **kwargs):
+        username = filter_serializer.validated_data['username']
         requested_user = get_object_or_404(User, username=username)
-        queryset = sony_filter.apply()
+        queryset = apply_sonyfilter(filter_serializer.validated_data)
         return queryset
 
     def post(self, request, *args, **kwargs):
-        request_data = JSONParser().parse(request)
-        sony_filter = SonyFilter(request_data)
-        queryset = self.get_queryset(sony_filter, *args, **kwargs)
-        detail_obj = SonyShotSetDetail(queryset)
-        serializer = ShotSetSerializer(detail_obj)
-        return Response(serializer.data)
+        filter_serializer = SonyFilterSerializer(data=request.data)
+        if filter_serializer.is_valid():
+            queryset = self.get_queryset(filter_serializer, *args, **kwargs)
+            detail_obj = SonyShotSetDetail(queryset)
+            summary_serializer = ShotSetSerializer(detail_obj)
+            return Response(summary_serializer.data, status=200)
+        else:
+            return Response(filter_serializer.errors)
         #return JSONResponse(self.kwargs, status=201)
 
-class PeriodDetail(APIView):
+class LabelList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    serializer_class = LabelSerializer
     def get_queryset(self, *args, **kwargs):
-        username = self.kwargs['username']
-        requested_user = get_object_or_404(User, username=username)
-        model_class, serializer_class = str_to_model_serializer(self.kwargs['period'])
-        period_obj = _url_to_object(requested_user, **self.kwargs)
-        queryset = period_obj.shots.all()
+        queryset = SessionLabel.objects.filter(user__username=self.kwargs['username'])
         return queryset
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset(*args, **kwargs)
-        detail_obj = SonyShotSetDetail(queryset)
-        serializer = ShotSetSerializer(detail_obj)
-        return Response(serializer.data)
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+#class SnippetDetail(mixins.RetrieveModelMixin,
+#                    mixins.UpdateModelMixin,
+#                    mixins.DestroyModelMixin,
+#                    generics.GenericAPIView):
+#    queryset = Snippet.objects.all()
+#    serializer_class = SnippetSerializer
+#
+#    def get(self, request, *args, **kwargs):
+#        return self.retrieve(request, *args, **kwargs)
+#
+#    def put(self, request, *args, **kwargs):
+#        return self.update(request, *args, **kwargs)
+#
+#    def delete(self, request, *args, **kwargs):
+#        return self.destroy(request, *args, **kwargs)
 
 class PeriodDetail(APIView):
     def get_queryset(self, *args, **kwargs):
@@ -89,6 +115,7 @@ class PeriodDetail(APIView):
         detail_obj = SonyShotSetDetail(queryset)
         serializer = ShotSetSerializer(detail_obj)
         return Response(serializer.data)
+
 
 class YearList(mixins.ListModelMixin,
                   generics.GenericAPIView):
@@ -198,47 +225,3 @@ class PeriodStrokeDetail(APIView):
         #    "complex_result": complex_result,
         #})
         #return Response(response.data)
-
-def str_to_periodmodel(string):
-    if string == 'session':
-        return Session
-    elif string == 'day':
-        return Day
-    elif string == 'week':
-        return Week
-    elif string == 'month':
-        return Month
-    elif string == 'year':
-        return Year
-
-def _url_to_object(user, period='', year=None, month=None, day=None, hour=None, *args, **kwargs):
-    _y = 2016 if year is None else int(year)
-    _m = 1 if month is None else int(month)
-    _d = 1 if day is None else int(day)
-    _h = 0 if hour is None else int(hour)
-    try:
-        _datetime = dt.datetime(_y, _m, _d, _h, 0, 0)
-    except ValueError:
-        raise Http404(ValueError("Wrong DateTime Format!"))
-
-    if period =='year':
-        obj = get_object_or_404(Year, user=user, timestamp=dt.date(int(year),1,1))
-
-    elif period =='month':
-        obj = get_object_or_404(Month, user=user, timestamp=dt.date(int(year),int(month),1))
-
-    elif period =='week':
-        d = dt.date(int(year),int(month),int(day))
-        w = d - dt.timedelta(days=d.weekday())
-        obj = get_object_or_404(Week, user=user, timestamp=w)
-
-    elif period =='day':
-        obj =get_object_or_404(Day, user=user, timestamp=dt.date(int(year),int(month),int(day)))
-
-    elif period =='session':
-        obj =get_object_or_404(Session, user=user, timestamp=dt.datetime(int(year),int(month),int(day),int(hour)))
-
-    else:
-        raise Http404(ValueError("Wrong period: {}".format(kwargs)))
-
-    return obj
