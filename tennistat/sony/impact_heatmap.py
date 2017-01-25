@@ -33,7 +33,7 @@ def make_heatmap(occurrences, rotation=None):
     ##
     tmp = io.BytesIO()
     #racq_img = PIL.Image.open('/home/alessandro/Documents/tennis-sensor-web/shot/racquet_small.png')
-    racq_img = PIL.Image.open('./api/img/racquet_small.png')
+    racq_img = PIL.Image.open('./generic/img/racquet_small.png')
     racq_img.paste(img,box=(4,3),mask=img)
     racq_img.transpose(rot).save(fp=tmp, format='png')
     #tmp = io.BytesIO()
