@@ -7,7 +7,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              WeekSerializer, DaySerializer, SessionSerializer,
                              ShotSerializer, ShotSetSerializer,
             ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
-from api.objects import SonyShotSetDetail
+from api.objects import SonyShotSetDetail, SonyFilter
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
@@ -44,6 +44,52 @@ def TestView(request):
             pass
         return JSONResponse(data, status=201)
 
+class ShotsFromPeriods(APIView):
+    def get_queryset(self, sony_filter, *args, **kwargs):
+        username = sony_filter.filter['username']
+        requested_user = get_object_or_404(User, username=username)
+        queryset = sony_filter.apply()
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        request_data = JSONParser().parse(request)
+        sony_filter = SonyFilter(request_data)
+        queryset = self.get_queryset(sony_filter, *args, **kwargs)
+        detail_obj = SonyShotSetDetail(queryset)
+        serializer = ShotSetSerializer(detail_obj)
+        return Response(serializer.data)
+        #return JSONResponse(self.kwargs, status=201)
+
+class PeriodDetail(APIView):
+    def get_queryset(self, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        model_class, serializer_class = str_to_model_serializer(self.kwargs['period'])
+        period_obj = _url_to_object(requested_user, **self.kwargs)
+        queryset = period_obj.shots.all()
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset(*args, **kwargs)
+        detail_obj = SonyShotSetDetail(queryset)
+        serializer = ShotSetSerializer(detail_obj)
+        return Response(serializer.data)
+
+class PeriodDetail(APIView):
+    def get_queryset(self, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        model_class = _str_to_periodmodel(self.kwargs['period'])
+        period_obj = _url_to_object(requested_user, **self.kwargs)
+        queryset = period_obj.shots.all()
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset(*args, **kwargs)
+        detail_obj = SonyShotSetDetail(queryset)
+        serializer = ShotSetSerializer(detail_obj)
+        return Response(serializer.data)
+
 class YearList(mixins.ListModelMixin,
                   generics.GenericAPIView):
     #queryset = Day.objects.all()
@@ -56,21 +102,6 @@ class YearList(mixins.ListModelMixin,
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
-
-class PeriodDetail(APIView):
-    def get_queryset(self, *args, **kwargs):
-        username = self.kwargs['username']
-        requested_user = get_object_or_404(User, username=username)
-        model_class, serializer_class = _str_to_model_serializer(self.kwargs['period'])
-        period_obj = _url_to_object(requested_user, **self.kwargs)
-        queryset = period_obj.shots.all()
-        return queryset
-
-    def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset(*args, **kwargs)
-        detail_obj = SonyShotSetDetail(queryset)
-        serializer = ShotSetSerializer(detail_obj)
-        return Response(serializer.data)
 
 class MonthList(mixins.ListModelMixin,
                   generics.GenericAPIView):
@@ -168,17 +199,17 @@ class PeriodStrokeDetail(APIView):
         #})
         #return Response(response.data)
 
-def _str_to_model_serializer(string):
+def str_to_periodmodel(string):
     if string == 'session':
-        return Session, SessionSerializer
+        return Session
     elif string == 'day':
-        return Day, DaySerializer
+        return Day
     elif string == 'week':
-        return Week, WeekSerializer
+        return Week
     elif string == 'month':
-        return Month, MonthSerializer
+        return Month
     elif string == 'year':
-        return Year, YearSerializer
+        return Year
 
 def _url_to_object(user, period='', year=None, month=None, day=None, hour=None, *args, **kwargs):
     _y = 2016 if year is None else int(year)
