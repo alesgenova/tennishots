@@ -1,7 +1,13 @@
 from rest_framework import serializers
+from generic.constants import PERIODS, SENSORS
 from sony.constants import SWING_TYPES
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 
+class AddLabelSerializer(serializers.Serializer):
+    label_pk = serializers.IntegerField(min_value=1)
+    session_pk = serializers.IntegerField(min_value=1)
+    action = serializers.ChoiceField(choices=(("add","Add Label"),("remove","Remove Label")))
+    success = serializers.BooleanField(required=False)
 
 class SpinRangePickerSerializer(serializers.Serializer):
     min = serializers.IntegerField(min_value=-10, max_value=10,required=False)
@@ -16,7 +22,7 @@ class DateRangePickerSerializer(serializers.Serializer):
     max = serializers.DateField(required=False)
 
 class PeriodPickerSerializer(serializers.Serializer):
-    name = serializers.ChoiceField(choices=(("session","Session"),("day","Day"),("week","Week"),("month","Month"),("year","Year"),))
+    name = serializers.ChoiceField(choices=PERIODS)
     pks = serializers.ListField(child=serializers.IntegerField(min_value=1))
 
 class SonyFilterListSerializer(serializers.Serializer):
@@ -29,7 +35,7 @@ class SonyFilterListSerializer(serializers.Serializer):
 
 class SonyFilterSerializer(serializers.Serializer):
     username = serializers.CharField()
-    sensor = serializers.ChoiceField(choices=(("SO","Sony"),))
+    sensor = serializers.ChoiceField(choices=SENSORS)
     filters = SonyFilterListSerializer(required=False)
 
 class ShotSetSerializer(serializers.Serializer):

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
 from sony.constants import SWING_TYPES
+from generic.constants import SENSORS
 
 # Create your models here.
 
@@ -84,9 +85,6 @@ class Session(Period):
 
 # The shot models (Sony, )
 class Shot(models.Model):
-    SENSOR_CHOICES = (
-                        ('SO', 'Sony'),
-                     )
     timestamp = models.DateTimeField()
     user = models.ForeignKey(User, related_name='shots', on_delete=models.CASCADE)
 
@@ -96,7 +94,7 @@ class Shot(models.Model):
     month = models.ForeignKey(Month, related_name='shots', on_delete=models.CASCADE)
     year = models.ForeignKey(Year, related_name='shots', on_delete=models.CASCADE)
 
-    sensor = models.CharField(max_length=2, choices=SENSOR_CHOICES)
+    sensor = models.CharField(max_length=2, choices=SENSORS)
 
     def __str__(self):
         return "{} - {}".format(self.user, self.timestamp)
