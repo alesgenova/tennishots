@@ -1,8 +1,4 @@
 
-
-mi2km = 1.609344
-
-
 """
 Scheleton of a JSON filter for the sony sensor
 {

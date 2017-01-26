@@ -19,6 +19,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              WeekSerializer, DaySerializer, SessionSerializer,
                              ShotSerializer, ShotSetSerializer,
                              LabelSerializer, SonyFilterSerializer,
+                             AddLabelSerializer,
             ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
@@ -34,22 +35,52 @@ class JSONResponse(HttpResponse):
 
 # Create your views here.
 
-@csrf_exempt
 def TestView(request):
 
     if request.method == 'GET':
-        data = {'one field':1, 'another field':[1,2,3]}
-        return JSONResponse(data=data)
+        data = {'user':str(request.user)}
+        return JSONResponse(data=data, status=200)
 
     elif request.method == 'POST':
+        #file_ = request.FILES['file']
         data = JSONParser().parse(request)
-        try:
-            data['a'] += 1
-        except Exception:
-            pass
-        return JSONResponse(data, status=201)
+        data['user'] = str(request.user)
+        return JSONResponse(data, status=200)
 
-class ShotsFromPeriods(generics.GenericAPIView):
+class AddSessionLabel(generics.GenericAPIView):
+    serializer_class = AddLabelSerializer
+    def get_queryset(self, *args, **kwargs):
+        queryset = SessionLabel.objects.filter(user=self.request.user)
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        serializer = AddLabelSerializer(data=request.data)
+        if serializer.is_valid():
+            label_pk = serializer.validated_data['label_pk']
+            session_pk = serializer.validated_data['session_pk']
+            action = serializer.validated_data['action']
+            #queryset = self.get_queryset()
+            try:
+                #label = queryset.filter(pk=label_pk)
+                label = SessionLabel.objects.get(pk=label_pk, user=request.user)
+            except SessionLabel.DoesNotExist:
+                serializer.validated_data['success'] = False
+                return Response(serializer.data, status=400)
+            try:
+                session = Session.objects.get(pk=session_pk, user=request.user)
+            except Session.DoesNotExist:
+                serializer.validated_data['success'] = False
+                return Response(serializer.data, status=400)
+            if action == 'add':
+                session.labels.add(label)
+            elif action == 'remove':
+                session.labels.remove(label)
+            serializer.validated_data['success'] = True
+            return Response(serializer.data, status=200)
+        else:
+            return Response(serializer.errors, status=400)
+
+class ShotsFilter(generics.GenericAPIView):
     serializer_class = SonyFilterSerializer
     def get_queryset(self, filter_serializer, *args, **kwargs):
         username = filter_serializer.validated_data['username']
@@ -65,7 +96,7 @@ class ShotsFromPeriods(generics.GenericAPIView):
             summary_serializer = ShotSetSerializer(detail_obj)
             return Response(summary_serializer.data, status=200)
         else:
-            return Response(filter_serializer.errors)
+            return Response(filter_serializer.errors, status=400)
         #return JSONResponse(self.kwargs, status=201)
 
 class LabelList(mixins.ListModelMixin,
