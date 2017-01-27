@@ -25,7 +25,7 @@ SECRET_KEY = 'pg_dns8)rkmo*d=&&03)rgysu%ff$hc4(u%5!*c@a4t2hypbd!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 SITE_ID = 1
 
