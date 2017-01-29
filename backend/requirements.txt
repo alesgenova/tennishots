@@ -7,6 +7,8 @@ django-extensions
 django-filter
 djangorestframework
 django-rest-auth[with_social]
+djangorestframework-jwt
+django-cors-headers
 #django-celery-results
 numpy
 matplotlib
