@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { PeriodListService } from './services/periodlist.service';
-import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'my-app',
   template: `<div class="container">
   <login></login>
-  <!--<period-list></period-list>-->
+  <period-list></period-list>
   </div>
   `,
-  providers: [PeriodListService, AuthService]
+  providers: [PeriodListService]
 })
-export class AppComponent  {}
+export class AppComponent  {
+    constructor(public router: Router) {}
+}
