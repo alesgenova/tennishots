@@ -1,29 +1,39 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { Http } from '@angular/http';
+import { contentHeaders } from '../../common/headers';
 
-interface Credentials {
-  username: string,
-  password: string
-}
+//const styles   = require('./login.css');
+//const template = require('./login.html');
 
 @Component({
+  moduleId: module.id,
   selector: 'login',
-  template: `
-    <form #f="ngForm" (ngSubmit)="onLogin(f.value)" *ngIf="!auth.loggedIn()">
-      <input type="text" placeholder="username" ngControl="username">
-      <input type="password" placeholder="password" ngControl="password">
-      <button type="submit">Submit</button>
-    </form>
-  `
+  templateUrl: 'login.component.html'
+//  styles: [ styles ]
 })
+export class Login {
+  constructor(public router: Router, public http: Http) {
+  }
 
-export class LoginComponent {
+  login(event:any, username:string, password:string) {
+    event.preventDefault();
+    let body = JSON.stringify({ username, password });
+    this.http.post('http://localhost:8000/rest-auth/login/', body, { headers: contentHeaders })
+      .subscribe(
+        response => {
+          localStorage.setItem('id_token', response.json().id_token);
+          this.router.navigate(['']);
+        },
+        error => {
+          alert(error.text());
+          console.log(error.text());
+        }
+      );
+  }
 
-  credentials: Credentials;
-
-  constructor(private auth: AuthService) {}
-
-  onLogin(credentials:string) {
-    this.auth.login(credentials);
+  signup(event:any) {
+    event.preventDefault();
+    this.router.navigate(['signup']);
   }
 }
