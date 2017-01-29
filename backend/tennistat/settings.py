@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'profiles',
     'shot',
     'video',
@@ -53,6 +54,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,6 +84,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tennistat.wsgi.application'
+
+# CORS allowed hosts
+CORS_ORIGIN_WHITELIST = (
+    #'www.tennistat.xyz',
+    'localhost:3000',
+    #'localhost:8000',
+)
 
 
 # Database
@@ -119,6 +129,8 @@ REST_FRAMEWORK = {
                 'rest_framework.permissions.AllowAny',
                 ]
             }
+
+REST_USE_JWT = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
