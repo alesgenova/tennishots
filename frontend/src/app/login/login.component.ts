@@ -7,18 +7,24 @@ import {AuthService} from '../services/auth.service'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loggedin:boolean = false
+  _login:boolean = false
+  _loggedin:boolean = false
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-      this.login_test()
+      //this.login_test()
+      this.test_loggedin();
   }
 
-  login_test(){
+  onLogin(){
       this.authService.login("ales","pass1234").
         subscribe( res => {
-            this.loggedin=res;
+            this._login=res;
         });
+  }
+
+  test_loggedin(){
+      this._loggedin = this.authService.loggedIn();
   }
 
 }

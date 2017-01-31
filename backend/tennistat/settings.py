@@ -152,6 +152,7 @@ REST_USE_JWT = True
 JWT_AUTH = {
             # ONE WEEK INSECURE?
             'JWT_EXPIRATION_DELTA':dt.timedelta(seconds=604800),
+            #'JWT_AUTH_HEADER_PREFIX': 'Bearer',
             #'JWT_EXPIRATION_DELTA':dt.timedelta(seconds=3600),
            }
 
