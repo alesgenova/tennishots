@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import datetime as dt
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -88,9 +90,18 @@ WSGI_APPLICATION = 'tennistat.wsgi.application'
 # CORS allowed hosts
 CORS_ORIGIN_WHITELIST = (
     #'www.tennistat.xyz',
-    'localhost:3000',
+    'localhost:4200',
     #'localhost:8000',
 )
+
+#CORS_ALLOW_HEADERS = default_headers + (
+#    'X-XSRF-TOKEN',
+#)
+#CORS_ALLOW_CREDENTIALS = True
+
+# CHANGE CSRF NAMES TO MATCH ANGULAR2 DEFAULTS
+#CSRF_COOKIE_NAME = 'XSRF-TOKEN'
+#CSRF_HEADER_NAME = 'X-XSRF-TOKEN'
 
 
 # Database
@@ -125,12 +136,24 @@ AUTH_PASSWORD_VALIDATORS = [
 # REST
 REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': [
+                #'rest_framework.permissions.IsAuthenticated',
                 #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
                 'rest_framework.permissions.AllowAny',
-                ]
-            }
+                ],
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+                'rest_framework.authentication.SessionAuthentication',
+                'rest_framework.authentication.BasicAuthentication',
+                'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+            ),
+        }
 
 REST_USE_JWT = True
+
+JWT_AUTH = {
+            # ONE WEEK INSECURE?
+            'JWT_EXPIRATION_DELTA':dt.timedelta(seconds=604800),
+            #'JWT_EXPIRATION_DELTA':dt.timedelta(seconds=3600),
+           }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

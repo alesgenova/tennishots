@@ -22,7 +22,7 @@ export class Login {
     this.http.post('http://localhost:8000/rest-auth/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
-          localStorage.setItem('id_token', response.json().id_token);
+          localStorage.setItem('id_token', response.json().token);
           this.router.navigate(['']);
         },
         error => {
