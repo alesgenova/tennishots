@@ -11,6 +11,7 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
 import { AuthGuard } from './common/auth.guard';
 
 import {PeriodListComponent} from './components/periodlist/periodlist.component';
+import {TestComponent} from './components/test/test.component';
 import {Login} from './components/auth/login.component';
 
 import { routes } from './app.routes';
@@ -24,7 +25,8 @@ import { routes } from './app.routes';
                 ],
   declarations: [ AppComponent,
                   PeriodListComponent,
-                  Login
+                  Login,
+                  TestComponent
                 ],
   bootstrap:    [ AppComponent ],
   providers:    [

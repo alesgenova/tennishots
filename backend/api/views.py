@@ -1,5 +1,6 @@
 import datetime as dt
 
+#from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
@@ -35,7 +36,13 @@ class JSONResponse(HttpResponse):
 
 # Create your views here.
 
-def TestView(request):
+# @ensure_csrf_cookie
+def CsrfView(request):
+    if request.method == 'GET':
+        data = {}
+        return JSONResponse(data=data, status=200)
+
+def TestView_(request):
 
     if request.method == 'GET':
         data = {'user':str(request.user)}
@@ -46,6 +53,20 @@ def TestView(request):
         data = JSONParser().parse(request)
         data['user'] = str(request.user)
         return JSONResponse(data, status=200)
+
+
+class TestView(generics.GenericAPIView):
+
+    def get(self, request, *args, **kwargs):
+        data = {'user':str(request.user)}
+        return JSONResponse(data=data, status=200)
+
+    def post(self, request, *args, **kwargs):
+        #file_ = request.FILES['file']
+        #data = JSONParser().parse(request.data)
+        data = request.data
+        data['user'] = str(request.user)
+        return JSONResponse(data=data, status=200)
 
 class AddSessionLabel(generics.GenericAPIView):
     serializer_class = AddLabelSerializer
