@@ -3,12 +3,21 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 
+//While the fix angular2-jtw import extra stuff
+//import { AUTH_PROVIDERS } from 'angular2-jwt';
+import { Http, RequestOptions } from '@angular/http';
+import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
+
 import { AuthService } from './services/auth.service';
 import { TennistatService } from './services/tennistat.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { TestComponent } from './test/test.component';
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
+}
 
 @NgModule({
   declarations: [
@@ -22,7 +31,12 @@ import { TestComponent } from './test/test.component';
     HttpModule
   ],
   providers: [AuthService, TennistatService,
-             // { provide: XSRFStrategy, useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken') },
+              {
+                provide: AuthHttp,
+                useFactory: authHttpServiceFactory,
+                deps: [ Http, RequestOptions ]
+              },
+             //{ provide: XSRFStrategy, useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken') },
              ],
   bootstrap: [AppComponent]
 })
