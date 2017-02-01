@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-      //this.login_test()
+      this.onLogin()
       this.test_loggedin();
   }
 
