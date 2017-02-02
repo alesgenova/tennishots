@@ -20,6 +20,11 @@ import { AnalysisComponent } from './analysis/analysis.component';
 import { FilterComponent } from './analysis/filter/filter.component';
 import { ResultsComponent } from './analysis/results/results.component';
 
+// ng2-bootstrap components
+import { TabsModule } from 'ng2-bootstrap/tabs';
+//import { AlertModule } from 'ng2-bootstrap';
+import { NouisliderModule } from 'ng2-nouislider';
+
 import {InputTextModule} from 'primeng/primeng';
 import {TabViewModule} from 'primeng/primeng';
 import {ToggleButtonModule} from 'primeng/primeng';
@@ -45,6 +50,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BrowserModule,
     FormsModule,
     HttpModule,
+    //bootstrap
+    TabsModule.forRoot(),
+    NouisliderModule,
+    //ngprime
     InputTextModule,
     TabViewModule,
     ToggleButtonModule,
