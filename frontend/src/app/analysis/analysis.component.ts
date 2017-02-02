@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SonyFilter } from '../objects/sonyfilter';
+import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { TennistatService } from '../services/tennistat.service';
 
 @Component({
@@ -11,17 +11,37 @@ export class AnalysisComponent implements OnInit {
 
   filter1: SonyFilter = new SonyFilter();
   filter2: SonyFilter = new SonyFilter();
+  _filter2: SonyFilter = new SonyFilter(); // aux filter to save/delete the state of filter2 when enabling/disabling comparison
+
   //filter2: SonyFilter;
   compare: boolean = false;
 
   constructor(private tennistatService: TennistatService) { }
 
   ngOnInit() {
-
+      this.filter1.username = "ales";
+      this.filter1.filters = new SOFilters();
+      this.filter1.filters.periods = new PeriodsPicker();
+      this.filter1.filters.date_range = new DateRange();
+      this.filter1.filters.swing_speed = new NumberRange();
+      this.filter1.filters.ball_speed = new NumberRange();
+      this.filter1.filters.ball_spin = new NumberRange();
+      this.filter2.username = "ales";
+      this.filter2.filters = new SOFilters();
+      this.filter2.filters.periods = new PeriodsPicker();
+      this.filter2.filters.date_range = new DateRange();
+      this.filter2.filters.swing_speed = new NumberRange();
+      this.filter2.filters.ball_speed = new NumberRange();
+      this.filter2.filters.ball_spin = new NumberRange();
   }
 
-  onToggleCompare(){
-
+  handleCompareChange(e) {
+      var isChecked = e.checked;
+      if (isChecked){
+          //this.filter2 = this._filter2;
+      }else{
+          //this.filter2 = new SonyFilter() ;
+      }
   }
 
   onSubmitRequest(){

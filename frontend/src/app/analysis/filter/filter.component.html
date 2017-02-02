@@ -1,9 +1,22 @@
-<p>
-  filter works!
-</p>
-<p>
-<input type="text" [(ngModel)]="filter.username" />
-</p>
+<label for="userpicker">Pick A player</label>
+<p-dropdown id="userpicker" [options]="users" [(ngModel)]="filter.username" [style]="{'width':'150px'}"></p-dropdown>
+<hr>
+<p-tabView orientation="left" (onChange)="handlePeriodChange($event)">
+    <p-tabPanel header="Sessions">
+        <!--<p-listbox [options]="sessions" [(ngModel)]="this.filters.periods.pks"></p-listbox>-->
+    </p-tabPanel>
+    <p-tabPanel header="Weeks">
+    </p-tabPanel>
+    <p-tabPanel header="Months">
+    </p-tabPanel>
+    <p-tabPanel header="Years">
+    </p-tabPanel>
+    <p-tabPanel header="Date Range">
+        <p-calendar [(ngModel)]="filter.filters.date_range.min"></p-calendar>
+        <p-calendar [(ngModel)]="filter.filters.date_range.max"></p-calendar>
+    </p-tabPanel>
+</p-tabView>
+
 <p>
 {{filter|json}}
 </p>
