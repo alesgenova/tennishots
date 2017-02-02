@@ -1,7 +1,14 @@
-<p>
-  <!--<sony-filter></sony-filter>-->
-  analysis works!
-</p>
+<h1>Filter Shots and Compare them</h1>
+
+<p-tabView>
+    <p-tabPanel header="Selection 1">
+       <sony-filter [filter]="filter1"></sony-filter>
+       <p-toggleButton [(ngModel)]="compare" (onChange)="handleCompareChange($event)" onLabel="Disable Comparison" offLabel="Enable Comparison" onIcon="" offIcon=""></p-toggleButton>
+    </p-tabPanel>
+    <p-tabPanel header="Selection 2" [disabled]="!compare">
+        <sony-filter [filter]="filter2"></sony-filter>
+    </p-tabPanel>
+</p-tabView>
 <p>
   {{filter1|json}}
 </p>
@@ -9,8 +16,5 @@
   {{filter2|json}}
 </p>
 <p>
-  <sony-filter [filter]="filter1"></sony-filter>
-</p>
-<p>
-  <sony-filter [filter]="filter2"></sony-filter>
+  {{_filter2|json}}
 </p>

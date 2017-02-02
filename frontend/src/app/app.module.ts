@@ -20,6 +20,13 @@ import { AnalysisComponent } from './analysis/analysis.component';
 import { FilterComponent } from './analysis/filter/filter.component';
 import { ResultsComponent } from './analysis/results/results.component';
 
+import {InputTextModule} from 'primeng/primeng';
+import {TabViewModule} from 'primeng/primeng';
+import {ToggleButtonModule} from 'primeng/primeng';
+import {DropdownModule} from 'primeng/primeng';
+import {CalendarModule} from 'primeng/primeng';
+import {ListboxModule} from 'primeng/primeng';
+
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
 }
@@ -31,13 +38,19 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TestComponent,
     AnalysisComponent,
     FilterComponent,
-    ResultsComponent
+    ResultsComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
     FormsModule,
     HttpModule,
+    InputTextModule,
+    TabViewModule,
+    ToggleButtonModule,
+    DropdownModule,
+    CalendarModule,
+    ListboxModule,
   ],
   providers: [AuthService, TennistatService,
               {

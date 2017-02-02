@@ -1,12 +1,12 @@
 export class SonyFilter {
     username: string;
     sensor: string;
-    filters?: SOFilters;
+    filters: SOFilters;
 }
 
 export class SOFilters{
     periods?: PeriodsPicker ;
-    date_range?: DateRange ;
+    date_range: DateRange ;
     swing_speed?: NumberRange ;
     ball_speed?: NumberRange ;
     ball_spin?: NumberRange ;
