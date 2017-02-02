@@ -11,10 +11,14 @@ export class AnalysisComponent implements OnInit {
 
   filter1: SonyFilter = new SonyFilter();
   filter2: SonyFilter = new SonyFilter();
-  _filter2: SonyFilter = new SonyFilter(); // aux filter to save/delete the state of filter2 when enabling/disabling comparison
+  //_filter2: SonyFilter = new SonyFilter(); // aux filter to save/delete the state of filter2 when enabling/disabling comparison
 
   //filter2: SonyFilter;
   compare: boolean = false;
+  activet1: boolean = true;
+  activet2: boolean = false;
+  headert2: string = "";
+  comparebtntext: string = "Enable Comparison";
 
   constructor(private tennistatService: TennistatService) { }
 
@@ -35,13 +39,17 @@ export class AnalysisComponent implements OnInit {
       this.filter2.filters.ball_spin = new NumberRange();
   }
 
-  handleCompareChange(e) {
-      var isChecked = e.checked;
-      if (isChecked){
-          //this.filter2 = this._filter2;
+  handleCompareChange() {
+      this.activet1 = true;
+      if (!this.compare){
+        this.headert2 = "Selection 2"
+        this.comparebtntext = "Disable Comparison";
       }else{
-          //this.filter2 = new SonyFilter() ;
+        this.headert2 = ""
+        this.comparebtntext = "Enable Comparison";
       }
+      this.compare = ! this.compare;
+      console.log('activated!');
   }
 
   onSubmitRequest(){

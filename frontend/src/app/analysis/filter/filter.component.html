@@ -1,9 +1,17 @@
 <label for="userpicker">Pick A player</label>
+<select class="custom-select" id="userpicker" [(ngModel)]="filter.username">
+    <option *ngFor="let user of users" [value]="user.value">{{user.label}}</option>
+</select>
+<hr>
+<label for="swingspeed">Pick A player</label>
+<!--<nouislider [connect]="true" [min]="0" [max]="15" [step]="1" [(ngModel)]="speed_range" (ngModelChange)="onChange($event)"></nouislider>
+<nouislider id="swinspeed" [connect]="true" [min]="0" [max]="220" [step]="1"></nouislider>-->
+<!--
 <p-dropdown id="userpicker" [options]="users" [(ngModel)]="filter.username" [style]="{'width':'150px'}"></p-dropdown>
 <hr>
 <p-tabView orientation="left" (onChange)="handlePeriodChange($event)">
     <p-tabPanel header="Sessions">
-        <!--<p-listbox [options]="sessions" [(ngModel)]="this.filters.periods.pks"></p-listbox>-->
+        <p-listbox [options]="sessions" [(ngModel)]="this.filters.periods.pks"></p-listbox>
     </p-tabPanel>
     <p-tabPanel header="Weeks">
     </p-tabPanel>
@@ -16,7 +24,4 @@
         <p-calendar [(ngModel)]="filter.filters.date_range.max"></p-calendar>
     </p-tabPanel>
 </p-tabView>
-
-<p>
-{{filter|json}}
-</p>
+-->

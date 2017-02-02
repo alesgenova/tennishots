@@ -10,9 +10,9 @@ import {SelectItem} from 'primeng/primeng';
 })
 export class FilterComponent implements OnInit {
 
-  @Input() filter;
+  @Input() filter: SonyFilter;
   advancedFilter: boolean = false;
-  users: SelectItem[];
+  users: any[];
 
   constructor() {
       this.users = [];
