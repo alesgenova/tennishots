@@ -9,12 +9,22 @@ import { Period } from '../../objects/period';
 })
 export class PeriodlistComponent implements OnInit {
 
-  @Input() periods: Period;
+  @Input() periods: Period[];
   @Input() periodsPicker: PeriodsPicker;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addPkToPks(pk:number) {
+      if (this.periodsPicker.pks.some(x=>x==pk)) {
+          var idx = this.periodsPicker.pks.indexOf(pk);
+          this.periodsPicker.pks.splice(idx,1);
+      }else {
+          this.periodsPicker.pks.push(pk)
+      }
+      console.log(pk);
   }
 
 }

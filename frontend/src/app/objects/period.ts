@@ -6,5 +6,12 @@ export class Period {
     timestamp: Date;
     shot_count: number;
     video_count: number;
-    labels?: Label[];
+    labels: Label[] = [];
+}
+
+export class UserPeriodsList {
+  sessions: Period[] = [];
+  weeks: Period[] = [];
+  months: Period[] = [];
+  years: Period[] = [];
 }

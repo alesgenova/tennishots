@@ -6,22 +6,22 @@
 <ngb-tabset *ngIf="showFilter"  (tabChange)="beforeTabChange($event)" justify="center">
   <ngb-tab  id="tab1">
     <template ngbTabTitle>
-      <select (click)="onUserSelectClick()" class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter1.username">
+      <select (click)="onUserSelectClick(1)" class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter1.username">
         <option *ngFor="let user of users" [value]="user.value">{{user.label}}</option>
       </select>
     </template>
     <template ngbTabContent>
-      <sony-filter [filter]="filter1"></sony-filter>
+      <sony-filter [filter]="filter1" [listOfPeriods]="listOfPeriods1"></sony-filter>
     </template>
   </ngb-tab>
   <ngb-tab *ngIf="compare" id="tab2">
     <template ngbTabTitle>
-      <select class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter2.username">
+      <select (click)="onUserSelectClick(2)" class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter2.username">
         <option *ngFor="let user of users" [value]="user.value">{{user.label}}</option>
       </select>
     </template>
     <template ngbTabContent>
-        <sony-filter [filter]="filter2"></sony-filter>
+        <sony-filter [filter]="filter2" [listOfPeriods]="listOfPeriods2"></sony-filter>
     </template>
   </ngb-tab>
   <ngb-tab id="tabS" >

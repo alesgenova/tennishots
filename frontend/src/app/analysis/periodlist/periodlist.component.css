@@ -1,0 +1,21 @@
+.card-header{
+    padding: 1px 1px 1px 1px;
+    margin: 0 0 0 0 ;
+}
+.card-block{
+    padding: 3px 1px 1px 1px;
+    margin: 0 0 0 0 ;
+}
+
+.card{
+    padding: 0 0 0 0;
+    margin: 0px 3px 6px 3px;
+}
+.card-footer{
+    background-color: white;
+    padding: 1px 0 1px 0;
+    margin: 0 0 0 0;
+}
+.card-text{
+    margin-bottom: 1px;
+}

@@ -1,4 +1,17 @@
-<div *ngFor="let period of periods">
-  {{period.timestamp}}
+<div class="row no-gutters">
+  <div *ngFor="let period of periods" class="col-6 col-sm-4 col-md-3">
+    <div class="card text-center">
+      <div class="card-header text-muted" (click)="addPkToPks(period.pk)">
+        {{period.timestamp|date}}
+      </div>
+      <div class="card-block">
+        <p class="card-text"><input (click)="addPkToPks(period.pk)" type="checkbox" class="form-check-input"> <strong>{{period.shot_count}}</strong> shots</p>
+        <div class="row no-gutters">
+          <div *ngFor="let label of period.labels" class="col-4">
+            <span class="badge badge-default">{{label.name}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-{{periodsPicker.name}}
