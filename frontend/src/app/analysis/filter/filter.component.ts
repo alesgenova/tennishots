@@ -13,6 +13,10 @@ export class FilterComponent implements OnInit {
   @Input() filter: SonyFilter;
   advancedFilter: boolean = false;
   users: any[];
+  someRange: number[] = [0,220];
+  num1 : number = 0;
+  num2 : number = 220;
+
 
   constructor() {
       this.users = [];
@@ -21,7 +25,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.filter.filters.periods.name = "session";
+      //this.filter.filters.periods.name = "session";
   }
 
   handlePeriodChange(e) {

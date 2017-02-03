@@ -23,7 +23,9 @@ import { ResultsComponent } from './analysis/results/results.component';
 // ng2-bootstrap components
 import { TabsModule } from 'ng2-bootstrap/tabs';
 //import { AlertModule } from 'ng2-bootstrap';
-import { NouisliderModule } from 'ng2-nouislider';
+// ng-bootstrap
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NouisliderComponent } from 'ng2-nouislider';
 
 import {InputTextModule} from 'primeng/primeng';
 import {TabViewModule} from 'primeng/primeng';
@@ -44,6 +46,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AnalysisComponent,
     FilterComponent,
     ResultsComponent,
+    NouisliderComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -52,7 +55,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     //bootstrap
     TabsModule.forRoot(),
-    NouisliderModule,
+    //NouisliderModule,
+    NgbModule.forRoot(),
     //ngprime
     InputTextModule,
     TabViewModule,

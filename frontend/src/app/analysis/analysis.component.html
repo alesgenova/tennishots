@@ -1,36 +1,26 @@
 <h1>Filter Shots and Compare them</h1>
 
-<tabset>
-  <tab heading="Selection 1" [active]="activet1" (select)="activet1 = true" (deselect)="activet1 = false">
+<div class="container">
+<ngb-tabset  (tabChange)="beforeTabChange($event)">
+  <ngb-tab title="Selection 1" id="tab1">
+    <template ngbTabContent>
       <sony-filter [filter]="filter1"></sony-filter>
-      <!--<button [(ngModel)]="compare" (onChange)="handleCompareChange($event)"></button>-->
-  </tab>
-  <tab [heading]="headert2" [disabled]="!compare" heading="" [active]="activet2" (select)="activet2 = true" (deselect)="activet2 = false">
-      <sony-filter [filter]="filter2"></sony-filter>
-      <!--<button [(ngModel)]="compare" (onChange)="handleCompareChange($event)"></button>-->
-  </tab>
-  <tab disabled=true>
-      <template tabHeading>
-          <button type="button" class="btn btn-primary btn-sm" [class.btn-danger]="compare" (click)="handleCompareChange()">{{comparebtntext}}</button>
-      </template>
-  </tab>
-
-  <!--<tab heading="Enable Comparison" (select)="handleCompareChange()" [active]="activet3"></tab>-->
-
-<!--
-<p-tabView>
-    <p-tabPanel header="Selection 1">
-       <sony-filter [filter]="filter1"></sony-filter>
-       <p-toggleButton [(ngModel)]="compare" (onChange)="handleCompareChange($event)" onLabel="Disable Comparison" offLabel="Enable Comparison" onIcon="" offIcon=""></p-toggleButton>
-    </p-tabPanel>
-    <p-tabPanel header="Selection 2" [disabled]="!compare">
+    </template>
+  </ngb-tab>
+  <ngb-tab *ngIf="compare" id="tab2" title="Selection 2">
+    <template ngbTabContent>
         <sony-filter [filter]="filter2"></sony-filter>
-    </p-tabPanel>
-</p-tabView>
--->
+    </template>
+  </ngb-tab>
+  <ngb-tab id="tabS" >
+    <template ngbTabTitle><button type="button" class="btn btn-primary btn-sm" [class.btn-danger]="compare" (click)="handleCompareChange()">{{comparebtntext}}</button></template>
+  </ngb-tab>
+</ngb-tabset>
+
 <p>
   {{filter1|json}}
 </p>
 <p>
   {{filter2|json}}
 </p>
+</div>

@@ -1,11 +1,56 @@
-<label for="userpicker">Pick A player</label>
-<select class="custom-select" id="userpicker" [(ngModel)]="filter.username">
-    <option *ngFor="let user of users" [value]="user.value">{{user.label}}</option>
-</select>
-<hr>
-<label for="swingspeed">Pick A player</label>
+<div class="container">
+  <div class="form-group row">
+    <label for="userpicker" class="col-3 col-form-label">Player:</label>
+    <div class="col-9">
+      <select class="form-control" id="userpicker" [(ngModel)]="filter.username">
+        <option *ngFor="let user of users" [value]="user.value">{{user.label}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <button type="button" class="btn btn-secondary btn-sm btn-block">Sessions</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block">Weeks</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block">Months</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block">Years</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block">Date Range</button>
+    </div>
+  </div>
+  <hr>
+  <div class="form-group row">
+    <label class="col-3 col-form-label">Swing Speed</label>
+    <div class="col-1">
+      {{someRange[0]}}
+    </div>
+    <div class="col-7">
+      <nouislider [connect]="true" [min]="0" [max]="220" [step]="1" [(ngModel)]="someRange"></nouislider>
+    </div>
+    <div class="col-1">
+      {{someRange[1]}}
+    </div>
+    <label for="ballspeed" class="col-3 col-form-label">Ball Speed</label>
+    <div class="col-1">
+      {{someRange[0]}}
+    </div>
+    <div class="col-7">
+      <nouislider [connect]="true" [min]="0" [max]="220" [step]="1" [(ngModel)]="someRange"></nouislider>
+    </div>
+    <div class="col-1">
+      {{someRange[1]}}
+    </div>
+    <label for="swingspeed" class="col-3 col-form-label">Ball Spin</label>
+    <div class="col-1">
+      {{someRange[0]}}
+    </div>
+    <div class="col-7">
+      <nouislider [connect]="true" [min]="-10" [max]="10" [step]="1" [(ngModel)]="someRange"></nouislider>
+    </div>
+    <div class="col-1">
+      {{someRange[1]}}
+    </div>
+</div>
 <!--<nouislider [connect]="true" [min]="0" [max]="15" [step]="1" [(ngModel)]="speed_range" (ngModelChange)="onChange($event)"></nouislider>
-<nouislider id="swinspeed" [connect]="true" [min]="0" [max]="220" [step]="1"></nouislider>-->
+
 <!--
 <p-dropdown id="userpicker" [options]="users" [(ngModel)]="filter.username" [style]="{'width':'150px'}"></p-dropdown>
 <hr>
