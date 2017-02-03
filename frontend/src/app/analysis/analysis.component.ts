@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { TennistatService } from '../services/tennistat.service';
 
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'analysis',
   templateUrl: './analysis.component.html',
@@ -15,9 +17,6 @@ export class AnalysisComponent implements OnInit {
 
   //filter2: SonyFilter;
   compare: boolean = false;
-  activet1: boolean = true;
-  activet2: boolean = false;
-  headert2: string = "";
   comparebtntext: string = "Enable Comparison";
 
   constructor(private tennistatService: TennistatService) { }
@@ -40,17 +39,20 @@ export class AnalysisComponent implements OnInit {
   }
 
   handleCompareChange() {
-      this.activet1 = true;
       if (!this.compare){
-        this.headert2 = "Selection 2"
         this.comparebtntext = "Disable Comparison";
       }else{
-        this.headert2 = ""
         this.comparebtntext = "Enable Comparison";
       }
       this.compare = ! this.compare;
-      console.log('activated!');
   }
+
+  beforeTabChange($event: NgbTabChangeEvent) {
+      console.log("I'm here!")
+      if ($event.nextId === 'tabS') {
+        $event.preventDefault();
+      }
+    };
 
   onSubmitRequest(){
 
