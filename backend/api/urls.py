@@ -8,6 +8,7 @@ period_regex = '^(?P<username>.+)/(?P<period>day|month|year|week)/(?P<year>[0-9]
 
 urlpatterns = [
     url(r'^(?P<username>.+)/labels/$', views.LabelList.as_view()),
+    url(r'^(?P<username>.+)/sessions/$', views.SessionList.as_view()),
     url(r'^(?P<username>.+)/days/$', views.DayList.as_view()),
     url(r'^(?P<username>.+)/weeks/$', views.WeekList.as_view()),
     url(r'^(?P<username>.+)/months/$', views.MonthList.as_view()),

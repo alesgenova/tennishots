@@ -17,6 +17,7 @@ export class TestComponent implements OnInit {
       //this.acquire_csrf();
       this.get_test();
       this.post_test();
+      this.get_periods();
   }
 
   acquire_csrf(){
@@ -37,6 +38,15 @@ export class TestComponent implements OnInit {
             this.user_post = data.user;
             console.log(data);
         });
+  }
+
+  get_periods(){
+
+      this.tennistatService.get_periods(localStorage["username"], "weeks")
+        .subscribe(data=>{
+            //this.user_get = data.user;
+            console.log(data);
+    });
   }
 
 }

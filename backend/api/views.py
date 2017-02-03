@@ -218,6 +218,19 @@ class DayList(mixins.ListModelMixin,
         self.queryset = Day.objects.filter(user=requested_user)
         return self.queryset
 
+class SessionList(mixins.ListModelMixin,
+                  generics.GenericAPIView):
+    #queryset = Day.objects.all()
+    serializer_class = SessionSerializer
+    def get_queryset(self, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        self.queryset = Session.objects.filter(user=requested_user)
+        return self.queryset
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
