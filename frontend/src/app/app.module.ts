@@ -26,6 +26,8 @@ import { TabsModule } from 'ng2-bootstrap/tabs';
 // ng-bootstrap
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NouisliderComponent } from 'ng2-nouislider';
+//font-awesome
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 
 import {InputTextModule} from 'primeng/primeng';
 import {TabViewModule} from 'primeng/primeng';
@@ -33,6 +35,7 @@ import {ToggleButtonModule} from 'primeng/primeng';
 import {DropdownModule} from 'primeng/primeng';
 import {CalendarModule} from 'primeng/primeng';
 import {ListboxModule} from 'primeng/primeng';
+import { PeriodlistComponent } from './analysis/periodlist/periodlist.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -46,7 +49,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AnalysisComponent,
     FilterComponent,
     ResultsComponent,
-    NouisliderComponent
+    NouisliderComponent,
+    PeriodlistComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -58,6 +62,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     //NouisliderModule,
     NgbModule.forRoot(),
     //ngprime
+    //font-awesome
+    Angular2FontawesomeModule,
     InputTextModule,
     TabViewModule,
     ToggleButtonModule,

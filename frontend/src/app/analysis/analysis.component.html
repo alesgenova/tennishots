@@ -1,19 +1,31 @@
 <h1>Filter Shots and Compare them</h1>
 
 <div class="container">
-<ngb-tabset  (tabChange)="beforeTabChange($event)">
-  <ngb-tab title="Selection 1" id="tab1">
+<button *ngIf="!showFilter" type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
+<br>
+<ngb-tabset *ngIf="showFilter"  (tabChange)="beforeTabChange($event)" justify="center">
+  <ngb-tab  id="tab1">
+    <template ngbTabTitle>
+      <select (click)="onUserSelectClick()" class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter1.username">
+        <option *ngFor="let user of users" [value]="user.value">{{user.label}}</option>
+      </select>
+    </template>
     <template ngbTabContent>
       <sony-filter [filter]="filter1"></sony-filter>
     </template>
   </ngb-tab>
-  <ngb-tab *ngIf="compare" id="tab2" title="Selection 2">
+  <ngb-tab *ngIf="compare" id="tab2">
+    <template ngbTabTitle>
+      <select class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter2.username">
+        <option *ngFor="let user of users" [value]="user.value">{{user.label}}</option>
+      </select>
+    </template>
     <template ngbTabContent>
         <sony-filter [filter]="filter2"></sony-filter>
     </template>
   </ngb-tab>
   <ngb-tab id="tabS" >
-    <template ngbTabTitle><button type="button" class="btn btn-primary btn-sm" [class.btn-danger]="compare" (click)="handleCompareChange()">{{comparebtntext}}</button></template>
+    <template ngbTabTitle><button type="button" class="btn btn-primary btn-sm" [class.btn-danger]="compare" (click)="handleCompareChange()"><i class="fa" [class.fa-plus]="!compare" [class.fa-minus]="compare" aria-hidden="true"></i></button></template>
   </ngb-tab>
 </ngb-tabset>
 

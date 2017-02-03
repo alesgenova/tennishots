@@ -34,4 +34,10 @@ export class TennistatService {
           .map(res => res.json());
   }
 
+  get_periods(username:string, period:string){
+      return this.authHttp
+          .get(this.ApiUrl+username+'/'+period+'/')
+          .map(res => res.json());
+  }
+
 }
