@@ -1,54 +1,79 @@
 <div class="container">
   <br>
-  {{periodSelector}}
   <div class="row">
     <div class="col-3">
-      <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="handlePeriodChange('sessions')">Sessions</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="handlePeriodChange('weeks')">Weeks</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="handlePeriodChange('months')">Months</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="handlePeriodChange('years')">Years</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="handlePeriodChange('date_range')">Date Range</button><hr>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[0]" (click)="handlePeriodChange('sessions')">Sessions</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[1]" (click)="handlePeriodChange('weeks')">Weeks</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[2]" (click)="handlePeriodChange('months')">Months</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[3]" (click)="handlePeriodChange('years')">Years</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[4]" (click)="handlePeriodChange('date_range')">Date Range</button><hr>
       <button type="button" class="btn btn-primary btn-sm btn-block" [class.btn-danger]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
     </div>
     <div *ngIf="periodSelector[0]" class="col-9">
-      <periodlist [periods]="sessions" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist [periods]="listOfPeriods.sessions" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[1]" class="col-9">
-      <periodlist [periods]="weeks" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist [periods]="listOfPeriods.weeks" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[2]" class="col-9">
-      <periodlist [periods]="months" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist [periods]="listOfPeriods.months" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[3]" class="col-9">
-      <periodlist [periods]="years" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist [periods]="listOfPeriods.years" [periodsPicker]="filter.filters.periods"></periodlist>
+    </div>
+    <div *ngIf="periodSelector[4]" class="col-9">
+      <div class="row">
+        <div class="col-sm-6">
+          <label>From</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp1" [(ngModel)]="filter.filters.date_range.min" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker">
+            <div class="input-group-addon" (click)="d1.toggle()" >
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </div>
+          </div>
+          <br>
+        </div>
+        <div class="col-sm-6">
+          <label>To</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp2" [(ngModel)]="filter.filters.date_range.max" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker">
+            <div class="input-group-addon" (click)="d2.toggle()" >
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
     </div>
   </div>
   <hr>
   <div *ngIf="advancedFilter">
     <div class="row">
       <div class="col-4 text-center">
+        <div class="row">
+          <div class="offset-1 col-10">
+            <nouislider [connect]="true" [min]="0" [max]="240" [step]="1" [tooltips]="[true,true]" [(ngModel)]="filter.filters.swing_speed"></nouislider>
+          </div>
+        </div>
         <label>Swing Speed</label>
-        <div class="row">
-          <div class="offset-1 col-10">
-            <nouislider [connect]="true" [min]="0" [max]="220" [step]="1" [tooltips]="[true,true]" [(ngModel)]="someRange"></nouislider>
-          </div>
-        </div>
       </div>
       <div class="col-4 text-center">
+        <div class="row">
+          <div class="offset-1 col-10">
+            <nouislider [connect]="true" [min]="0" [max]="240" [step]="1" [tooltips]="[true,true]" [(ngModel)]="filter.filters.ball_speed"></nouislider>
+          </div>
+        </div>
         <label>Ball Speed</label>
-        <div class="row">
-          <div class="offset-1 col-10">
-            <nouislider [connect]="true" [min]="0" [max]="220" [step]="1" [tooltips]="[true,true]" [(ngModel)]="someRange"></nouislider>
-          </div>
-        </div>
       </div>
       <div class="col-4 text-center">
-        <label>Ball Spin</label>
         <div class="row">
           <div class="offset-1 col-10">
-            <nouislider [connect]="true" [min]="0" [max]="220" [step]="1" [tooltips]="[true,true]" [(ngModel)]="someRange"></nouislider>
+            <nouislider [connect]="true" [min]="-10" [max]="10" [step]="1" [tooltips]="[true,true]" [(ngModel)]="filter.filters.ball_spin"></nouislider>
           </div>
         </div>
+        <label>Ball Spin</label>
       </div>
     </div>
   </div>

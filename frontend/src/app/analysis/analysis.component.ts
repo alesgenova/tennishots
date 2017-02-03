@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
+import { Period, UserPeriodsList } from '../objects/period';
 import { TennistatService } from '../services/tennistat.service';
 
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -21,6 +22,10 @@ export class AnalysisComponent implements OnInit {
   compare: boolean = false;
   comparebtntext: string = "+";
 
+  //
+  listOfPeriods1: UserPeriodsList = new UserPeriodsList();
+  listOfPeriods2: UserPeriodsList = new UserPeriodsList();
+
   constructor(private tennistatService: TennistatService) { }
 
   ngOnInit() {
@@ -28,21 +33,9 @@ export class AnalysisComponent implements OnInit {
       this.users.push({label:'Myself', value:"ales"});
       this.users.push({label:'Pierluigi', value:"lionardo"});
       this.filter1.username = "ales";
-      this.filter1.filters = new SOFilters();
-      this.filter1.filters.periods = new PeriodsPicker();
-      this.filter1.filters.periods.name = "session"
-      this.filter1.filters.date_range = new DateRange();
-      this.filter1.filters.swing_speed = new NumberRange();
-      this.filter1.filters.ball_speed = new NumberRange();
-      this.filter1.filters.ball_spin = new NumberRange();
       this.filter2.username = "ales";
-      this.filter2.filters = new SOFilters();
-      this.filter2.filters.periods = new PeriodsPicker();
-      this.filter2.filters.periods.name = "session"
-      this.filter2.filters.date_range = new DateRange();
-      this.filter2.filters.swing_speed = new NumberRange();
-      this.filter2.filters.ball_speed = new NumberRange();
-      this.filter2.filters.ball_spin = new NumberRange();
+      this.getUserPeriods(this.filter1.username,1);
+      this.getUserPeriods(this.filter2.username,2);
   }
 
   handleCompareChange() {
@@ -63,8 +56,33 @@ export class AnalysisComponent implements OnInit {
       }
     };
 
-  onUserSelectClick() {
-      console.log("CLik")
+  onUserSelectClick(num:number) {
+      if (num ==1){
+          this.getUserPeriods(this.filter1.username,1);
+      }else if (num == 2){
+          this.getUserPeriods(this.filter2.username,2);
+      }
+      console.log("CLik"+num)
+
+  }
+
+  getUserPeriods(user:string, num:number){
+      this.getPeriods(user, "sessions", num);
+      this.getPeriods(user, "weeks", num);
+      this.getPeriods(user, "months", num);
+      this.getPeriods(user, "years", num);
+  }
+
+  getPeriods(user:string, name:string, num:number) {
+      var periods: Period[];
+      this.tennistatService.get_periods(user, name)
+        .subscribe(data=>{
+            if (num == 1) {
+                this.listOfPeriods1[name] = data;
+            }else if (num == 2){
+                this.listOfPeriods2[name] = data;
+            }
+      });
   }
 
   onSubmitRequest(){

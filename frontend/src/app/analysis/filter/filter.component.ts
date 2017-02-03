@@ -3,7 +3,7 @@ import { TennistatService } from '../../services/tennistat.service';
 
 import { SonyFilter, PeriodsPicker, DateRange } from '../../objects/sonyfilter';
 import {SelectItem} from 'primeng/primeng';
-import { Period } from '../../objects/period';
+import { Period, UserPeriodsList } from '../../objects/period';
 
 @Component({
   //inputs: ["filter"],
@@ -14,9 +14,12 @@ import { Period } from '../../objects/period';
 export class FilterComponent implements OnInit {
 
   @Input() filter: SonyFilter;
+  @Input() listOfPeriods: UserPeriodsList;
   advancedFilter: boolean = false;
   users: any[];
-  someRange: number[] = [0,220];
+  swing_speed: number[] = [0,240];
+  ball_speed: number[] = [0,240];
+  ball_spin: number[] = [-10,10];
   num1 : number = 0;
   num2 : number = 220;
   periodSelector: boolean[] = [true,false,false,false,false];
@@ -35,10 +38,12 @@ export class FilterComponent implements OnInit {
 
   ngOnInit() {
       //this.filter.filters.periods.name = "session";
+      /*
       this.getPeriods(localStorage["username"],"sessions");
       this.getPeriods(localStorage["username"],"weeks");
       this.getPeriods(localStorage["username"],"months");
       this.getPeriods(localStorage["username"],"years");
+      */
   }
 
   handlePeriodChange(name) {

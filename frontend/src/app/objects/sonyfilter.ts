@@ -1,16 +1,19 @@
 export class SonyFilter {
     username: string;
-    sensor: string;
-    filters: SOFilters;
+    sensor: string = 'SO';
+    filters: SOFilters = new SOFilters();
 }
 
 export class SOFilters{
-    periods?: PeriodsPicker ;
-    date_range: DateRange ;
-    swing_speed?: NumberRange ;
-    ball_speed?: NumberRange ;
-    ball_spin?: NumberRange ;
-    swing_type?: string[] ;
+    periods?: PeriodsPicker = new PeriodsPicker();
+    date_range: DateRange = new DateRange();
+    swing_speed?: number[] = [0,240];
+    ball_speed?: number[] = [0,240];
+    ball_spin?: number[] = [-10,10];
+    //swing_speed?: NumberRange = new NumberRange();
+    //ball_speed?: NumberRange = new NumberRange();
+    //ball_spin?: NumberRange = new NumberRange();
+    swing_type?: string[] = [];
 }
 
 export class DateRange {
@@ -24,6 +27,6 @@ export class NumberRange{
 }
 
 export class PeriodsPicker{
-    name: string;
-    pks?: number[];
+    name: string = 'session';
+    pks?: number[] = [];
 }
