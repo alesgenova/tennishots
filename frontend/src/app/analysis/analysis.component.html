@@ -3,7 +3,7 @@
 <div class="container">
 <button *ngIf="!showFilter" type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
 <br>
-<ngb-tabset *ngIf="showFilter"  (tabChange)="beforeTabChange($event)" justify="center">
+<ngb-tabset *ngIf="showFilter"  (tabChange)="beforeTabChange($event)" justify="left">
   <ngb-tab  id="tab1">
     <template ngbTabTitle>
       <select (click)="onUserSelectClick(1)" class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter1.username">
@@ -28,11 +28,15 @@
     <template ngbTabTitle><button type="button" class="btn btn-primary btn-sm" [class.btn-danger]="compare" (click)="handleCompareChange()"><i class="fa" [class.fa-plus]="!compare" [class.fa-minus]="compare" aria-hidden="true"></i></button></template>
   </ngb-tab>
 </ngb-tabset>
-
+<button *ngIf="showFilter" type="button" class="btn btn-primary btn-sm btn-block" (click)="onSubmitRequest()">Submit</button>
+<display [stats1]="stats1" [stats2]="stats2" [compare]="compare"></display>
 <p>
   {{filter1|json}}
 </p>
 <p>
   {{filter2|json}}
+</p>
+<p>
+  {{stats2|json}}
 </p>
 </div>

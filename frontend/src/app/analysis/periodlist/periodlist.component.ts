@@ -11,10 +11,24 @@ export class PeriodlistComponent implements OnInit {
 
   @Input() periods: Period[];
   @Input() periodsPicker: PeriodsPicker;
+  doPagination: boolean;
+  nPeriods: number;
+  periodsPerPage: number = 8;
+  currPage: number;
+  periodsSubset: Period[];
 
   constructor() { }
 
   ngOnInit() {
+      this.nPeriods = this.periods.length;
+      this.doPagination = (this.nPeriods > this.periodsPerPage);
+      this.currPage = 1;
+      if (this.doPagination){
+          this.periodsSubset = this.periods.slice(0,this.periodsPerPage);
+      }else{
+          this.periodsSubset = this.periods
+      }
+
   }
 
   addPkToPks(pk:number) {
@@ -25,6 +39,23 @@ export class PeriodlistComponent implements OnInit {
           this.periodsPicker.pks.push(pk)
       }
       console.log(pk);
+  }
+
+  isInPks(pk:number) {
+      //console.log("checking is in "+pk);
+      if (this.periodsPicker.pks.some(x=>x==pk)) {
+          return true;
+      }else {
+          return false;
+      }
+  }
+
+  onPageChange(){
+      var start: number;
+      var stop: number;
+      start = (this.currPage-1)*this.periodsPerPage;
+      stop = start+this.periodsPerPage;
+      this.periodsSubset = this.periods.slice(start,stop);
   }
 
 }

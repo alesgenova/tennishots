@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../objects/period';
+import { SonyResponse } from '../objects/sonyresponse';
 import { TennistatService } from '../services/tennistat.service';
 
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +17,8 @@ export class AnalysisComponent implements OnInit {
   showFilter: boolean = true;
   filter1: SonyFilter = new SonyFilter();
   filter2: SonyFilter = new SonyFilter();
+  stats1: SonyResponse;
+  stats2: SonyResponse;
   //_filter2: SonyFilter = new SonyFilter(); // aux filter to save/delete the state of filter2 when enabling/disabling comparison
 
   //filter2: SonyFilter;
@@ -86,7 +89,19 @@ export class AnalysisComponent implements OnInit {
   }
 
   onSubmitRequest(){
-
+      this.stats1 = new SonyResponse;
+      this.stats2 = new SonyResponse;
+      this.tennistatService.get_filter_stats(this.filter1)
+        .subscribe(data=>{
+            this.stats1 = data;
+        });
+      if (this.compare){
+          this.tennistatService.get_filter_stats(this.filter2)
+            .subscribe(data=>{
+                this.stats2 = data;
+            });
+      }
+      this.showFilter = false;
   }
 
 }

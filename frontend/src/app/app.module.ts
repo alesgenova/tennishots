@@ -12,6 +12,10 @@ import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AuthService } from './services/auth.service';
 import { TennistatService } from './services/tennistat.service';
 
+// highcharts module
+import { ChartModule } from 'angular2-highcharts';
+import { ChartsModule } from 'ng2-charts';
+
 import { routes } from './app.routes';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -21,7 +25,7 @@ import { FilterComponent } from './analysis/filter/filter.component';
 import { ResultsComponent } from './analysis/results/results.component';
 
 // ng2-bootstrap components
-import { TabsModule } from 'ng2-bootstrap/tabs';
+//import { TabsModule } from 'ng2-bootstrap/tabs';
 //import { AlertModule } from 'ng2-bootstrap';
 // ng-bootstrap
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -29,13 +33,8 @@ import { NouisliderComponent } from 'ng2-nouislider';
 //font-awesome
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 
-import {InputTextModule} from 'primeng/primeng';
-import {TabViewModule} from 'primeng/primeng';
-import {ToggleButtonModule} from 'primeng/primeng';
-import {DropdownModule} from 'primeng/primeng';
-import {CalendarModule} from 'primeng/primeng';
-import {ListboxModule} from 'primeng/primeng';
 import { PeriodlistComponent } from './analysis/periodlist/periodlist.component';
+import { DisplayComponent } from './analysis/display/display.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -50,7 +49,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FilterComponent,
     ResultsComponent,
     NouisliderComponent,
-    PeriodlistComponent
+    PeriodlistComponent,
+    DisplayComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -58,18 +58,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     HttpModule,
     //bootstrap
-    TabsModule.forRoot(),
-    //NouisliderModule,
     NgbModule.forRoot(),
-    //ngprime
+    //NouisliderModule,
+    //highcharts
+    ChartModule,
+    ChartsModule,
     //font-awesome
     Angular2FontawesomeModule,
-    InputTextModule,
-    TabViewModule,
-    ToggleButtonModule,
-    DropdownModule,
-    CalendarModule,
-    ListboxModule,
   ],
   providers: [AuthService, TennistatService,
               {

@@ -10,20 +10,20 @@
       <button type="button" class="btn btn-primary btn-sm btn-block" [class.btn-danger]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
     </div>
     <div *ngIf="periodSelector[0]" class="col-9">
-      <periodlist [periods]="listOfPeriods.sessions" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.sessions.length > 0" [periods]="listOfPeriods.sessions" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[1]" class="col-9">
-      <periodlist [periods]="listOfPeriods.weeks" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.weeks.length > 0" [periods]="listOfPeriods.weeks" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[2]" class="col-9">
-      <periodlist [periods]="listOfPeriods.months" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.months.length > 0" [periods]="listOfPeriods.months" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[3]" class="col-9">
-      <periodlist [periods]="listOfPeriods.years" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.years.length > 0" [periods]="listOfPeriods.years" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[4]" class="col-9">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-6">
           <label>From</label>
           <div class="input-group">
             <input class="form-control" placeholder="yyyy-mm-dd"
@@ -34,7 +34,7 @@
           </div>
           <br>
         </div>
-        <div class="col-sm-6">
+        <div class="col-6">
           <label>To</label>
           <div class="input-group">
             <input class="form-control" placeholder="yyyy-mm-dd"
