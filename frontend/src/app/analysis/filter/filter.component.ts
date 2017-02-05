@@ -31,9 +31,6 @@ export class FilterComponent implements OnInit {
 
 
   constructor(private tennistatService: TennistatService) {
-      this.users = [];
-      this.users.push({label:'Myself', value:localStorage["username"]});
-      this.users.push({label:'Pierluigi', value:"lionardo"});
   }
 
   ngOnInit() {
@@ -55,7 +52,7 @@ export class FilterComponent implements OnInit {
       }else if (name == "weeks"){
         this.filter.filters.periods.name = "week";
         this.periodSelector[1] = true;
-    }else if (name == "months"){
+      }else if (name == "months"){
         this.filter.filters.periods.name = "month";
         this.periodSelector[2] = true;
       }else if (name == "years"){
@@ -66,23 +63,5 @@ export class FilterComponent implements OnInit {
         //this.filter.filters.periods.name = "session";
       }
   }
-  getPeriods(user:string, name:string) {
-      this.tennistatService.get_periods(user, name)
-        .subscribe(data=>{
-            if (name == "sessions"){
-              this.sessions = data;
-            }else if (name == "weeks"){
-              this.weeks = data;
-          }else if (name == "months"){
-              this.months = data;
-            }else if (name == "years"){
-              this.years = data;
-            }
-            //this.user_get = data.user;
-            console.log(data);
-      });
-  }
-
-
 
 }

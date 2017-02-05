@@ -1,0 +1,57 @@
+<p>
+  display works!
+</p>
+
+<div class="row">
+  <div *ngFor="let j of [0,1]" class="col-6">
+    <div *ngFor="let stroke of stats1?.strokes.slice(j*4,j*4+4) ; let i=index" class="col-6" class="card text-center">
+      <div class="card-header">
+        <h5 class="mb-0">
+          {{ STROKES[stroke.name].label }}
+        </h5>
+      </div>
+      <div class="card-block">
+        <div class="row">
+          <div class="col-6" [class.col-12]="!compare">
+            <strong>{{stroke.count}}</strong> Shots
+          </div>
+          <div *ngIf="compare" class="col-6">
+            <strong>{{stats2?.strokes[i+j*4]?.count}}</strong> Shots
+          </div>
+        </div>
+        <p>
+          <button class="btn btn-secondary btn-sm btn-block" (click)="expanded[stroke.name]=!expanded[stroke.name]">Expand</button>
+        </p>
+        <div *ngIf="expanded[stroke.name]">
+          <div class="row">
+            <div class="col-6" [class.col-12]="!compare">
+              <img class="img-fluid" [src]="stroke.stats?.heatmap" style="height:100px;">
+            </div>
+            <div *ngIf="compare" class="col-6">
+              <img class="img-fluid" [src]="stats2?.strokes[i+j*4]?.stats.heatmap" style="height:100px;">
+            </div>
+            <div *ngFor="let stat of ['swing_speed', 'ball_speed', 'ball_spin']" class="col-md-10 offset-md-1">
+              <hr>
+              {{getStatLabel(stat)}}
+              <canvas *ngIf="!compare" baseChart
+                      [data]="stats1?.strokes[i+j*4]?.stats[stat].y"
+                      [labels]="stats1?.strokes[i+j*4]?.stats[stat].x"
+                      [options]="barChartOptions"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType">
+              </canvas>
+              <canvas *ngIf="compare" baseChart
+                      [data]="[stats1?.strokes[i+j*4]?.stats[stat].y,stats2?.strokes[i+j*4]?.stats[stat].y]"
+                      [labels]="stats1?.strokes[i+j*4]?.stats[stat].x"
+                      [options]="barChartOptions"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{stats1|json}}

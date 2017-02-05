@@ -9,7 +9,7 @@
 
 .card{
     padding: 0 0 0 0;
-    margin: 0px 3px 6px 3px;
+    margin: 0px 3px 9px 3px;
 }
 .card-footer{
     background-color: white;
@@ -18,4 +18,10 @@
 }
 .card-text{
     margin-bottom: 1px;
+}
+.card-header-selected{
+    background-color: bg-primary;
+}
+.labels-spacer{
+    height: 25px;
 }

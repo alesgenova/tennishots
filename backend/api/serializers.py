@@ -17,9 +17,14 @@ class SpeedRangePickerSerializer(serializers.Serializer):
     min = serializers.FloatField(min_value=0, required=False)
     max = serializers.FloatField(min_value=0, required=False)
 
+class DateSerializer(serializers.Serializer):
+    year = serializers.IntegerField()
+    month = serializers.IntegerField(min_value=1, max_value=12)
+    day = serializers.IntegerField(min_value=1, max_value=31)
+
 class DateRangePickerSerializer(serializers.Serializer):
-    min = serializers.DateField(required=False)
-    max = serializers.DateField(required=False)
+    min = DateSerializer(required=False)
+    max = DateSerializer(required=False)
 
 class PeriodPickerSerializer(serializers.Serializer):
     name = serializers.ChoiceField(choices=PERIODS)
@@ -28,9 +33,9 @@ class PeriodPickerSerializer(serializers.Serializer):
 class SonyFilterListSerializer(serializers.Serializer):
     periods = PeriodPickerSerializer(required=False)
     date_range = DateRangePickerSerializer(required=False)
-    swing_speed = SpeedRangePickerSerializer(required=False)
-    ball_speed = SpeedRangePickerSerializer(required=False)
-    ball_spin = SpinRangePickerSerializer(required=False)
+    swing_speed = serializers.ListField(child=serializers.IntegerField(min_value=0), required=False)
+    ball_speed = serializers.ListField(child=serializers.IntegerField(min_value=0), required=False)
+    ball_spin = serializers.ListField(child=serializers.IntegerField(min_value=-10, max_value=10), required=False)
     swing_type = serializers.MultipleChoiceField(choices=SWING_TYPES, required=False)
 
 class SonyFilterSerializer(serializers.Serializer):
