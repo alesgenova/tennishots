@@ -17,8 +17,8 @@ export class AnalysisComponent implements OnInit {
   showFilter: boolean = true;
   filter1: SonyFilter = new SonyFilter();
   filter2: SonyFilter = new SonyFilter();
-  stats1: SonyResponse;
-  stats2: SonyResponse;
+  stats1: SonyResponse = new SonyResponse();
+  stats2: SonyResponse = new SonyResponse();
   //_filter2: SonyFilter = new SonyFilter(); // aux filter to save/delete the state of filter2 when enabling/disabling comparison
 
   //filter2: SonyFilter;
@@ -61,8 +61,10 @@ export class AnalysisComponent implements OnInit {
 
   onUserSelectClick(num:number) {
       if (num ==1){
+          this.listOfPeriods1 = new UserPeriodsList();
           this.getUserPeriods(this.filter1.username,1);
       }else if (num == 2){
+          this.listOfPeriods2 = new UserPeriodsList();
           this.getUserPeriods(this.filter2.username,2);
       }
       console.log("CLik"+num)

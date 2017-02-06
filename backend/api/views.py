@@ -4,6 +4,7 @@ import datetime as dt
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
+from profiles.models import UserProfile
 
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -20,10 +21,26 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              WeekSerializer, DaySerializer, SessionSerializer,
                              ShotSerializer, ShotSetSerializer,
                              LabelSerializer, SonyFilterSerializer,
-                             AddLabelSerializer,
+                             AddLabelSerializer, UserProfileSerializer,
             ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
+
+class CreateProfile(generics.GenericAPIView):
+    """
+    List all friends profiles, or create own user profile.
+    """
+    serializer_class = UserProfileSerializer
+    def post(self, request, format=None):
+        user = request.user
+        try:
+            profile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            serializer = UserProfileSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(user=request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class JSONResponse(HttpResponse):
     """

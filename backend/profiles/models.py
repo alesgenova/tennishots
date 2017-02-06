@@ -36,6 +36,8 @@ class UserProfile(models.Model):
     backhand = models.IntegerField(choices=backhand_choices)
     privacy = models.CharField(max_length=2, choices=privacy_choices)
 
+    friends = models.ManyToManyField("self")
+
     def save(self, *args, **kwargs):
         try:
             temp_name = self.avatar.name
@@ -53,3 +55,15 @@ class UserProfile(models.Model):
         except Exception:
             pass
         super(UserProfile, self).save(*args, **kwargs)
+
+class FriendRequest(models.Model):
+    from_user = models.ForeignKey(UserProfile, related_name="requests_out", on_delete=models.CASCADE)
+    to_user = models.ForeignKey(UserProfile, related_name="requests_in", on_delete=models.CASCADE)
+    #status = models.CharField(max_length=2, choices=(('PE','Pending'),('RE','Refused'),('AC','Accepted')))
+
+    def accept(self):
+        self.from_user.friends.add(to_user)
+        self.delete()
+
+    def refuse(self):
+        self.delete()

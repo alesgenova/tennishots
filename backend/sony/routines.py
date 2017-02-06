@@ -121,7 +121,8 @@ class SonyShotSetDetail(object):
                         labels[0], labels[bins-1] = (rang[0],rang[1])
                     y, x = np.histogram(vals, bins=bins, range=rang)
                     statdict['x'] = labels #x[:-1]
-                    statdict['y'] = y/np.max(y)
+                    #statdict['y'] = y/np.max(y)
+                    statdict['y'] = y/np.sum(y)
                     #strokedict['stats'].append(statdict)
                     strokedict['stats'][stat] = statdict
 

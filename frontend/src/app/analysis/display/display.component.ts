@@ -18,17 +18,41 @@ export class DisplayComponent implements OnInit {
   constructor() { }
 
 
-  public barChartOptions:any = {
+  public chartOptions:any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    scales: {
+        yAxes: [{
+            ticks:{
+                display:false,
+                //suggestedMin:0.,
+                //suggestedMax:1.05,
+                stepSize: 0.01
+            },
+            gridLines:{display:false}
+                }],
+        xAxes: [{
+            gridLines:{display:false}
+                }],
+            },
   };
-  public barChartType:string = 'line';
-  public barChartLegend:boolean = false;
+  public chartType:string = 'line';
+  public chartLegend:boolean = false;
 
-  public barChartData:any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
-  ];
+  public chartColors:Array<any> = [
+  { // grey
+    pointRadius: 0,
+    //borderColor: 'rgba(245,85,54,0.8)',//"#C9302C"
+    borderColor: 'rgba(169,68,66,0.8)',
+    backgroundColor: 'rgba(245,85,54,0.3)',
+  },
+  { // grey
+    pointRadius: 0,
+    //borderColor: 'rgba(32,164,243,0.8)', //"#025AA5"
+    borderColor: 'rgba(49,112,143,0.8)',
+    backgroundColor: 'rgba(32,164,243,0.3)'
+  }
+]
 
   ngOnInit() {
       this.expanded = {

@@ -87,6 +87,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tennistat.wsgi.application'
 
+#REST_AUTH_SERIALIZERS = {
+#    'USER_DETAILS_SERIALIZER': 'api.serializers.UserSerializer'
+#}
+
 # CORS allowed hosts
 CORS_ORIGIN_WHITELIST = (
     #'www.tennistat.xyz',
@@ -174,3 +178,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Gmail SETUP
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tennistat.xyz@gmail.com'
+EMAIL_HOST_PASSWORD = 'vitellOtonnatO87'
+EMAIL_PORT = 587

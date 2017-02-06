@@ -1,0 +1,21 @@
+<nav class="nav bg-faded">
+  <div class="nav container">
+    <li class="nav-item">
+      <a class="navbar-brand" href="#" ><img src="" style="height:40px;" alt="TENNISTAT"></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Analyze</a>
+    </li>
+    <li *ngIf="loggedIn" class="nav-item">
+      <a class="nav-link" href="#" id="userdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{username}}</a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userdropdown">
+        <a class="dropdown-item" href="#">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Log Out
+        </a>
+      </div>
+    </li>
+    <li *ngIf="!loggedIn" class="nav-item">
+      <a class="nav-link">Login</a>
+    </li>
+  </div>
+</nav>
