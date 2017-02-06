@@ -1,7 +1,15 @@
 from rest_framework import serializers
+from rest_auth.serializers import UserDetailsSerializer
 from generic.constants import PERIODS, SENSORS
 from sony.constants import SWING_TYPES
+from profiles.models import UserProfile
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = ['first_name','last_name', 'arm', 'units', 'backhand', 'privacy']
 
 class AddLabelSerializer(serializers.Serializer):
     label_pk = serializers.IntegerField(min_value=1)

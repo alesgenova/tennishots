@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -35,6 +36,9 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 
 import { PeriodlistComponent } from './analysis/periodlist/periodlist.component';
 import { DisplayComponent } from './analysis/display/display.component';
+import { TopbarComponent } from './topbar/topbar.component';
+import { LogoutComponent } from './logout/logout.component';
+import { RegisterComponent } from './register/register.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -50,12 +54,16 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ResultsComponent,
     NouisliderComponent,
     PeriodlistComponent,
-    DisplayComponent
+    DisplayComponent,
+    TopbarComponent,
+    LogoutComponent,
+    RegisterComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     //bootstrap
     NgbModule.forRoot(),

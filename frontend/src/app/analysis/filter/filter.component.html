@@ -7,7 +7,7 @@
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[2]" (click)="handlePeriodChange('months')">Months</button>
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[3]" (click)="handlePeriodChange('years')">Years</button>
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[4]" (click)="handlePeriodChange('date_range')">Date Range</button><hr>
-      <button type="button" class="btn btn-primary btn-sm btn-block" [class.btn-danger]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
     </div>
     <div *ngIf="periodSelector[0]" class="col-9">
       <periodlist *ngIf="listOfPeriods.sessions.length > 0" [periods]="listOfPeriods.sessions" [periodsPicker]="filter.filters.periods"></periodlist>
