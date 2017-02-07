@@ -1,6 +1,6 @@
 export class RegistrationForm{
-    userForm: UserForm = new UserForm();
-    profileForm: ProfileForm = new ProfileForm();
+    user: UserForm = new UserForm();
+    profile: ProfileForm = new ProfileForm();
 }
 
 export class UserForm{

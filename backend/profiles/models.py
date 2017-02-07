@@ -56,14 +56,20 @@ class UserProfile(models.Model):
             pass
         super(UserProfile, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return "{}".format(self.user.username)
+
 class FriendRequest(models.Model):
     from_user = models.ForeignKey(UserProfile, related_name="requests_out", on_delete=models.CASCADE)
     to_user = models.ForeignKey(UserProfile, related_name="requests_in", on_delete=models.CASCADE)
     #status = models.CharField(max_length=2, choices=(('PE','Pending'),('RE','Refused'),('AC','Accepted')))
 
     def accept(self):
-        self.from_user.friends.add(to_user)
+        self.from_user.friends.add(self.to_user)
         self.delete()
 
     def refuse(self):
         self.delete()
+
+    def __str__(self):
+        return "{} -> {}".format(self.from_user.user.username, self.to_user.user.username)
