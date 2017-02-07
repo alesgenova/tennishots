@@ -2,8 +2,26 @@ from rest_framework import serializers
 from rest_auth.serializers import UserDetailsSerializer
 from generic.constants import PERIODS, SENSORS
 from sony.constants import SWING_TYPES
-from profiles.models import UserProfile
+from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    pk = serializers.IntegerField(read_only=True)
+    from_user = serializers.CharField()
+    to_user = serializers.CharField()
+    action = serializers.CharField(required=False)
+    success = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = FriendRequest
+        fields = ["pk", "from_user", "to_user", "action", "success"]
+
+class FriendSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user__username', read_only=True)
+    email = serializers.CharField(source='user__email', read_only=True)
+    class Meta:
+        model = UserProfile
+        fields = ['first_name','last_name', 'username', 'email']
 
 class UserProfileSerializer(serializers.ModelSerializer):
 

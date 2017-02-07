@@ -48,39 +48,20 @@ export class AuthService {
             });
     }
 
-    register(registrationForm:RegistrationForm): Observable<boolean>{
+    register(registrationForm:RegistrationForm){
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(this.ApiUrl+'register/',registrationForm.userForm, options)
-            .map((response: Response) => {
-                console.log(response)
-                // login successful if there's a jwt token in the response
-                let token = response.json() && response.json().token;
-                if (token) {
-                    // set token property
-                    this.token = token;
-
-                    // store username and jwt token in local storage to keep user logged in between page refreshes
-                    //localStorage.setItem('currentUser', JSON.stringify({ username: username, id_token: token }));
-                    localStorage.setItem('username', registrationForm.userForm.username);
-                    localStorage.setItem('id_token', token);
-
-                    // return true to indicate successful login
-                    return true;
-                } else {
-                    // return false to indicate failed login
-                    return false;
-                }
-            });
+        return this.http.post(this.ApiUrl+'registration/',registrationForm.user, options)
+            .map( (response: Response) => response.json() );
     }
 
-    createprofile(registrationForm:RegistrationForm): Observable<boolean>{
+    createprofile(registrationForm:RegistrationForm){
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-        return this.authHttp.post(this.ApiUrl2+'profile/',registrationForm.profileForm, options)
-            .map((response: Response) => {return true} );
+        return this.authHttp.post(this.ApiUrl2+'profile/',registrationForm.profile, options)
+            .map((response: Response) => {return response.json()} );
     }
 
     logout(): void {

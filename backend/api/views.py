@@ -4,7 +4,7 @@ import datetime as dt
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
-from profiles.models import UserProfile
+from profiles.models import UserProfile, FriendRequest
 
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -22,9 +22,74 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              ShotSerializer, ShotSetSerializer,
                              LabelSerializer, SonyFilterSerializer,
                              AddLabelSerializer, UserProfileSerializer,
-            ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
+                             FriendRequestSerializer, FriendSerializer,
+                             ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
+
+class PendingFriendRequests(generics.GenericAPIView):
+    serializer_class = FriendRequestSerializer
+
+    def get_queryset(self):
+        profile = self.request.user.userprofile
+        return FriendRequest.objects.filter(to_user=profile)
+
+    def get(self, request, format=None):
+        queryset = self.get_queryset()
+        serializer = FriendRequestSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        serializer = FriendRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            if request.user.username != serializer.data['to_user']:
+                return Response({"Error":"Permission denied"}, status=status.HTTP_401_UNAUTHORIZED)
+            from_user = get_object_or_404(UserProfile, user__username=serializer.data['from_user'])
+            to_user = get_object_or_404(UserProfile, user__username=serializer.data['to_user'])
+            friend_request = get_object_or_404(FriendRequest, from_user=from_user, to_user=to_user)
+            if serializer.data['action'] == "accept":
+                friend_request.accept()
+            elif serializer.data['action'] == "refuse":
+                friend_request.refuse()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class AddFriend(generics.GenericAPIView):
+    queryset = []
+    serializer_class = FriendRequestSerializer
+
+    def post(self, request):
+        serializer = FriendRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            if request.user.username != serializer.data['from_user']:
+                return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+            from_user = get_object_or_404(UserProfile, user__username=serializer.data['from_user'])
+            to_user = get_object_or_404(UserProfile, user__username=serializer.data['to_user'])
+            if to_user in from_user.friends.all() or from_user == to_user:
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            try:
+                friend_request = FriendRequest.objects.get(from_user=from_user, to_user=to_user)
+            except FriendRequest.DoesNotExist:
+                try:
+                    friend_request = FriendRequest.objects.get(from_user=to_user, to_user=from_user)
+                except FriendRequest.DoesNotExist:
+                    friend_request = FriendRequest(from_user=from_user, to_user=to_user)
+                    friend_request.save()
+            serializer_out = FriendRequestSerializer(friend_request)
+            return Response(serializer_out.data, status=status.HTTP_201_CREATED)
+
+class GetFriends(generics.GenericAPIView):
+    """
+    List all friends profiles
+    """
+    serializer_class = FriendSerializer
+
+    def get_queryset(self):
+        return self.request.user.userprofile.friends.all()
+
+    def get(self, request, format=None):
+        queryset = self.get_queryset()
+        serializer = FriendSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CreateProfile(generics.GenericAPIView):
     """
