@@ -5,6 +5,18 @@ from sony.constants import SWING_TYPES
 from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 
+class SearchUserSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.CharField(source='user.email', read_only=True)
+    first_name = serializers.CharField(read_only=True)
+    last_name = serializers.CharField(read_only=True)
+    query = serializers.CharField(min_length=3, required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = ['first_name','last_name', 'user', 'email', 'query']
+
+
 class FriendRequestSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
     from_user = serializers.CharField()
@@ -17,11 +29,11 @@ class FriendRequestSerializer(serializers.ModelSerializer):
         fields = ["pk", "from_user", "to_user", "action", "success"]
 
 class FriendSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user__username', read_only=True)
-    email = serializers.CharField(source='user__email', read_only=True)
+    user = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.CharField(source='user.email', read_only=True)
     class Meta:
         model = UserProfile
-        fields = ['first_name','last_name', 'username', 'email']
+        fields = ['first_name','last_name', 'user', 'email']
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
