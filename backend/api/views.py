@@ -3,6 +3,8 @@ import datetime as dt
 #from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
+
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
 from profiles.models import UserProfile, FriendRequest
 
@@ -23,9 +25,40 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              LabelSerializer, SonyFilterSerializer,
                              AddLabelSerializer, UserProfileSerializer,
                              FriendRequestSerializer, FriendSerializer,
+                             SearchUserSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
+
+class SearchUser(generics.GenericAPIView):
+    serializer_class = SearchUserSerializer
+
+    def get_queryset(self):
+        return UserProfile.objects.all()
+
+    def post(self, request):
+        serializer = SearchUserSerializer(data=request.data)
+        if serializer.is_valid():
+            if 'query' in serializer.data:
+                query = serializer.data['query']
+                queryset = self.get_queryset()
+
+                QS = Q(user__username__icontains=query)
+                QS.add(Q(user__email__icontains=query), Q.OR)
+                QS.add(Q(first_name__icontains=query), Q.OR)
+                QS.add(Q(last_name__icontains=query), Q.OR)
+                QS2 = Q(user__username=request.user.username)
+                QS2.add(Q(user__username__in=request.user.userprofile.friends.values_list('user__username', flat=True)),Q.OR)
+                QS2.add(Q(user__username__in=request.user.userprofile.requests_out.values_list('to_user__user__username', flat=True)),Q.OR)
+                QS2.add(Q(user__username__in=request.user.userprofile.requests_in.values_list('from_user__user__username', flat=True)),Q.OR)
+
+                queryset = queryset.filter(QS).exclude(QS2)
+
+                serializer = SearchUserSerializer(queryset, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class PendingFriendRequests(generics.GenericAPIView):
     serializer_class = FriendRequestSerializer
@@ -83,7 +116,7 @@ class GetFriends(generics.GenericAPIView):
     """
     serializer_class = FriendSerializer
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
         return self.request.user.userprofile.friends.all()
 
     def get(self, request, format=None):
@@ -105,7 +138,7 @@ class CreateProfile(generics.GenericAPIView):
             if serializer.is_valid():
                 serializer.save(user=request.user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class JSONResponse(HttpResponse):
     """

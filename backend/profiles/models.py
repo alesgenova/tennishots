@@ -36,7 +36,7 @@ class UserProfile(models.Model):
     backhand = models.IntegerField(choices=backhand_choices)
     privacy = models.CharField(max_length=2, choices=privacy_choices)
 
-    friends = models.ManyToManyField("self")
+    friends = models.ManyToManyField("self", null=True, blank=True)
 
     def save(self, *args, **kwargs):
         try:
