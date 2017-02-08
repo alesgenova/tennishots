@@ -1,3 +1,26 @@
+export class UserProfile{
+    "first_name": string = "";
+    "last_name": string = "";
+    "arm": string = "";
+    "units": string = "";
+    "backhand": string = "";
+    "privacy": string = "";
+    "friends": Friend[] = []
+}
+
+export class Friend{
+    "first_name": "";
+    "last_name": "";
+    "user": "";
+    "email": ""
+}
+
+export class FriendRequest{
+    "from_user": "";
+    "to_user": "";
+    "action"?: ""
+}
+
 export class RegistrationForm{
     user: UserForm = new UserForm();
     profile: ProfileForm = new ProfileForm();

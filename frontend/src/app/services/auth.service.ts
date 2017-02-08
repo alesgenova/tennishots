@@ -5,7 +5,7 @@ import { Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { tokenNotExpired } from 'angular2-jwt';
 
-import { RegistrationForm } from '../objects/registration';
+import { UserForm } from '../objects/registration';
 
 import 'rxjs/add/operator/map';
 
@@ -48,20 +48,12 @@ export class AuthService {
             });
     }
 
-    register(registrationForm:RegistrationForm){
+    register(userForm:UserForm){
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(this.ApiUrl+'registration/',registrationForm.user, options)
+        return this.http.post(this.ApiUrl+'registration/',userForm, options)
             .map( (response: Response) => response.json() );
-    }
-
-    createprofile(registrationForm:RegistrationForm){
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-
-        return this.authHttp.post(this.ApiUrl2+'profile/',registrationForm.profile, options)
-            .map((response: Response) => {return response.json()} );
     }
 
     logout(): void {
@@ -74,6 +66,6 @@ export class AuthService {
 
     loggedIn() {
         return tokenNotExpired();
-}
+    }
 
 }

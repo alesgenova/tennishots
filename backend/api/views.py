@@ -30,6 +30,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 
+
 class SearchUser(generics.GenericAPIView):
     serializer_class = SearchUserSerializer
 
@@ -124,15 +125,22 @@ class GetFriends(generics.GenericAPIView):
         serializer = FriendSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class CreateProfile(generics.GenericAPIView):
+class UserProfileView(generics.GenericAPIView):
     """
     List all friends profiles, or create own user profile.
     """
     serializer_class = UserProfileSerializer
+    def get(self, request):
+        profile = UserProfile.objects.get(user=request.user)
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request, format=None):
         user = request.user
         try:
             profile = UserProfile.objects.get(user=user)
+            serializer = UserProfileSerializer(profile)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except UserProfile.DoesNotExist:
             serializer = UserProfileSerializer(data=request.data)
             if serializer.is_valid():

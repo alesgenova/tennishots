@@ -17,17 +17,6 @@ class SearchUserSerializer(serializers.ModelSerializer):
         fields = ['first_name','last_name', 'user', 'email', 'query']
 
 
-class FriendRequestSerializer(serializers.ModelSerializer):
-    pk = serializers.IntegerField(read_only=True)
-    from_user = serializers.CharField()
-    to_user = serializers.CharField()
-    action = serializers.CharField(required=False)
-    success = serializers.BooleanField(read_only=True)
-
-    class Meta:
-        model = FriendRequest
-        fields = ["pk", "from_user", "to_user", "action", "success"]
-
 class FriendSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', read_only=True)
     email = serializers.CharField(source='user.email', read_only=True)
@@ -35,25 +24,33 @@ class FriendSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['first_name','last_name', 'user', 'email']
 
+class FriendRequestSerializer(serializers.ModelSerializer):
+    pk = serializers.IntegerField(read_only=True)
+    from_user = serializers.CharField()
+    to_user = serializers.CharField()
+    action = serializers.CharField(required=False)
+    from_first_name = serializers.CharField(source="from_user.first_name",read_only=True)
+    from_last_name = serializers.CharField(source="from_user.last_name",read_only=True)
+    from_email = serializers.CharField(source="from_user.user.email",read_only=True)
+    #success = serializers.BooleanField(read_only=True)
+    #from_profile = FriendSerializer(source="from_user", required=False, read_only=True)
+
+    class Meta:
+        model = FriendRequest
+        fields = ["pk", "from_user", "to_user", "action", "from_first_name", "from_last_name", "from_email"]#, "success", "from_profile"]
+
 class UserProfileSerializer(serializers.ModelSerializer):
+    friends = FriendSerializer(required=False, read_only=True, many=True)
 
     class Meta:
         model = UserProfile
-        fields = ['first_name','last_name', 'arm', 'units', 'backhand', 'privacy']
+        fields = ['first_name','last_name', 'arm', 'units', 'backhand', 'privacy', 'friends']
 
 class AddLabelSerializer(serializers.Serializer):
     label_pk = serializers.IntegerField(min_value=1)
     session_pk = serializers.IntegerField(min_value=1)
     action = serializers.ChoiceField(choices=(("add","Add Label"),("remove","Remove Label")))
     success = serializers.BooleanField(required=False)
-
-class SpinRangePickerSerializer(serializers.Serializer):
-    min = serializers.IntegerField(min_value=-10, max_value=10,required=False)
-    max = serializers.IntegerField(min_value=-10, max_value=10, required=False)
-
-class SpeedRangePickerSerializer(serializers.Serializer):
-    min = serializers.FloatField(min_value=0, required=False)
-    max = serializers.FloatField(min_value=0, required=False)
 
 class DateSerializer(serializers.Serializer):
     year = serializers.IntegerField()

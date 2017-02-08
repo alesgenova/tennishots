@@ -39,6 +39,9 @@ import { DisplayComponent } from './analysis/display/display.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
+import { FriendsComponent } from './friends/friends.component';
+import { LabelsComponent } from './labels/labels.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -57,7 +60,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DisplayComponent,
     TopbarComponent,
     LogoutComponent,
-    RegisterComponent
+    RegisterComponent,
+    FriendsComponent,
+    LabelsComponent,
+    ProfileComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
 import { AuthService } from '../services/auth.service';
+import { TennistatService } from '../services/tennistat.service';
 import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../objects/registration';
 
 @Component({
@@ -33,7 +34,7 @@ export class RegisterComponent implements OnInit {
       privacy: new FormControl("VF")
 });*/
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private tennistatService: TennistatService) {
       this.createRegistrationForm();
   }
 
@@ -78,7 +79,7 @@ export class RegisterComponent implements OnInit {
           this.passwordError = "The two password fields didn't match."
           return
       }
-      this.authService.register(this.registrationForm.value)
+      this.authService.register(this.registrationForm.value.user)
             .subscribe( res => {
                                 console.log(res);
                                 if (typeof res.token != "undefined") {
@@ -86,8 +87,8 @@ export class RegisterComponent implements OnInit {
                                     localStorage.setItem('id_token', res.token);
                                     success = true;
                                     console.log("Registration Success");
-                                    this.authService.createprofile(this.registrationForm.value)
-                                          .subscribe( res => { console.log(res) });
+                                    this.tennistatService.create_profile(this.registrationForm.value.profile)
+                                          .subscribe( res => { localStorage.setItem('userProfile', JSON.stringify(res)) } );
                                     console.log("Userprofile Success");
                                 }
                                },
