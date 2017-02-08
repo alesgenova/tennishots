@@ -1,0 +1,82 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <table  class="table table-hover">
+        <thead class="alert alert-danger">
+          <tr>
+            <th colspan="2" class="text-center">
+              Friend Requests
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td *ngIf="friendRequests.length < 1" class="text-center text-muted">
+              You're all caught up, there are no pending friend requests.
+            </td>
+          </tr>
+          <tr *ngFor="let request of friendRequests">
+            <td>
+              {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
+               <span class="text-muted small">{{request.from_email}}</span>
+            </td>
+            <td class=text-right>
+              <button (click)="respondRequest(request.from_user,'accept')" class="btn btn-primary btn-sm">Accept</button>
+              <button (click)="respondRequest(request.from_user,'refuse')" class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
+      <table *ngIf="friends.length > 0" class="table table-hover">
+        <thead class="alert alert-success">
+          <tr>
+            <th colspan="2" class="text-center">
+              Friends
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let friend of friends">
+            <td>
+              {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
+               <span class="text-muted small">{{friend.email}}</span>
+            </td>
+            <td class=text-right>
+              <button class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-hover">
+        <thead class="alert alert-warning">
+          <tr>
+            <th colspan="2" class="text-center">
+              Add Friends
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <input [(ngModel)]="search" (ngModelChange)="searchUser(search)" type="text" class="form-control" placeholder="Search friends by name, username, or email address...">
+            </td>
+          <tr>
+          <tr *ngFor="let user of users">
+            <td>
+              {{user.first_name}} {{user.last_name}} <span class="text-muted small">({{user.user}})</span><br>
+               <span class="text-muted small">{{user.email}}</span>
+            </td>
+            <td class=text-right>
+              <button (click)="addFriend(user.user)" class="btn btn-primary btn-sm">Add</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
