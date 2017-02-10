@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^addsessionlabel/$', views.AddSessionLabel.as_view()),
     url(r'^shotsfilter/$', views.ShotsFilter.as_view()),
     url(r'^test/$', views.TestView.as_view()),
+    url(r'^testupload/$', views.UploadAvatar.as_view()),
     url(r'^csrf/$', views.CsrfView),
     url(r'^shots/$', views.PeriodStrokeDetail.as_view()),
     url(r'^profile/$', views.UserProfileView.as_view()),

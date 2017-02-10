@@ -25,10 +25,35 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              LabelSerializer, SonyFilterSerializer,
                              AddLabelSerializer, UserProfileSerializer,
                              FriendRequestSerializer, FriendSerializer,
-                             SearchUserSerializer,
+                             SearchUserSerializer, AvatarSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
+
+class UploadAvatar(generics.GenericAPIView):
+    serializer_class = AvatarSerializer
+    queryset = UserProfile.objects.all()
+
+    def post(self,request):
+        serializer = AvatarSerializer(data=request.data)
+        if serializer.is_valid():
+            profile = request.user.userprofile
+            if 'avatar' in serializer.data:
+                profile.avatar.delete()
+                profile.avatar = request.FILES['avatar']
+                profile.save()
+            serializer_out = UserProfileSerializer(profile)
+            return Response(serializer_out.data, status=status.HTTP_201_CREATED)
+
+class TestUploadView(generics.GenericAPIView):
+    serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
+
+    def post(self,request):
+        serializer = UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class SearchUser(generics.GenericAPIView):

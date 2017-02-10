@@ -5,6 +5,11 @@ from sony.constants import SWING_TYPES
 from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 
+
+class AvatarSerializer(serializers.Serializer):
+    avatar = serializers.ImageField(max_length=None, required=False, use_url=True)
+
+
 class SearchUserSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', read_only=True)
     email = serializers.CharField(source='user.email', read_only=True)
@@ -41,10 +46,11 @@ class FriendRequestSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     friends = FriendSerializer(required=False, read_only=True, many=True)
+    avatar = serializers.ImageField(max_length=None, required=False, use_url=True)
 
     class Meta:
         model = UserProfile
-        fields = ['first_name','last_name', 'arm', 'units', 'backhand', 'privacy', 'friends']
+        fields = ['first_name','last_name', 'arm', 'units', 'backhand', 'privacy', 'friends', 'avatar']
 
 class AddLabelSerializer(serializers.Serializer):
     label_pk = serializers.IntegerField(min_value=1)

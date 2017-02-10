@@ -8,7 +8,8 @@ from PIL import Image, ImageOps
 
 def avatar_user_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return 'user_{0}/avatar/{1}'.format(instance.user.id, filename)
+    #return 'user_{0}/avatar/{1}'.format(instance.user.id, filename)
+    return 'user_{0}/avatar.png'.format(instance.user.id)
 
 class UserProfile(models.Model):
     arm_choices = (('L','Left-handed'),
@@ -43,8 +44,8 @@ class UserProfile(models.Model):
             temp_name = self.avatar.name
             image_obj = Image.open(self.avatar)
             # ImageOps compatible mode
-            if image_obj.mode not in ("L", "RGB"):
-                image_obj = image_obj.convert("RGB")
+            if image_obj.mode not in ("L", "RGB", "RGBA"):
+                image_obj = image_obj.convert("RGBA")
             imagefit = ImageOps.fit(image_obj, (500, 500), Image.ANTIALIAS)
             img_io = io.BytesIO()
             imagefit.save(img_io, 'PNG')
