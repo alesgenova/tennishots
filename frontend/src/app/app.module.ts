@@ -25,6 +25,10 @@ import { AnalysisComponent } from './analysis/analysis.component';
 import { FilterComponent } from './analysis/filter/filter.component';
 import { ResultsComponent } from './analysis/results/results.component';
 
+// file uploader
+import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
+import {FileUploadModule} from 'primeng/primeng';
+
 // ng2-bootstrap components
 //import { TabsModule } from 'ng2-bootstrap/tabs';
 //import { AlertModule } from 'ng2-bootstrap';
@@ -42,6 +46,7 @@ import { RegisterComponent } from './register/register.component';
 import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
 import { ProfileComponent } from './profile/profile.component';
+import { FileuploadComponent } from './fileupload/fileupload.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -63,7 +68,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RegisterComponent,
     FriendsComponent,
     LabelsComponent,
-    ProfileComponent
+    ProfileComponent,
+    FileuploadComponent,
+    // ng2-file-upload
+    FileSelectDirective,
+    FileDropDirective
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -79,6 +88,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ChartsModule,
     //font-awesome
     Angular2FontawesomeModule,
+    FileUploadModule
   ],
   providers: [AuthService, TennistatService,
               {

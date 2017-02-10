@@ -14,7 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.conf.urls.static import static
+
 from django.contrib import admin
+from tennistat import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,3 +26,5 @@ urlpatterns = [
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
+if settings.DEBUG is True:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
