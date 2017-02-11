@@ -12,6 +12,7 @@ import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
 
 import { AuthService } from './services/auth.service';
 import { TennistatService } from './services/tennistat.service';
+import { ProfileService } from './services/profile.service';
 
 // highcharts module
 import { ChartModule } from 'angular2-highcharts';
@@ -90,7 +91,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     Angular2FontawesomeModule,
     FileUploadModule
   ],
-  providers: [AuthService, TennistatService,
+  providers: [AuthService, TennistatService, ProfileService,
               {
                 provide: AuthHttp,
                 useFactory: authHttpServiceFactory,
