@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 //import { loggedIn } from './shared/profile.global';
 import { AuthService } from './services/auth.service';
 import { TennistatService } from './services/tennistat.service';
+import { ProfileService } from './services/profile.service';
 
 @Component({
   selector: 'app-root',
@@ -10,21 +11,11 @@ import { TennistatService } from './services/tennistat.service';
 })
 export class AppComponent implements OnInit {
 
-  public Profile = Object({});
-/*        username: "",
-        first_name: "",
-        last_name: "",
-        arm: "",
-        units: "",
-        backhand: "",
-        privacy: "",
-        friends: []
-    });*/
-  loggedIn: boolean = false;
-
-  constructor(private authService:AuthService, private tennistatService:TennistatService){}
+  constructor(private authService:AuthService,
+              private tennistatService:TennistatService,
+              private profileService:ProfileService){}
 
   ngOnInit(){
-      
+      this.profileService.refreshProfile();
   }
 }

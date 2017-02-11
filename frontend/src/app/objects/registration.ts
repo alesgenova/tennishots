@@ -6,6 +6,7 @@ export class UserProfile{
     "backhand": string = "";
     "privacy": string = "";
     "friends": Friend[] = []
+    "avatar"?: string = "";
 }
 
 export class Friend{

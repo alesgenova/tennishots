@@ -4,14 +4,14 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class ProfileService {
-    
+
     private loggedIn:boolean;
     private userProfile:any;
 
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
 
     refreshProfile() {
-        if (this.loggedIn){
+        if (this.authService.loggedIn()){
             this.tennistatService.get_profile()
                   .subscribe(res => this.userProfile = res);
         }

@@ -48,6 +48,14 @@ export class AuthService {
             });
     }
 
+    login2(username:string, password:string){
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this.ApiUrl+'login/',JSON.stringify({ username: username, password: password }), options)
+            .map( (response: Response) => response.json() );
+    }
+
     register(userForm:UserForm){
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
