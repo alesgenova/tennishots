@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
+import { UserProfile } from '../objects/registration';
 
 @Component({
   selector: 'topbar',
@@ -9,21 +10,23 @@ import { ProfileService } from '../services/profile.service';
 })
 export class TopbarComponent implements OnInit {
 
-  @Input() Profile: any;
+  //@Input() Profile: any;
   //loggedOut: boolean = false;
   //loggedIn: boolean = false;
   username: string;
+  Profile = new UserProfile();
 
   constructor(private authService: AuthService, private profileService: ProfileService) { }
 
   ngOnInit() {
       if (this.loggedIn()){
           this.username = localStorage.getItem('username');
+          this.Profile = this.getProfile();
       }
   }
 
   loggedIn(){
-      console.log("loggedIn check")
+      //console.log("loggedIn check")
       return this.authService.loggedIn()
   }
 
@@ -33,7 +36,9 @@ export class TopbarComponent implements OnInit {
   }
 
   getProfile(){
-      return this.profileService.getProfile()
+      //console.log("got Profile")
+      this.Profile = this.profileService.getProfile();
+      return this.Profile
   }
 
 }

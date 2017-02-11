@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../services/auth.service'
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { ProfileService } from '../services/profile.service';
+import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
 @Component({
   selector: 'login',
@@ -7,24 +10,45 @@ import {AuthService} from '../services/auth.service'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  _login:boolean = false
-  _loggedin:boolean = false
-  constructor(private authService: AuthService) { }
+
+  loginForm: FormGroup;
+  loginError: string = "";
+
+  constructor(private authService: AuthService,
+              private fb: FormBuilder,
+              private profileService:ProfileService,
+              private router: Router) {
+      this.createLoginForm();
+  }
 
   ngOnInit() {
-      this.onLogin()
-      this.test_loggedin();
+
+  }
+
+  createLoginForm(){
+      this.loginForm = this.fb.group({
+          username: ['', Validators.required],
+          password: ['', Validators.required]
+      });
   }
 
   onLogin(){
-      this.authService.login("ales","pass1234").
-        subscribe( res => {
-            this._login=res;
-        });
-  }
-
-  test_loggedin(){
-      this._loggedin = this.authService.loggedIn();
+      this.authService.login2(this.loginForm.value.username, this.loginForm.value.password)
+        .subscribe( res => {
+                    if (typeof res.token != "undefined") {
+                        localStorage.setItem('username', res.user.username);
+                        localStorage.setItem('id_token', res.token);
+                        this.profileService.refreshProfile();
+                        this.router.navigate([''])
+                    }
+                            },
+                    err => {
+                        let theError:any = err.json()
+                        if (typeof theError.non_field_errors != "undefined") {
+                            this.loginError = theError.non_field_errors[0]
+                        }
+                    }
+        );
   }
 
 }

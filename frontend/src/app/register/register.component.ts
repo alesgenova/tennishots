@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
 import { AuthService } from '../services/auth.service';
@@ -34,7 +35,10 @@ export class RegisterComponent implements OnInit {
       privacy: new FormControl("VF")
 });*/
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private tennistatService: TennistatService) {
+  constructor(private fb: FormBuilder,
+              private authService: AuthService,
+              private tennistatService: TennistatService,
+              private router: Router) {
       this.createRegistrationForm();
   }
 
@@ -90,6 +94,7 @@ export class RegisterComponent implements OnInit {
                                     this.tennistatService.create_profile(this.registrationForm.value.profile)
                                           .subscribe( res => { localStorage.setItem('userProfile', JSON.stringify(res)) } );
                                     console.log("Userprofile Success");
+                                    this.router.navigate([''])
                                 }
                                },
                         err => {

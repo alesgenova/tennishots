@@ -1,7 +1,7 @@
 <div class="bg-faded">
   <div class="container">
     <nav class="nav">
-      <a class="navbar-brand" [routerLink]="['']"><img src="" style="height:35px;" alt="TENNISTAT"></a>
+      <a class="navbar-brand" [routerLink]="['']"><img src="" height="35px" alt="TENNISTAT"></a>
       <ul class="nav flex-row mr-auto">
         <li class="nav-item">
           <a class="nav-link text-muted" [routerLink]="['analyze']">Analyze</a>
@@ -15,9 +15,11 @@
         <li class="nav-item"><a class="nav-link" [routerLink]="['register']">Register</a></li>
       </ul>
       <ul *ngIf="loggedIn()" class="nav flex-row">
-        <li ngbDropdown class="nav-item dropdown">
-          <a class="nav-link" role="button" id="dropdown01"ngbDropdownToggle>{{username}}</a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
+        <li class="nav-item dropdown">
+          <a role="button" class="nav-link" href="#" id="dropdownAvatar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img [src]="'//localhost:8000'+getProfile()?.avatar" class="rounded-circle" height="35px">
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownAvatar">
             <a class="dropdown-item" [routerLink]="['profile']">
                 <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;{{username}}
             </a>
