@@ -67,7 +67,10 @@
               There is no recent activity from you or your friends yet.
             </td>
           </tr>
-          <tr *ngFor="let session of recentActivity">
+        </tbody>
+          <!-- The Session Info -->
+          <tbody *ngFor="let session of recentActivity; let i=index">
+          <tr (click)="onSessionExpand(i)">
             <td width="50px">
               <img [src]="session.player.avatar" class="rounded" height="50px" >
             </td>
@@ -76,7 +79,13 @@
                <span class="text-muted small">{{session.shot_count}} shots <span *ngIf="session.video_count > 0">and {{session.video_count}} video</span> in this session.</span>
             </td>
             <td class=text-right>
-              <button class="btn btn-primary btn-sm">View</button>
+              <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
+            </td>
+          </tr>
+          <!-- The Session Stats -->
+          <tr *ngIf="sessionsExpand[i]">
+            <td colspan="3">
+            <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
             </td>
           </tr>
         </tbody>
@@ -84,3 +93,7 @@
     </div>
   </div>
 </div>
+
+{{sessionsStats|json}}
+
+<!--<display [stats1]="getSessionStats(ales, 109)" [stats2]="emptyResponse" [compare]="false"></display>-->
