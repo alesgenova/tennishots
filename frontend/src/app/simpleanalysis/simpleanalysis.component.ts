@@ -79,7 +79,7 @@ export class SimpleanalysisComponent implements OnInit {
   }
 
   getPeriods(user:string, name:string) {
-      this.tennistatService.get_periods(user, name+'s')
+      this.tennistatService.get_periods(user, name)
         .subscribe(data=>{
             this.listOfPeriods[name] = data;
             if (name == this.activePeriod){
@@ -93,6 +93,7 @@ export class SimpleanalysisComponent implements OnInit {
       if (name == 'all'){
           this.periodsSubset = [];
           this.onPeriodSelect(0);
+          this.doPagination = false;
       }else{
           this.nPeriods = this.listOfPeriods[name].length;
           this.doPagination = (this.nPeriods > this.periodsPerPage);
@@ -104,6 +105,14 @@ export class SimpleanalysisComponent implements OnInit {
               this.periodsSubset = this.listOfPeriods[name]
           }
       }
+  }
+
+  onPageChange(){
+      var start: number;
+      var stop: number;
+      start = (this.currPage-1)*this.periodsPerPage;
+      stop = start+this.periodsPerPage;
+      this.periodsSubset = this.listOfPeriods[this.activePeriod].slice(start,stop);
   }
 
   onPeriodSelect(pk:number){

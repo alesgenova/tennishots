@@ -10,16 +10,16 @@
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
     </div>
     <div *ngIf="periodSelector[0]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.sessions.length > 0" [periods]="listOfPeriods.sessions" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.session.length > 0" [periods]="listOfPeriods.session" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[1]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.weeks.length > 0" [periods]="listOfPeriods.weeks" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.week.length > 0" [periods]="listOfPeriods.week" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[2]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.months.length > 0" [periods]="listOfPeriods.months" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.month.length > 0" [periods]="listOfPeriods.month" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[3]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.years.length > 0" [periods]="listOfPeriods.years" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="listOfPeriods.year.length > 0" [periods]="listOfPeriods.year" [periodsPicker]="filter.filters.periods"></periodlist>
     </div>
     <div *ngIf="periodSelector[4]" class="col-9">
       <div class="row">

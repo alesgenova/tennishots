@@ -70,7 +70,7 @@
         </tbody>
           <!-- The Session Info -->
           <tbody *ngFor="let session of recentActivity; let i=index">
-          <tr (click)="onSessionExpand(i)">
+          <tr role="button" (click)="onSessionExpand(i)">
             <td width="50px">
               <img [src]="session.player.avatar" class="rounded" height="50px" >
             </td>

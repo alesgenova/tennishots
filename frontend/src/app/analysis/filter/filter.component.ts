@@ -28,8 +28,6 @@ export class FilterComponent implements OnInit {
   months: Period[];
   years: Period[];
 
-
-
   constructor(private tennistatService: TennistatService) {
   }
 

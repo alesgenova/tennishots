@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Friend, FriendRequest } from '../objects/registration';
 import { TennistatService } from  '../services/tennistat.service';
 import { ProfileService } from  '../services/profile.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-friends',
@@ -18,7 +19,9 @@ export class FriendsComponent implements OnInit {
   search: string = "";
 
 
-  constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
+  constructor(private tennistatService: TennistatService,
+              private profileService: ProfileService,
+              private router: Router) { }
 
   ngOnInit() {
       this.userProfile = this.profileService.getProfile();
@@ -72,6 +75,10 @@ export class FriendsComponent implements OnInit {
             .subscribe( res => {
                 this.searchUser(this.search);
             });
+  }
+
+  onFriendClick(user:string){
+      this.router.navigate(['summary',user]);
   }
 
 }
