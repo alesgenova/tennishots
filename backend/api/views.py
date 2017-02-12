@@ -27,7 +27,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              AddLabelSerializer, UserProfileSerializer,
                              FriendRequestSerializer, FriendSerializer,
                              SearchUserSerializer, AvatarSerializer,
-                             CsvSerializer,
+                             CsvSerializer, SessionSerializerPlus,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
@@ -338,74 +338,77 @@ class PeriodDetail(APIView):
         serializer = ShotSetSerializer(detail_obj)
         return Response(serializer.data)
 
+class LatestActivity(mixins.ListModelMixin,
+                  generics.GenericAPIView):
+    serializer_class = SessionSerializerPlus
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        queryset = Session.objects.all()
+
+        QS = Q(user=user)
+        QS.add(Q(user__in=user.userprofile.friends.values_list('user', flat=True)), Q.OR)
+        queryset = queryset.filter(QS)
+        return queryset.order_by("-timestamp")[:20]
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 class YearList(mixins.ListModelMixin,
                   generics.GenericAPIView):
-    #queryset = Day.objects.all()
     serializer_class = YearSerializer
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
         self.queryset = Year.objects.filter(user=requested_user)
-        return self.queryset
+        return self.queryset.order_by("-timestamp")
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
 class MonthList(mixins.ListModelMixin,
                   generics.GenericAPIView):
-    #queryset = Day.objects.all()
     serializer_class = MonthSerializer
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
         self.queryset = Month.objects.filter(user=requested_user)
-        return self.queryset
+        return self.queryset.order_by("-timestamp")
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
 class WeekList(mixins.ListModelMixin,
                   generics.GenericAPIView):
-    #queryset = Day.objects.all()
     serializer_class = WeekSerializer
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
         self.queryset = Week.objects.filter(user=requested_user)
-        return self.queryset
+        return self.queryset.order_by("-timestamp")
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
 class DayList(mixins.ListModelMixin,
                   generics.GenericAPIView):
-    #queryset = Day.objects.all()
     serializer_class = DaySerializer
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
         self.queryset = Day.objects.filter(user=requested_user)
-        return self.queryset
+        return self.queryset.order_by("-timestamp")
 
 class SessionList(mixins.ListModelMixin,
                   generics.GenericAPIView):
-    #queryset = Day.objects.all()
     serializer_class = SessionSerializer
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
         self.queryset = Session.objects.filter(user=requested_user)
-        return self.queryset
+        return self.queryset.order_by("-timestamp")
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    #def post(self, request, *args, **kwargs):
-    #    return self.create(request, *args, **kwargs)
 
 class DayList_(APIView):
     def get_queryset(self, *args, **kwargs):

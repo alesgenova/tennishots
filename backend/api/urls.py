@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^addfriend/$', views.AddFriend.as_view()),
     url(r'^friendrequests/$', views.PendingFriendRequests.as_view()),
     url(r'^searchuser/$', views.SearchUser.as_view()),
+    url(r'^latestactivity/$', views.LatestActivity.as_view()),
     #url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
 ]
 
