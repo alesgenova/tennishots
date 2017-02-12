@@ -68,7 +68,6 @@ export class AnalysisComponent implements OnInit {
           this.getUserPeriods(this.filter2.username,2);
       }
       console.log("CLik"+num)
-
   }
 
   getUserPeriods(user:string, num:number){
@@ -91,8 +90,8 @@ export class AnalysisComponent implements OnInit {
   }
 
   onSubmitRequest(){
-      this.stats1 = new SonyResponse;
-      this.stats2 = new SonyResponse;
+      this.stats1 = new SonyResponse();
+      this.stats2 = new SonyResponse();
       this.tennistatService.get_filter_stats(this.filter1)
         .subscribe(data=>{
             this.stats1 = data;
