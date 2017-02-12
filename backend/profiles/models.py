@@ -8,8 +8,8 @@ from PIL import Image, ImageOps
 
 def avatar_user_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    #return 'user_{0}/avatar/{1}'.format(instance.user.id, filename)
-    return 'user_{0}/avatar.png'.format(instance.user.id)
+    return 'user_{0}/avatar/{1}'.format(instance.user.id, filename)
+    #return 'user_{0}/avatar.png'.format(instance.user.id)
 
 class UserProfile(models.Model):
     arm_choices = (('L','Left-handed'),
@@ -31,7 +31,7 @@ class UserProfile(models.Model):
     # One to one mapping between a user and its profile
     user = models.OneToOneField(User, primary_key=True)
     # Additional items we are interested in for a player
-    avatar = models.ImageField(upload_to=avatar_user_path, null=True, blank=True)
+    avatar = models.ImageField(upload_to=avatar_user_path, default="no-avatar.svg", blank=True)
     arm = models.CharField(max_length=1, choices=arm_choices)
     units = models.CharField(max_length=1, choices=unit_choices)
     backhand = models.IntegerField(choices=backhand_choices)

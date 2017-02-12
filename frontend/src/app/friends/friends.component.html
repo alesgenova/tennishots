@@ -5,7 +5,7 @@
       <table  class="table table-hover">
         <thead class="alert alert-danger">
           <tr>
-            <th colspan="2" class="text-center">
+            <th colspan="3" class="text-center">
               Friend Requests
             </th>
           </tr>
@@ -17,6 +17,9 @@
             </td>
           </tr>
           <tr *ngFor="let request of friendRequests">
+            <td width="50px">
+              <img [src]="'//localhost:8000'+request.from_avatar" class="rounded" height="50px" >
+            </td>
             <td>
               {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
                <span class="text-muted small">{{request.from_email}}</span>
@@ -34,13 +37,16 @@
       <table *ngIf="friends.length > 0" class="table table-hover">
         <thead class="alert alert-success">
           <tr>
-            <th colspan="2" class="text-center">
+            <th colspan="3" class="text-center">
               Friends
             </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let friend of friends">
+            <td width="50px">
+              <img [src]="'//localhost:8000'+friend.avatar" class="rounded" height="50px" >
+            </td>
             <td>
               {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
                <span class="text-muted small">{{friend.email}}</span>
@@ -55,21 +61,24 @@
       <table class="table table-hover">
         <thead class="alert alert-warning">
           <tr>
-            <th colspan="2" class="text-center">
+            <th colspan="3" class="text-center">
               Add Friends
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td colspan="2">
+            <td colspan="3">
               <input [(ngModel)]="search" (ngModelChange)="searchUser(search)" type="text" class="form-control" placeholder="Search friends by name, username, or email address...">
             </td>
           <tr>
           <tr *ngFor="let user of users">
+            <td width="50px">
+              <img [src]="'//localhost:8000'+user.avatar" class="rounded" height="50px" >
+            </td>
             <td>
-              {{user.first_name}} {{user.last_name}} <span class="text-muted small">({{user.user}})</span><br>
-               <span class="text-muted small">{{user.email}}</span>
+                {{user.first_name}} {{user.last_name}} <span class="text-muted small">({{user.user}})</span><br>
+                 <span class="text-muted small">{{user.email}}</span>
             </td>
             <td class=text-right>
               <button (click)="addFriend(user.user)" class="btn btn-primary btn-sm">Add</button>

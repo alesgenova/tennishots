@@ -1,6 +1,67 @@
-<p>
-  profile works!
-</p>
-<p>
-  {{ userProfile|json }}
-</p>
+<div class="container">
+<div class="row">
+  <div class="col-lg-8 offset-lg-2">
+  <form [formGroup]="profileForm" novalidate (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="first_name" class="col-3 col-form-label">First Name:&nbsp;*</label>
+      <div class="col-9">
+        <input class="form-control" type="text" id="first_name" formControlName="first_name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="last_name" class="col-3 col-form-label">Last Name:&nbsp;</label>
+      <div class="col-9">
+        <input class="form-control" type="text" id="last_name" formControlName="last_name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="arm" class="col-3 col-form-label">Dominant Arm:</label>
+      <div class="col-9">
+        <select id="arm" class="form-control" formControlName="arm">
+          <option *ngFor="let option of armChoices" [value]="option.value">{{option.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="units" class="col-3 col-form-label">Speed Units:</label>
+      <div class="col-9">
+        <select id="units" class="form-control" formControlName="units">
+          <option *ngFor="let option of unitChoices" [value]="option.value">{{option.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="backhand" class="col-3 col-form-label">Backhand Style:</label>
+      <div class="col-9">
+        <select id="backhand" class="form-control" formControlName="backhand">
+          <option *ngFor="let option of backhandChoices" [value]="option.value">{{option.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="privacy" class="col-3 col-form-label">Privacy Option:</label>
+      <div class="col-9">
+        <select id="privacy" class="form-control" formControlName="privacy">
+          <option *ngFor="let option of privacyChoices" [value]="option.value">{{option.label}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="privacy" class="col-3 col-form-label">Avatar:</label>
+      <div class="col-9">
+        <p-fileUpload name="avatar" url="http://localhost:8000/api/avatarupload/" (onBeforeSend)="onBeforeSend($event)" accept="image/*" maxFileSize="10000000"></p-fileUpload>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-9 offset-3">
+        <input value="Save Changes" class="btn btn-primary btn-block" [disabled]="!profileForm.valid" type="submit" />
+      </div>
+    </div>
+
+</form>
+{{profileForm.value|json}}
+
+</div>
+</div>
+
+</div>

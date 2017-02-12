@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Friend, FriendRequest } from '../objects/registration';
 import { TennistatService } from  '../services/tennistat.service';
+import { ProfileService } from  '../services/profile.service';
 
 @Component({
   selector: 'app-friends',
@@ -10,15 +11,17 @@ import { TennistatService } from  '../services/tennistat.service';
 })
 export class FriendsComponent implements OnInit {
 
+  userProfile: any;
   friends: Friend[] = [];
   friendRequests: FriendRequest[] = [];
   users: Friend[] = [];
   search: string = "";
 
 
-  constructor(private tennistatService: TennistatService) { }
+  constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
   ngOnInit() {
+      this.userProfile = this.profileService.getProfile();
       this.refreshFriends();
       this.refreshRequests();
   }
@@ -26,7 +29,8 @@ export class FriendsComponent implements OnInit {
   refreshFriends() {
       this.tennistatService.get_friends()
             .subscribe( res => {
-                localStorage.setItem('userProfile.friends', JSON.stringify(res));
+                this.userProfile.friends = res;
+                localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
                 this.friends = res;
             });
   }
@@ -52,7 +56,7 @@ export class FriendsComponent implements OnInit {
   }
 
   respondRequest(from_user: string, action: string){
-      this.tennistatService.respond_friendrequest(from_user, localStorage.getItem("username"), action)
+      this.tennistatService.respond_friendrequest(from_user, this.userProfile.user, action)
             .subscribe( res => {
                 //this.friends = [];
                 //this.friendRequests = [];
@@ -64,7 +68,7 @@ export class FriendsComponent implements OnInit {
 
   addFriend(to_user:string){
 
-      this.tennistatService.add_friend(localStorage.getItem("username"), to_user)
+      this.tennistatService.add_friend( this.userProfile.user, to_user)
             .subscribe( res => {
                 this.searchUser(this.search);
             });

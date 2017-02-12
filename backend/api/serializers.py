@@ -6,6 +6,10 @@ from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 
 
+class CsvSerializer(serializers.Serializer):
+    sonycsv = serializers.FileField(max_length=None, required=False, use_url=True)
+
+
 class AvatarSerializer(serializers.Serializer):
     avatar = serializers.ImageField(max_length=None, required=False, use_url=True)
 
@@ -16,18 +20,20 @@ class SearchUserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(read_only=True)
     last_name = serializers.CharField(read_only=True)
     query = serializers.CharField(min_length=3, required=False)
+    avatar = serializers.ImageField(max_length=None, required=False, read_only=True, use_url=True)
 
     class Meta:
         model = UserProfile
-        fields = ['first_name','last_name', 'user', 'email', 'query']
+        fields = ['first_name','last_name', 'user', 'email', 'avatar', 'query']
 
 
 class FriendSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', read_only=True)
     email = serializers.CharField(source='user.email', read_only=True)
+    avatar = serializers.ImageField(max_length=None, required=False, read_only=True, use_url=True)
     class Meta:
         model = UserProfile
-        fields = ['first_name','last_name', 'user', 'email']
+        fields = ['first_name','last_name', 'user', 'email', 'avatar']
 
 class FriendRequestSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
@@ -37,20 +43,22 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     from_first_name = serializers.CharField(source="from_user.first_name",read_only=True)
     from_last_name = serializers.CharField(source="from_user.last_name",read_only=True)
     from_email = serializers.CharField(source="from_user.user.email",read_only=True)
+    from_avatar = serializers.ImageField(source="from_user.avatar", max_length=None, required=False, read_only=True, use_url=True)
     #success = serializers.BooleanField(read_only=True)
     #from_profile = FriendSerializer(source="from_user", required=False, read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["pk", "from_user", "to_user", "action", "from_first_name", "from_last_name", "from_email"]#, "success", "from_profile"]
+        fields = ["pk", "from_user", "to_user", "action", "from_first_name", "from_last_name", "from_email", "from_avatar"]#, "success", "from_profile"]
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
     friends = FriendSerializer(required=False, read_only=True, many=True)
-    avatar = serializers.ImageField(max_length=None, required=False, use_url=True)
+    avatar = serializers.ImageField(max_length=None, required=False, read_only=True, use_url=True)
 
     class Meta:
         model = UserProfile
-        fields = ['first_name','last_name', 'arm', 'units', 'backhand', 'privacy', 'friends', 'avatar']
+        fields = ['user','first_name','last_name', 'arm', 'units', 'backhand', 'privacy', 'friends', 'avatar']
 
 class AddLabelSerializer(serializers.Serializer):
     label_pk = serializers.IntegerField(min_value=1)

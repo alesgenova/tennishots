@@ -21,12 +21,12 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownAvatar">
             <a class="dropdown-item" [routerLink]="['profile']">
-                <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;{{username}}
+                <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;{{getProfile()?.user}}
             </a>
             <a class="dropdown-item" [routerLink]="['friends']">
                 <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Friends
             </a>
-            <a class="dropdown-item" [routerLink]="[]">
+            <a class="dropdown-item" [routerLink]="['import']">
                 <i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Import Shots
             </a>
             <a class="dropdown-item" [routerLink]="[]">
