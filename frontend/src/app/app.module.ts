@@ -50,6 +50,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { FileuploadComponent } from './fileupload/fileupload.component';
 import { CsvuploadComponent } from './csvupload/csvupload.component';
 import { HomeComponent } from './home/home.component';
+import { SimpleanalysisComponent } from './simpleanalysis/simpleanalysis.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -77,7 +78,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FileSelectDirective,
     FileDropDirective,
     CsvuploadComponent,
-    HomeComponent
+    HomeComponent,
+    SimpleanalysisComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

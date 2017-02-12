@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 import { AnalysisComponent } from './analysis/analysis.component';
+import { SimpleanalysisComponent } from './simpleanalysis/simpleanalysis.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
@@ -16,6 +17,8 @@ export const routes: Routes = [
   { path: 'login',  component: LoginComponent },
   { path: 'logout',  component: LogoutComponent },
   { path: 'register',  component: RegisterComponent },
+  { path: 'summary',  component: SimpleanalysisComponent },
+  { path: 'summary/:user',  component: SimpleanalysisComponent },
   { path: 'analyze',  component: AnalysisComponent },
   { path: 'profile',  component: ProfileComponent },
   { path: 'friends',  component: FriendsComponent },
