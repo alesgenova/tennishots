@@ -10,8 +10,8 @@ export class Period {
 }
 
 export class UserPeriodsList {
-  sessions: Period[] = [];
-  weeks: Period[] = [];
-  months: Period[] = [];
-  years: Period[] = [];
+  session: Period[] = [];
+  week: Period[] = [];
+  month: Period[] = [];
+  year: Period[] = [];
 }

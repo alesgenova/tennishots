@@ -1,0 +1,19 @@
+.card-block{
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.card-footer{
+    background-color: white;
+    padding: 1px 0 1px 0;
+    margin: 0 0 0 0;
+}
+.card-text{
+    margin-bottom: 1px;
+}
+.card-header-selected{
+    background-color: bg-primary;
+}
+.labels-spacer{
+    height: 25px;
+}
