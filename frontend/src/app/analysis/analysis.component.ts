@@ -19,6 +19,8 @@ export class AnalysisComponent implements OnInit {
   filter2: SonyFilter = new SonyFilter();
   stats1: SonyResponse = new SonyResponse();
   stats2: SonyResponse = new SonyResponse();
+  gotPeriods1 = false;
+  gotPeriods2 = false;
   //_filter2: SonyFilter = new SonyFilter(); // aux filter to save/delete the state of filter2 when enabling/disabling comparison
 
   //filter2: SonyFilter;
@@ -61,9 +63,11 @@ export class AnalysisComponent implements OnInit {
 
   onUserSelectClick(num:number) {
       if (num ==1){
+          this.gotPeriods1 = false;
           this.listOfPeriods1 = new UserPeriodsList();
           this.getUserPeriods(this.filter1.username,1);
       }else if (num == 2){
+          this.gotPeriods2 = false;
           this.listOfPeriods2 = new UserPeriodsList();
           this.getUserPeriods(this.filter2.username,2);
       }
@@ -71,10 +75,10 @@ export class AnalysisComponent implements OnInit {
   }
 
   getUserPeriods(user:string, num:number){
-      this.getPeriods(user, "sessions", num);
-      this.getPeriods(user, "weeks", num);
-      this.getPeriods(user, "months", num);
-      this.getPeriods(user, "years", num);
+      this.getPeriods(user, "session", num);
+      this.getPeriods(user, "week", num);
+      this.getPeriods(user, "month", num);
+      this.getPeriods(user, "year", num);
   }
 
   getPeriods(user:string, name:string, num:number) {
@@ -83,8 +87,10 @@ export class AnalysisComponent implements OnInit {
         .subscribe(data=>{
             if (num == 1) {
                 this.listOfPeriods1[name] = data;
+                this.gotPeriods1 = true;
             }else if (num == 2){
                 this.listOfPeriods2[name] = data;
+                this.gotPeriods2 = true;
             }
       });
   }

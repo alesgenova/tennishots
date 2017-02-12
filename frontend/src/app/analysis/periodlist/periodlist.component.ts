@@ -38,7 +38,7 @@ export class PeriodlistComponent implements OnInit {
       }else {
           this.periodsPicker.pks.push(pk)
       }
-      console.log(pk);
+      //console.log(pk);
   }
 
   isInPks(pk:number) {

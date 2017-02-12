@@ -30,7 +30,7 @@
       <h4 *ngIf="friends.length > 0" class="text-center">Friends</h4>
       <table *ngIf="friends.length > 0" class="table">
         <tbody>
-          <tr *ngFor="let friend of friends">
+          <tr *ngFor="let friend of friends" role="button" (click)="onFriendClick(friend.user)">
             <td width="50px">
               <img [src]="'//localhost:8000'+friend.avatar" class="rounded" height="50px" >
             </td>

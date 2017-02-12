@@ -348,7 +348,7 @@ class LatestActivity(mixins.ListModelMixin,
         QS = Q(user=user)
         QS.add(Q(user__in=user.userprofile.friends.values_list('user', flat=True)), Q.OR)
         queryset = queryset.filter(QS)
-        return queryset.order_by("-timestamp")[:20]
+        return queryset.order_by("-timestamp")[:10]
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

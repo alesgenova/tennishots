@@ -10,7 +10,6 @@
     <button class="btn btn-secondary" (click)="onPeriodChange('year')" [class.active]="activePeriod=='year'">Years</button>
     <button class="btn btn-secondary" (click)="onPeriodChange('all')" [class.active]="activePeriod=='all'">All</button>
   </div>
-  <hr>
   <div class="row">
     <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-lg-2">
       <div class="card text-center" role="button" (click)="onPeriodSelect(period.pk)" [class.card-inverse]="period.pk==activePk" [class.card-primary]="period.pk==activePk">
@@ -28,8 +27,11 @@
       </div>
       <br>
     </div>
+    <div *ngIf="doPagination" class=col-12>
+      <ngb-pagination [disabled]="!doPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPage" (pageChange)="onPageChange()" size="sm"></ngb-pagination>
+    </div>
   </div>
-
+  <hr>
   <!-- Display -->
   <display [stats1]="stats" [compare]="false"></display>
 

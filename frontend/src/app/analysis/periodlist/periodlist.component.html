@@ -1,13 +1,9 @@
 <div class="row no-gutters">
   <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-md-3">
-    <div class="card text-center" (click)="addPkToPks(period.pk)">
-      <div class="card-header" [class.bg-primary]="isInPks(period.pk)" [class.text-white]="isInPks(period.pk)">
-        {{period.timestamp|date}}
-      </div>
+    <div class="card text-center" role="button" (click)="addPkToPks(period.pk)" [class.card-inverse]="isInPks(period.pk)" [class.card-primary]="isInPks(period.pk)">
       <div class="card-block">
+        <h6 class="card-title"><strong>{{period.timestamp|date}}</strong></h6>
         <p class="card-text">
-          <!--<button type="button" class="btn btn-sm" [class.btn-primary]="isInPks(period.pk)" (click)="addPkToPks(period.pk)">+</button>
-          <input (click)="addPkToPks(period.pk)" type="checkbox" class="form-check-input">-->
           <strong>{{period.shot_count}}</strong> shots
         </p>
         <div class="labels-spacer row no-gutters">

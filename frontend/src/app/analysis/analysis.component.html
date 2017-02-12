@@ -13,8 +13,8 @@
       </div>
     </template>
     <template ngbTabContent>
-      <div [class.filter1]="compare">
-      <sony-filter [filter]="filter1" [listOfPeriods]="listOfPeriods1"></sony-filter>
+      <div *ngIf="gotPeriods1" [class.filter1]="compare">
+        <sony-filter [filter]="filter1" [listOfPeriods]="listOfPeriods1"></sony-filter>
       </div>
     </template>
   </ngb-tab>
@@ -27,7 +27,7 @@
       </div>
     </template>
     <template ngbTabContent>
-      <div class="filter2">
+      <div *ngIf="gotPeriods2" class="filter2">
         <sony-filter [filter]="filter2" [listOfPeriods]="listOfPeriods2"></sony-filter>
       </div>
     </template>
