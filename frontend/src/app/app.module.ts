@@ -48,6 +48,7 @@ import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FileuploadComponent } from './fileupload/fileupload.component';
+import { CsvuploadComponent } from './csvupload/csvupload.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -73,7 +74,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FileuploadComponent,
     // ng2-file-upload
     FileSelectDirective,
-    FileDropDirective
+    FileDropDirective,
+    CsvuploadComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
+from shot.tasks import sony_csv_to_db
 from profiles.models import UserProfile, FriendRequest
 
 from django.http import Http404, HttpResponse
@@ -26,9 +27,21 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              AddLabelSerializer, UserProfileSerializer,
                              FriendRequestSerializer, FriendSerializer,
                              SearchUserSerializer, AvatarSerializer,
+                             CsvSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
+
+class UploadCsv(generics.GenericAPIView):
+    serializer_class = CsvSerializer
+    queryset = []#UserProfile.objects.all()
+
+    def post(self,request):
+        serializer = CsvSerializer(data=request.data)
+        if serializer.is_valid():
+            if 'sonycsv' in serializer.data:
+                _handle_csvfile_upload(request.FILES['sonycsv'], request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class UploadAvatar(generics.GenericAPIView):
     serializer_class = AvatarSerializer
@@ -172,6 +185,15 @@ class UserProfileView(generics.GenericAPIView):
                 serializer.save(user=request.user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, format=None):
+        user = request.user
+        profile = get_object_or_404(UserProfile,user=user)
+        serializer = UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.update(instance=profile, validated_data=serializer.data)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class JSONResponse(HttpResponse):
     """
@@ -438,3 +460,20 @@ class PeriodStrokeDetail(APIView):
         #    "complex_result": complex_result,
         #})
         #return Response(response.data)
+
+def _handle_csvfile_upload(f,user):
+    import os
+    from tennistat.settings import MEDIA_ROOT
+    filename = f.name
+    destination_dir = os.path.join(MEDIA_ROOT,'user_'+str(user.pk),'csv_files')
+    destination_file = os.path.join(destination_dir,f.name)
+
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
+
+    with open(destination_file, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    #shots_results = csv_to_shots_db.apply_async((destination_file,user.pk), queue='db')
+    #videos_results = csv_to_videos_db.apply_async((destination_file,user.pk), queue='db')
+    import_result = sony_csv_to_db(destination_file, user.pk)

@@ -36,7 +36,7 @@ export class AuthService {
 
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     //localStorage.setItem('currentUser', JSON.stringify({ username: username, id_token: token }));
-                    localStorage.setItem('username', username);
+                    //localStorage.setItem('username', username);
                     localStorage.setItem('id_token', token);
 
                     // return true to indicate successful login
@@ -69,7 +69,8 @@ export class AuthService {
         this.token = null;
         //localStorage.removeItem('currentUser');
         localStorage.removeItem('id_token');
-        localStorage.removeItem('username');
+        localStorage.removeItem('userProfile');
+        //localStorage.removeItem('username');
     }
 
     loggedIn() {

@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit {
       this.authService.login2(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe( res => {
                     if (typeof res.token != "undefined") {
-                        localStorage.setItem('username', res.user.username);
                         localStorage.setItem('id_token', res.token);
                         this.profileService.refreshProfile();
                         this.router.navigate([''])

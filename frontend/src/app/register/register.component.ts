@@ -13,27 +13,16 @@ import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '..
 })
 export class RegisterComponent implements OnInit {
 
-  armChoices: any[];
-  unitChoices: any[];
-  backhandChoices: any[];
-  privacyChoices: any[];
+  armChoices = ARM_CHOICES;
+  unitChoices = UNIT_CHOICES;
+  backhandChoices = BACKHAND_CHOICES;
+  privacyChoices = PRIVACY_CHOICES;
 
   passwordError: string = "";
   usernameError: string = "";
   emailError: string = "";
 
-  registrationForm: FormGroup;/* ({
-      first_name: new FormControl("", Validators.required),
-      last_name: new FormControl(""),
-      username: new FormControl("", Validators.required),
-      password1: new FormControl("", Validators.required),
-      password2: new FormControl("", Validators.required),
-      email: new FormControl("", Validators.required),
-      arm: new FormControl("R"),
-      units: new FormControl("M"),
-      backhand: new FormControl("2"),
-      privacy: new FormControl("VF")
-});*/
+  registrationForm: FormGroup;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -43,10 +32,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.armChoices = ARM_CHOICES;
-      this.unitChoices = UNIT_CHOICES;
-      this.backhandChoices = BACKHAND_CHOICES;
-      this.privacyChoices = PRIVACY_CHOICES;
+
   }
 
   createRegistrationForm(){

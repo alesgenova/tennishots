@@ -70,6 +70,13 @@ export class TennistatService {
           .map((response: Response) => {return response.json()} );
   }
 
+  update_profile(profileForm:ProfileForm){
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      return this.authHttp.put(this.ApiUrl+'profile/',profileForm, options)
+          .map((response: Response) => {return response.json()} );
+  }
+
   get_friendrequests(){
       return this.authHttp
           .get(this.ApiUrl+'friendrequests/')
