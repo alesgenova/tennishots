@@ -43,6 +43,12 @@ export class TennistatService {
           .map(res => res.json());
   }
 
+  get_recentactivity(){
+      return this.authHttp
+          .get(this.ApiUrl+'latestactivity/')
+          .map(res => res.json());
+  }
+
   get_filter_stats(filter:SonyFilter){
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
