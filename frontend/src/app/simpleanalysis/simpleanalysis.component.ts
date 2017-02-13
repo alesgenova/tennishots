@@ -17,7 +17,8 @@ import 'rxjs/add/operator/switchMap';
 })
 export class SimpleanalysisComponent implements OnInit {
 
-    userChoices: any[];
+    userChoices: any;
+    userChoices_keys:any[];
     stats = new SonyResponse();
     listOfPeriods = new UserPeriodsList();
     activeUser: string;
@@ -50,10 +51,17 @@ export class SimpleanalysisComponent implements OnInit {
               this.router.navigate(['summary']);
           }
       }
-      this.userChoices = [];
-      this.userChoices.push({username:this.userProfile.user,first_name:"Myself"});
+      this.userChoices = {};
+      this.userChoices_keys = []; // I ain't implementing no fucking pipe to loop in the template. I miss python.
+      this.userChoices_keys.push(this.userProfile.user);
+      this.userChoices[this.userProfile.user] = {username:this.userProfile.user,
+                             first_name:"Myself",
+                             last_name:""};
       for (let friend of this.userProfile.friends){
-          this.userChoices.push({username:friend.user,first_name:friend.first_name});
+          this.userChoices_keys.push(friend.user);
+          this.userChoices[friend.user] = {username:friend.user,
+                                 first_name:friend.first_name,
+                                 last_name:friend.last_name};
       };
       this.onUserSelectClick();
   }

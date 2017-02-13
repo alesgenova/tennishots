@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
+import { TennistatService } from '../services/tennistat.service';
+import { ProfileService } from '../services/profile.service';
+
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../objects/period';
 import { SonyResponse } from '../objects/sonyresponse';
-import { TennistatService } from '../services/tennistat.service';
 
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,7 +16,8 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AnalysisComponent implements OnInit {
 
-  users: any[];
+  userProfile: any;
+  userChoices: any[];
   showFilter: boolean = true;
   filter1: SonyFilter = new SonyFilter();
   filter2: SonyFilter = new SonyFilter();
@@ -31,14 +35,17 @@ export class AnalysisComponent implements OnInit {
   listOfPeriods1: UserPeriodsList = new UserPeriodsList();
   listOfPeriods2: UserPeriodsList = new UserPeriodsList();
 
-  constructor(private tennistatService: TennistatService) { }
+  constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
   ngOnInit() {
-      this.users = [];
-      this.users.push({label:'Myself', value:"ales"});
-      this.users.push({label:'Pierluigi', value:"lionardo"});
-      this.filter1.username = "ales";
-      this.filter2.username = "ales";
+      this.userProfile = this.profileService.getProfile();
+      this.userChoices = [];
+      this.userChoices.push({username:this.userProfile.user,first_name:"Myself"});
+      for (let friend of this.userProfile.friends){
+          this.userChoices.push({username:friend.user,first_name:friend.first_name});
+      };
+      this.filter1.username = this.userProfile.user;
+      this.filter2.username = this.userProfile.user;
       this.getUserPeriods(this.filter1.username,1);
       this.getUserPeriods(this.filter2.username,2);
   }
@@ -63,15 +70,14 @@ export class AnalysisComponent implements OnInit {
 
   onUserSelectClick(num:number) {
       if (num ==1){
-          this.gotPeriods1 = false;
+          //this.gotPeriods1 = false;
           this.listOfPeriods1 = new UserPeriodsList();
           this.getUserPeriods(this.filter1.username,1);
       }else if (num == 2){
-          this.gotPeriods2 = false;
+          //this.gotPeriods2 = false;
           this.listOfPeriods2 = new UserPeriodsList();
           this.getUserPeriods(this.filter2.username,2);
       }
-      console.log("CLik"+num)
   }
 
   getUserPeriods(user:string, num:number){

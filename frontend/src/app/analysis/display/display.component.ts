@@ -44,13 +44,13 @@ export class DisplayComponent implements OnInit {
     pointRadius: 0,
     //borderColor: 'rgba(245,85,54,0.8)',//"#C9302C"
     borderColor: 'rgba(169,68,66,0.8)',
-    backgroundColor: 'rgba(245,85,54,0.3)',
+    backgroundColor: 'rgba(245,85,54,0.2)',
   },
   { // grey
     pointRadius: 0,
     //borderColor: 'rgba(32,164,243,0.8)', //"#025AA5"
     borderColor: 'rgba(49,112,143,0.8)',
-    backgroundColor: 'rgba(32,164,243,0.3)'
+    backgroundColor: 'rgba(32,164,243,0.2)'
   }
 ]
 
