@@ -15,6 +15,7 @@ export class TopbarComponent implements OnInit {
   //loggedIn: boolean = false;
   username: string;
   Profile = new UserProfile();
+  navbarLogoUrl = "assets/img/logo_nav_small.png"
 
   constructor(private authService: AuthService, private profileService: ProfileService) { }
 
