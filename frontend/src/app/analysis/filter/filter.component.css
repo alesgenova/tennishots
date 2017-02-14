@@ -1,0 +1,7 @@
+.period-container {
+    /*width: 50px;
+    overflow-x:hidden;*/
+    background-color: "#ababab";
+    height: 300px;
+    overflow-y: scroll;
+}

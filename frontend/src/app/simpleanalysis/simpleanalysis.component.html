@@ -1,25 +1,23 @@
 <div class="my-top">
   <div class="container">
-    <h1>Activity Summary</h1>
-    <p>
-    <select (click)="onUserSelectClick()" id="userpicker" [(ngModel)]="activeUser" class="custom-select">
-          <option *ngFor="let key of userChoices_keys" [value]="userChoices[key].username">{{userChoices[key].first_name}} {{userChoices[key].last_name}}</option>
-    </select> <span class="text-muted">({{userChoices[activeUser].username}})</span>
-    </p>
+    <h2>Activity Summary</h2>
   </div>
 </div>
 
 <div class="container text-center">
-    <div class="row no-gutters">
-      <div class="col">
-        <button class="btn btn-sm btn-secondary btn-block active">Basic mode</button>
-        <br>
-      </div>
-      <div class="col">
-        <button [routerLink]="['','analyze']" class="btn btn-sm btn-secondary btn-block">Advanced mode</button>
-        <br>
-      </div>
+  <div class="row">
+    <div class="col">
+  <p>
+  <select (click)="onUserSelectClick()" id="userpicker" [(ngModel)]="activeUser" class="custom-select">
+        <option *ngFor="let key of userChoices_keys" [value]="userChoices[key].username">{{userChoices[key].first_name}} {{userChoices[key].last_name}}</option>
+  </select> <span class="text-muted">({{userChoices[activeUser].username}})</span>
+  </p>
     </div>
+    <div class="col">
+      Advanced mode: <button [routerLink]="['','analyze']" class="btn btn-secondary">Off</button>
+    </div>
+  </div>
+
   <p>
     <button class="btn" (click)="onPeriodChange('session')" [class.btn-primary]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>
     <button class="btn" (click)="onPeriodChange('week')" [class.btn-primary]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>
@@ -50,6 +48,10 @@
   </div>
   <hr>
   <!-- Display -->
-  <display [stats1]="stats" [compare]="false"></display>
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <display [stats1]="stats" [compare]="false"></display>
+    </div>
+  </div>
 
 </div>

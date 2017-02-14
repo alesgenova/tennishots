@@ -7,22 +7,15 @@
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[2]" (click)="handlePeriodChange('months')">Months</button>
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[3]" (click)="handlePeriodChange('years')">Years</button>
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[4]" (click)="handlePeriodChange('date_range')">Date Range</button><hr>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[4]" (click)="handlePeriodChange('date_range')">Tags</button><hr>
       <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
     </div>
-    <div *ngIf="periodSelector[0]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.session.length > 0" [periods]="listOfPeriods.session" [periodsPicker]="filter.filters.periods"></periodlist>
-    </div>
-    <div *ngIf="periodSelector[1]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.week.length > 0" [periods]="listOfPeriods.week" [periodsPicker]="filter.filters.periods"></periodlist>
-    </div>
-    <div *ngIf="periodSelector[2]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.month.length > 0" [periods]="listOfPeriods.month" [periodsPicker]="filter.filters.periods"></periodlist>
-    </div>
-    <div *ngIf="periodSelector[3]" class="col-9">
-      <periodlist *ngIf="listOfPeriods.year.length > 0" [periods]="listOfPeriods.year" [periodsPicker]="filter.filters.periods"></periodlist>
-    </div>
-    <div *ngIf="periodSelector[4]" class="col-9">
-      <div class="row">
+    <div class="period-container col-9">
+      <periodlist *ngIf="periodSelector[0] && listOfPeriods.session.length > 0" [periods]="listOfPeriods.session" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[1] && listOfPeriods.week.length > 0" [periods]="listOfPeriods.week" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[2] &&listOfPeriods.month.length > 0" [periods]="listOfPeriods.month" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[3] && listOfPeriods.year.length > 0" [periods]="listOfPeriods.year" [periodsPicker]="filter.filters.periods"></periodlist>
+      <div *ngIf="periodSelector[4]" class="row">
         <div class="col-6">
           <label>From</label>
           <div class="input-group">

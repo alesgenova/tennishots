@@ -1,23 +1,22 @@
 <div class="my-top">
   <div class="container">
-    <h1>Advanced Analysis</h1>
-    <p>
+    <h2>Advanced Analysis</h2>
+    <!--<p>
       Filter your shots (or your friends') any way you want. Click on the red button to enable comparison between your selections.
-    </p>
+    </p>-->
   </div>
 </div>
 
 <div class="container text-center">
-    <div class="row no-gutters">
-      <div class="col">
-        <button [routerLink]="['','summary']" class="btn btn-sm btn-secondary btn-block">Basic mode</button>
-        <br>
-      </div>
-      <div class="col">
-        <button class="btn btn-sm btn-secondary btn-block active">Advanced mode</button>
-        <br>
-      </div>
+  <div class="row">
+    <div class="col">
+
     </div>
+    <div class="col">
+      Advanced mode: <button [routerLink]="['','summary']" class="btn btn-secondary active">On</button>
+    </div>
+  </div>
+  
   <button *ngIf="!showFilter" type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
   <br>
   <ngb-tabset *ngIf="showFilter"  (tabChange)="beforeTabChange($event)" justify="left" #t="ngbTabset">
