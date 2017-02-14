@@ -24,7 +24,7 @@ export const routes: Routes = [
   { path: 'friends',  component: FriendsComponent },
   { path: 'tags',  component: LabelsComponent },
   { path: 'import',  component: CsvuploadComponent },
-//  { path: 'home',  component: Test },
+  { path: 'test',  component: TestComponent },
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },
 //  { path: '**',     component: Login },

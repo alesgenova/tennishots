@@ -12,6 +12,7 @@ import 'rxjs/add/operator/map';
 export class TennistatService {
 
   ApiUrl: string = 'http://localhost:8000/api/'
+  jsonPostOptions = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
 
   constructor(private http: Http, private authHttp: AuthHttp) { }
 //headerPrefix?: string;
@@ -22,11 +23,9 @@ export class TennistatService {
   }
 
   post_test(){
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
       let name:string = "carrr"
       return this.authHttp
-          .post(this.ApiUrl+'test/',{name}, options)
+          .post(this.ApiUrl+'test/',{name}, this.jsonPostOptions)
           .map(res => res.json());
   }
 
@@ -50,16 +49,26 @@ export class TennistatService {
   }
 
   get_filter_stats(filter:SonyFilter){
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
       return this.authHttp
-          .post(this.ApiUrl+'shotsfilter/',filter, options)
+          .post(this.ApiUrl+'shotsfilter/',filter, this.jsonPostOptions)
           .map(res => res.json());
   }
 
   get_friends(){
       return this.authHttp
           .get(this.ApiUrl+'friends/')
+          .map(res => res.json());
+  }
+
+  get_tags(username:string){
+      return this.authHttp
+          .get(this.ApiUrl+username+'/labels/')
+          .map(res => res.json());
+  }
+
+  create_tag(username:string, tagname:string){
+      return this.authHttp
+          .post(this.ApiUrl+username+'/labels/', {name:tagname}, this.jsonPostOptions)
           .map(res => res.json());
   }
 
@@ -70,16 +79,12 @@ export class TennistatService {
   }
 
   create_profile(profileForm:ProfileForm){
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      return this.authHttp.post(this.ApiUrl+'profile/',profileForm, options)
+      return this.authHttp.post(this.ApiUrl+'profile/',profileForm, this.jsonPostOptions)
           .map((response: Response) => {return response.json()} );
   }
 
   update_profile(profileForm:ProfileForm){
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      return this.authHttp.put(this.ApiUrl+'profile/',profileForm, options)
+      return this.authHttp.put(this.ApiUrl+'profile/',profileForm, this.jsonPostOptions)
           .map((response: Response) => {return response.json()} );
   }
 
@@ -90,23 +95,17 @@ export class TennistatService {
   }
 
  respond_friendrequest(from_user:string, to_user:string, action:string){
-     let headers = new Headers({ 'Content-Type': 'application/json' });
-     let options = new RequestOptions({ headers: headers });
-     return this.authHttp.post(this.ApiUrl+'friendrequests/',{from_user:from_user, to_user:to_user, action:action}, options)
+     return this.authHttp.post(this.ApiUrl+'friendrequests/',{from_user:from_user, to_user:to_user, action:action}, this.jsonPostOptions)
          .map((response: Response) => {return response.json()} );
  }
 
   add_friend(from_user:string, to_user:string){
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      return this.authHttp.post(this.ApiUrl+'addfriend/',{from_user:from_user, to_user:to_user}, options)
+      return this.authHttp.post(this.ApiUrl+'addfriend/',{from_user:from_user, to_user:to_user}, this.jsonPostOptions)
           .map((response: Response) => {return response.json()} );
   }
 
   search_user(query: string){
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      return this.authHttp.post(this.ApiUrl+'searchuser/',{query:query}, options)
+      return this.authHttp.post(this.ApiUrl+'searchuser/',{query:query}, this.jsonPostOptions)
           .map((response: Response) => {return response.json()} );
   }
 
