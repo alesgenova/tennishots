@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
+
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import { Label } from '../objects/label';
 import { Period, UserPeriodsList } from '../objects/period';
@@ -23,14 +26,25 @@ export class LabelsComponent implements OnInit {
   currPage: number = 1;
   periodsSubset: Period[];
   categoryButtonText = 'Category';
-  newTag: any = {category:-1, name:""};
+  newTag: FormGroup;
 
-  constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
+  constructor(private tennistatService: TennistatService,
+              private profileService: ProfileService,
+              private fb: FormBuilder,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
       this.userProfile = this.profileService.getProfile();
       this.refreshTags();
       this.getSessions();
+      this.createTagForm();
+  }
+
+  createTagForm(){
+      this.newTag = this.fb.group({
+            name: ["",Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])],
+            category: [null,Validators.compose([Validators.required])]
+        });
   }
 
   refreshTags() {
@@ -58,19 +72,95 @@ export class LabelsComponent implements OnInit {
       this.periodsSubset = this.sessionList.slice(start,stop);
   }
 
-  onCategorySelect(catNum: number){
-      this.newTag.category = catNum;
-      if (catNum == 0){
+  onCreateTag(){
+      this.tennistatService.create_tag(this.userProfile.user, this.newTag.value.name, this.newTag.value.category)
+            .subscribe( res =>{
+                this.createTagForm();
+                this.refreshTags();
+                this.onCategorySelect(null);
+            });
+  }
+
+  onDeleteTag(pk:number){
+      if (true){
+          this.tennistatService.delete_tag(pk)
+                .subscribe( res =>{
+                    this.refreshTags();
+                });
+      }
+  }
+
+  getTagClass(category:number){
+      if (category == 0){
+          return 'badge-primary'
+      }else if (category == 1){
+          return 'badge-success'
+      }else if (category == 2){
+          return 'badge-info'
+      }else if (category == 3){
+          return 'badge-warning'
+      }else if (category == 4){
+          return 'badge-danger'
+      }else if (category == 5){
+          return 'badge-default'
+      }
+  }
+
+  getMissingTags(sessionTags:Label[]){
+      let missingTags: Label[] = [];
+      for (let tag of this.tagList){
+          if (sessionTags.some(x=>x.pk==tag.pk)) {
+
+          }else{
+            missingTags.push(tag);
+          }
+      }
+      return missingTags
+  }
+
+  getFormattedTag(name:string, category:number){
+      if (category == null){
+          return name;
+      }else if (category == 0){
+          return '<span class="badge badge-primary">'+name+'</span>';
+      }else if (category == 1){
+          return '<span class="badge badge-success">'+name+'</span>';
+      }else if (category == 2){
+          return '<span class="badge badge-info">'+name+'</span>';
+      }else if (category == 3){
+          return '<span class="badge badge-warning">'+name+'</span>';
+      }else if (category == 4){
+          return '<span class="badge badge-danger">'+name+'</span>';
+      }else if (category == 5){
+          return '<span class="badge badge-default">'+name+'</span>';
+      }
+  }
+
+  onAssignTag(tagPk:number, sessionPk:number, action:string){
+      this.tennistatService.assign_tag(tagPk, sessionPk, action)
+            .subscribe( res =>{
+                this.getSessions();
+            });
+  }
+
+  onCategorySelect(category: number){
+      this.newTag.setValue({
+         category: category,
+         name: this.newTag.value.name
+      });
+      if (category == null){
+          this.categoryButtonText = 'Category';
+      }else if (category == 0){
           this.categoryButtonText = '<span class="badge badge-primary">Surface</span>';
-      }else if (catNum == 1){
+      }else if (category == 1){
           this.categoryButtonText = '<span class="badge badge-success">Opponent</span>';
-      }else if (catNum == 2){
+      }else if (category == 2){
           this.categoryButtonText = '<span class="badge badge-info">Game type</span>';
-      }else if (catNum == 3){
-          this.categoryButtonText = '<span class="badge badge-warning">Competitive</span>';
-      }else if (catNum == 4){
-          this.categoryButtonText = '<span class="badge badge-danger">Conditions</span>';
-      }else if (catNum == 5){
+      }else if (category == 3){
+          this.categoryButtonText = '<span class="badge badge-warning">Competition</span>';
+      }else if (category == 4){
+          this.categoryButtonText = '<span class="badge badge-danger">Condition</span>';
+      }else if (category == 5){
           this.categoryButtonText = '<span class="badge badge-default">Other</span>';
       }
   }

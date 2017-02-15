@@ -57,8 +57,16 @@ class Day(Period):
         super(Day, self).save(*args, **kwargs)
 
 class SessionLabel(models.Model):
+    category_choices = ((0,'Surface'),
+                        (1, 'Opponent'),
+                        (2, 'Game type'),
+                        (3, 'Competition'),
+                        (4, 'Condition'),
+                        (5, 'Other'))
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
+    category = models.IntegerField(choices=category_choices, default=5)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
