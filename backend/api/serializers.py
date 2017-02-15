@@ -114,7 +114,7 @@ class LabelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SessionLabel
-        fields = ('pk', 'name', 'slug')
+        fields = ('pk', 'name', 'slug', 'category')
 
 class SessionSerializerPlus(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)

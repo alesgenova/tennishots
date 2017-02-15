@@ -66,9 +66,21 @@ export class TennistatService {
           .map(res => res.json());
   }
 
-  create_tag(username:string, tagname:string){
+  create_tag(username:string, tagname:string, category:number){
       return this.authHttp
-          .post(this.ApiUrl+username+'/labels/', {name:tagname}, this.jsonPostOptions)
+          .post(this.ApiUrl+username+'/labels/', {name:tagname, category:category}, this.jsonPostOptions)
+          .map(res => res.json());
+  }
+
+  delete_tag(pk:number){
+      return this.authHttp
+          .delete(this.ApiUrl+'label/'+pk+'/',)
+          .map(res => res.json());
+  }
+
+  assign_tag(tagPk:number, sessionPk:number, action:string){
+      return this.authHttp
+          .post(this.ApiUrl+'addsessionlabel/', {label_pk:tagPk, session_pk:sessionPk, action:action}, this.jsonPostOptions)
           .map(res => res.json());
   }
 
