@@ -6,40 +6,47 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-8 offset-md-2">
+    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
       <h4 class="text-center">Tags</h4>
       <hr>
-      <div class="row text-center">
-        <div *ngFor="let tag of tagList" class="col-3 col-md-2">
-          <h5><span class="badge badge-default">{{tag.name}}&nbsp;&nbsp;<i role="button" class="fa fa-times" aria-hidden="true"></i></span></h5>
+      <h5><span *ngFor="let tag of tagList"> <span class="badge badge-default">{{tag.name}}&nbsp;&nbsp;<i role="button" class="fa fa-times" aria-hidden="true"></i></span>&nbsp;</span></h5>
+      <div class="input-group input-group-sm">
+        <div class="input-group-btn">
+          <button [innerHTML]="categoryButtonText" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" role="button" (click)="onCategorySelect(0)" placement="right" ngbTooltip="Clay,&nbsp;Hard&nbsp;Court,&nbsp;..."><span class="badge badge-primary">Surface</span></a>
+            <a class="dropdown-item" role="button" (click)="onCategorySelect(1)" placement="right" ngbTooltip="Roger,&nbsp;Ana,&nbsp;..."><span class="badge badge-success">Opponent</span></a>
+            <a class="dropdown-item" role="button" (click)="onCategorySelect(2)" placement="right" ngbTooltip="Singles,&nbsp;Doubles,&nbsp;..."><span class="badge badge-info">Game type</span></a>
+            <a class="dropdown-item" role="button" (click)="onCategorySelect(3)" placement="right" ngbTooltip="Practice,&nbsp;Match,&nbsp;..."><span class="badge badge-warning">Competitive</span></a>
+            <a class="dropdown-item" role="button" (click)="onCategorySelect(4)" placement="right" ngbTooltip="Outdoor,&nbsp;Windy,&nbsp;..."><span class="badge badge-danger">Conditions</span></a>
+            <a class="dropdown-item" role="button" (click)="onCategorySelect(5)" placement="right" ngbTooltip="Anything&nbsp;else"><span class="badge badge-default">Other</span></a>
+          </div>
+        </div>
+        <input [(ngModel)]="newTag.name" type="text" class="form-control" placeholder="Tag name">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="button">Create</button>
+        </span>
+      </div>
+      {{newTag|json}}
+      <h4 class="text-center">Tag your sessions</h4>
+      <hr>
+      <div class="row">
+        <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-lg-3">
+          <div class="card text-center" role="button" (click)="onPeriodSelect(period.pk)" [class.card-inverse]="period.pk==activePk" [class.card-primary]="period.pk==activePk">
+            <div class="card-block">
+              <h6 class="card-title"><strong>{{period.timestamp|date}}</strong></h6>
+              <p class="card-text">
+                <strong>{{period.shot_count}}</strong> shots
+              </p>
+              <span class="badge badge-default">{{period.labels.length}} tags</span>
+            </div>
+          </div>
           <br>
         </div>
-        <div class="col-10">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Create new tag...">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button">Create</button>
-            </span>
-          </div>
+        <div *ngIf="doPagination"  class="col-12">
+          <ngb-pagination [disabled]="!doPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPage" (pageChange)="onPageChange()" size="sm"></ngb-pagination>
         </div>
-    </div>
-    <h4 class="text-center">Tag your sessions</h4>
-    <hr>
-    <div class="row">
-      <div *ngFor="let period of periodsSubset" class="col-6 col-md-4 col-lg-3">
-        <div class="card text-center" role="button" (click)="onPeriodSelect(period.pk)" [class.card-inverse]="period.pk==activePk" [class.card-primary]="period.pk==activePk">
-          <div class="card-block">
-            <h6 class="card-title"><strong>{{period.timestamp|date}}</strong></h6>
-            <p class="card-text">
-              <strong>{{period.shot_count}}</strong> shots
-            </p>
-            <span class="badge badge-default">{{period.labels.length}} tags</span>
-          </div>
-        </div>
-        <br>
-      </div>
-      <div *ngIf="doPagination"  class="col-12">
-        <ngb-pagination [disabled]="!doPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPage" (pageChange)="onPageChange()" size="sm"></ngb-pagination>
       </div>
     </div>
   </div>

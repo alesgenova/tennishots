@@ -19,9 +19,11 @@ export class LabelsComponent implements OnInit {
   sessionList: Period[];
   doPagination: boolean;
   nPeriods: number;
-  periodsPerPage: number = 6;
+  periodsPerPage: number = 8;
   currPage: number = 1;
   periodsSubset: Period[];
+  categoryButtonText = 'Category';
+  newTag: any = {category:-1, name:""};
 
   constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
@@ -56,6 +58,22 @@ export class LabelsComponent implements OnInit {
       this.periodsSubset = this.sessionList.slice(start,stop);
   }
 
+  onCategorySelect(catNum: number){
+      this.newTag.category = catNum;
+      if (catNum == 0){
+          this.categoryButtonText = '<span class="badge badge-primary">Surface</span>';
+      }else if (catNum == 1){
+          this.categoryButtonText = '<span class="badge badge-success">Opponent</span>';
+      }else if (catNum == 2){
+          this.categoryButtonText = '<span class="badge badge-info">Game type</span>';
+      }else if (catNum == 3){
+          this.categoryButtonText = '<span class="badge badge-warning">Competitive</span>';
+      }else if (catNum == 4){
+          this.categoryButtonText = '<span class="badge badge-danger">Conditions</span>';
+      }else if (catNum == 5){
+          this.categoryButtonText = '<span class="badge badge-default">Other</span>';
+      }
+  }
 
 
 }
