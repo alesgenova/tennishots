@@ -4,6 +4,7 @@ import { TennistatService } from '../../services/tennistat.service';
 import { SonyFilter, PeriodsPicker, DateRange } from '../../objects/sonyfilter';
 import {SelectItem} from 'primeng/primeng';
 import { Period, UserPeriodsList } from '../../objects/period';
+import { Label } from '../../objects/label';
 
 @Component({
   //inputs: ["filter"],
@@ -15,6 +16,7 @@ export class FilterComponent implements OnInit {
 
   @Input() filter: SonyFilter;
   @Input() listOfPeriods: UserPeriodsList;
+  @Input() tagList: Label[];
   advancedFilter: boolean = false;
   users: any[];
   swing_speed: number[] = [0,240];
@@ -22,7 +24,7 @@ export class FilterComponent implements OnInit {
   ball_spin: number[] = [-10,10];
   num1 : number = 0;
   num2 : number = 220;
-  periodSelector: boolean[] = [true,false,false,false,false];
+  periodSelector: boolean[] = [true,false,false,false,false,false];
   sessions: Period[];
   weeks: Period[];
   months: Period[];
@@ -43,7 +45,7 @@ export class FilterComponent implements OnInit {
 
   handlePeriodChange(name) {
       this.filter.filters.periods.pks = [];
-      for (var i = 0; i < 5; ++i) { this.periodSelector[i] = false; }
+      for (var i = 0; i < 6; ++i) { this.periodSelector[i] = false; }
       if (name == "sessions"){
         this.filter.filters.periods.name = "session";
         this.periodSelector[0] = true;
@@ -58,6 +60,8 @@ export class FilterComponent implements OnInit {
         this.periodSelector[3] = true;
       }else if (name == "date_range"){
         this.periodSelector[4] = true;
+    }else if (name == "tags"){
+        this.periodSelector[5] = true;
         //this.filter.filters.periods.name = "session";
       }
   }

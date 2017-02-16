@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-6">
+  </div>
+  <div class="col-6">
+    <p>
+      <a class="btn btn-sm btn-secondary" role="button"(click)="onSelectAll(false)">Select none</a>
+    </p>
+  </div>
+</div>
+
+<p class="lead">
+  <span *ngFor="let tag of tagList">
+    <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
+      <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
+    </span>
+  </span>
+</p>
+
+{{tagsPicker|json}}

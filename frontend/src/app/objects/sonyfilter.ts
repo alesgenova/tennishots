@@ -10,6 +10,7 @@ export class SOFilters{
     swing_speed?: number[] = [0,240];
     ball_speed?: number[] = [0,240];
     ball_spin?: number[] = [-10,10];
+    labels?: number[] = [];
     //swing_speed?: NumberRange = new NumberRange();
     //ball_speed?: NumberRange = new NumberRange();
     //ball_spin?: NumberRange = new NumberRange();

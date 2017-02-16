@@ -85,6 +85,7 @@ class SonyFilterListSerializer(serializers.Serializer):
     swing_speed = serializers.ListField(child=serializers.IntegerField(min_value=0), required=False)
     ball_speed = serializers.ListField(child=serializers.IntegerField(min_value=0), required=False)
     ball_spin = serializers.ListField(child=serializers.IntegerField(min_value=-10, max_value=10), required=False)
+    labels = serializers.ListField(child=serializers.IntegerField(min_value=1))
     swing_type = serializers.MultipleChoiceField(choices=SWING_TYPES, required=False)
 
 class SonyFilterSerializer(serializers.Serializer):
