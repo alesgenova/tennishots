@@ -4,7 +4,7 @@ import numpy as np
 from django.db.models import Q
 from generic.routines import str_to_periodmodel
 from sony.impact_heatmap import make_heatmap
-from shot.models import Session, Day, Week, Month, Year, Shot
+from shot.models import Session, Day, Week, Month, Year, Shot, SessionLabel
 
 def apply_sonyfilter(filter_obj, input_queryset=None):
     """
@@ -53,6 +53,14 @@ def apply_sonyfilter(filter_obj, input_queryset=None):
         maximum = filters['ball_spin'][1]
         QS.add(Q(data__ball_spin__gte=minimum), Q.AND)
         QS.add(Q(data__ball_spin__lte=maximum), Q.AND)
+    if 'labels' in filters:
+        pks = filters['labels']
+        the_sessions = Session.objects.filter(user__username=username)
+        for pk in pks:
+            the_label = SessionLabel.objects.filter(user__username=username,pk=pk)
+            the_sessions = the_sessions.filter(labels__in=the_label)
+        QS.add(Q(session__in=the_sessions), Q.AND)
+
 
     queryset = Shot.objects.filter(QS)
     return queryset

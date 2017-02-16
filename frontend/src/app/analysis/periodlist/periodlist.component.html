@@ -1,3 +1,16 @@
+<div class="row">
+  <div class="col-6">
+    <p>
+      <a class="btn btn-sm btn-secondary" role="button"(click)="onSelectAll(true)">Select all</a>
+    </p>
+  </div>
+  <div class="col-6">
+    <p>
+      <a class="btn btn-sm btn-secondary" role="button"(click)="onSelectAll(false)">Select none</a>
+    </p>
+  </div>
+</div>
+
 <div class="row no-gutters">
   <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-md-3">
     <div class="card text-center" role="button" (click)="addPkToPks(period.pk)" [class.card-inverse]="isInPks(period.pk)" [class.card-primary]="isInPks(period.pk)">

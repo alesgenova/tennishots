@@ -31,6 +31,15 @@ export class PeriodlistComponent implements OnInit {
 
   }
 
+  onSelectAll(all:boolean){
+      this.periodsPicker.pks = [];
+      if (all){
+          for (let period of this.periods){
+              this.periodsPicker.pks.push(period.pk);
+          }
+      }
+  }
+
   addPkToPks(pk:number) {
       if (this.periodsPicker.pks.some(x=>x==pk)) {
           var idx = this.periodsPicker.pks.indexOf(pk);

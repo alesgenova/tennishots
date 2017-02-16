@@ -6,6 +6,7 @@ import { ProfileService } from '../services/profile.service';
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../objects/period';
 import { SonyResponse } from '../objects/sonyresponse';
+import { Label } from '../objects/label';
 
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
@@ -34,6 +35,8 @@ export class AnalysisComponent implements OnInit {
   //
   listOfPeriods1: UserPeriodsList = new UserPeriodsList();
   listOfPeriods2: UserPeriodsList = new UserPeriodsList();
+  tagList1: Label[] = [];
+  tagList2: Label[] = [];
 
   constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
@@ -47,7 +50,12 @@ export class AnalysisComponent implements OnInit {
       this.filter1.username = this.userProfile.user;
       this.filter2.username = this.userProfile.user;
       this.getUserPeriods(this.filter1.username,1);
-      this.getUserPeriods(this.filter2.username,2);
+      this.listOfPeriods2 = this.listOfPeriods1;
+      this.gotPeriods2 = true;
+      //this.getUserPeriods(this.filter2.username,2);
+      this.getTags(this.filter1.username,1);
+      this.getTags(this.filter2.username,2);
+      //this.tagList2 = this.tagList1
   }
 
   handleCompareChange() {
@@ -73,10 +81,12 @@ export class AnalysisComponent implements OnInit {
           //this.gotPeriods1 = false;
           this.listOfPeriods1 = new UserPeriodsList();
           this.getUserPeriods(this.filter1.username,1);
+          this.getTags(this.filter1.username,1);
       }else if (num == 2){
           //this.gotPeriods2 = false;
           this.listOfPeriods2 = new UserPeriodsList();
           this.getUserPeriods(this.filter2.username,2);
+          this.getTags(this.filter2.username,2);
       }
   }
 
@@ -99,6 +109,17 @@ export class AnalysisComponent implements OnInit {
                 this.gotPeriods2 = true;
             }
       });
+  }
+
+  getTags(user:string, num:number) {
+      this.tennistatService.get_tags(user)
+            .subscribe( res => {
+                if (num == 1) {
+                    this.tagList1 = res;
+                }else if (num == 2) {
+                    this.tagList2 = res;
+                }
+            });
   }
 
   onSubmitRequest(){
