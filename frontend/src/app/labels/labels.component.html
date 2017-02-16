@@ -42,26 +42,24 @@
         <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-lg-3">
           <div class="card text-center">
             <div class="card-block">
-              <h6 class="card-title"><strong>{{period.timestamp|date}}</strong></h6>
-              <p class="card-text">
-                <strong>{{period.shot_count}}</strong> shots
-              </p>
-              <div class="dropdown">
-                <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{period.labels.length}} tags</span>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a *ngFor="let tag of period.labels" role="button" (click)="onAssignTag(tag.pk, period.pk, 'remove')" class="dropdown-item">
-                      <span>
-                        <i class="fa fa-minus-square" aria-hidden="true"></i>&nbsp;
-                        <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
-                      </span>
-                    </a>
-                    <div *ngIf="period.labels.length > 0" class="dropdown-divider"></div>
-                    <a *ngFor="let tag of getMissingTags(period.labels)" role="button" (click)="onAssignTag(tag.pk, period.pk, 'add')" class="dropdown-item">
-                      <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;
+              <h6 class="card-title">{{period.timestamp|date}}</h6>
+              <strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span>
+            </div>
+            <div class="dropdown">
+              <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{period.labels.length}} tags</span>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a *ngFor="let tag of period.labels" role="button" (click)="onAssignTag(tag.pk, period.pk, 'remove')" class="dropdown-item">
+                    <span>
+                      <i class="fa fa-minus-square" aria-hidden="true"></i>&nbsp;
                       <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
-                    </a>
-                  </div>
-              </div>
+                    </span>
+                  </a>
+                  <div *ngIf="period.labels.length > 0" class="dropdown-divider"></div>
+                  <a *ngFor="let tag of getMissingTags(period.labels)" role="button" (click)="onAssignTag(tag.pk, period.pk, 'add')" class="dropdown-item">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;
+                    <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
+                  </a>
+                </div>
             </div>
           </div>
           <br>
