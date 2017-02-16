@@ -1,29 +1,31 @@
-<div class="row">
-  <div *ngFor="let j of [0,1]" class="col-sm-6">
+<div class="row no-gutters">
+  <div *ngFor="let j of [0,1]" class="col-6">
     <div *ngFor="let stroke of stats1?.strokes.slice(j*4,j*4+4) ; let i=index" class="col-6" class="card text-center">
       <div class="card-header" [style.background-color]="STROKES[stroke.name].bgColor" role="button" (click)="expanded[stroke.name]=!expanded[stroke.name]">
-        <h5 class="mb-0">
+        <h6 class="mb-0">
           {{ STROKES[stroke.name].label }}
-        </h5>
+        </h6>
       </div>
       <div class="card-block"  role="button" (click)="expanded[stroke.name]=!expanded[stroke.name]">
-        <div class="row">
-          <div class="col-6" [class.col-12]="!compare">
-            <strong>{{stroke.count}}</strong> Shots
-          </div>
-          <div *ngIf="compare" class="col-6">
-            <strong>{{stats2?.strokes[i+j*4]?.count}}</strong> Shots
+        <div class="container">
+          <div class="row">
+            <div class="col-6" [class.col-12]="!compare" [class.selection1]="compare">
+              <strong>{{stroke.count}}</strong>&nbsp;<span class="small">shots</span>
+              <div *ngIf="expanded[stroke.name]">
+                <img *ngIf="stroke.count > 0" class="img-fluid" [src]="stroke.stats?.heatmap">
+              </div>
+            </div>
+            <div *ngIf="compare" class="col selection2">
+              <strong>{{stats2?.strokes[i+j*4]?.count}}</strong>&nbsp;<span class="small">shots</span>
+              <div *ngIf="expanded[stroke.name] && stats2.count > 0">
+                <img *ngIf="stats2.strokes[i+j*4].count > 0" class="img-fluid" [src]="stats2?.strokes[i+j*4]?.stats?.heatmap">
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="card-block" *ngIf="expanded[stroke.name]">
         <div class="row">
-          <div class="col-6" [class.offset-3]="!compare">
-            <img *ngIf="stroke.count > 0" class="img-fluid" [src]="stroke.stats?.heatmap">
-          </div>
-          <div *ngIf="compare && stats2.count > 0" class="col-6">
-            <img *ngIf="stats2.strokes[i+j*4].count > 0" class="img-fluid" [src]="stats2?.strokes[i+j*4]?.stats?.heatmap">
-          </div>
           <div *ngFor="let stat of ['swing_speed', 'ball_speed', 'ball_spin']" class="col-md-10 offset-md-1">
             <hr>
             <canvas *ngIf="!compare || stats2.count < 1" baseChart

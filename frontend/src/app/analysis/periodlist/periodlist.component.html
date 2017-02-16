@@ -13,16 +13,26 @@
 
 <div class="row no-gutters">
   <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-md-3">
-    <div class="card text-center" role="button" (click)="addPkToPks(period.pk)" [class.card-inverse]="isInPks(period.pk)" [class.card-primary]="isInPks(period.pk)">
-      <div class="card-block">
-        <h6 class="card-title"><strong>{{period.timestamp|date}}</strong></h6>
-        <p class="card-text">
-          <strong>{{period.shot_count}}</strong> shots
-        </p>
-        <div class="labels-spacer row no-gutters">
-          <div *ngFor="let label of period.labels" class="col-4">
-            <span class="badge badge-default">{{label.name}}</span>
-          </div>
+    <div class="card text-center" [class.card-inverse]="isInPks(period.pk)" [class.card-primary]="isInPks(period.pk)">
+      <div class="card-block" [class.card-block-session]="PeriodsPicker?.name=='session'" role="button" (click)="addPkToPks(period.pk)">
+        <span class="small"><strong>{{period.timestamp|date}}</strong></span><br>
+        <strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span>
+      </div>
+      <div *ngIf="period?.labels" class="dropdown">
+        <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{period.labels.length}}&nbsp;tags
+        </span>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p>
+            <a *ngFor="let tag of period.labels">
+              <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
+            </a>
+          </p>
+          <div *ngIf="activePeriod=='session' && period.labels.length > 0" class="dropdown-divider"></div>
+          <a [routerLink]="['','tags']" role="button" class="dropdown-item">
+            <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;
+            <span>Edit tags</span>
+          </a>
         </div>
       </div>
     </div>

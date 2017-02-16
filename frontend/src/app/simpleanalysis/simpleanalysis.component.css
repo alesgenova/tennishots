@@ -3,6 +3,10 @@
     padding-right: 1px;
 }
 
+.card-block-session{
+    padding-bottom: 0px;
+}
+
 .card-footer{
     background-color: white;
     padding: 1px 0 1px 0;

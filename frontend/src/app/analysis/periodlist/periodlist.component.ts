@@ -67,4 +67,22 @@ export class PeriodlistComponent implements OnInit {
       this.periodsSubset = this.periods.slice(start,stop);
   }
 
+  getFormattedTag(name:string, category:number){
+      if (category == null){
+          return name;
+      }else if (category == 0){
+          return '<span class="badge badge-primary">'+name+'</span>';
+      }else if (category == 1){
+          return '<span class="badge badge-success">'+name+'</span>';
+      }else if (category == 2){
+          return '<span class="badge badge-info">'+name+'</span>';
+      }else if (category == 3){
+          return '<span class="badge badge-warning">'+name+'</span>';
+      }else if (category == 4){
+          return '<span class="badge badge-danger">'+name+'</span>';
+      }else if (category == 5){
+          return '<span class="badge badge-default">'+name+'</span>';
+      }
+  }
+
 }

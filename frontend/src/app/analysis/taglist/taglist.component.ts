@@ -19,7 +19,8 @@ export class TaglistComponent implements OnInit {
   }
 
   onSelectAll(all:boolean){
-      this.tagsPicker = [];
+      let nTags = this.tagsPicker.length
+      this.tagsPicker.splice(0,nTags);
       if (all){
           for (let tag of this.tagList){
               this.tagsPicker.push(tag.pk);
