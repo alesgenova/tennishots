@@ -9,6 +9,7 @@ import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
 import { CsvuploadComponent } from './csvupload/csvupload.component';
 import { HomeComponent } from './home/home.component';
+import { BoxplotComponent } from './boxplot/boxplot.component';
 
 import { Routes } from '@angular/router';
 
@@ -25,6 +26,7 @@ export const routes: Routes = [
   { path: 'tags',  component: LabelsComponent },
   { path: 'import',  component: CsvuploadComponent },
   { path: 'test',  component: TestComponent },
+  { path: 'boxplot',  component: BoxplotComponent },
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },
 //  { path: '**',     component: Login },

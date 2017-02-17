@@ -47,7 +47,7 @@ def sony_csv_to_db(csvfile, user_id):
 
         if is_shot:
             try:
-                user.shots.get(timestamp=t)
+                user.shots.get(timestamp=t, user=user)
             except Shot.DoesNotExist:
                 new_shotdata.append({'swing_type':_shorten_swing_type(entry.swing_type),
                                      'swing_speed':entry.swing_speed,
@@ -65,7 +65,7 @@ def sony_csv_to_db(csvfile, user_id):
                                       sensor='SO'))
         elif is_video:
             try :
-                user.videos.get(timestamp=t)
+                user.videos.get(timestamp=t, user=user)
             except VideoSource.DoesNotExist:
                 new_videos.append(VideoSource(timestamp=t,
                           #duration=dt.timedelta(seconds=0),
@@ -81,7 +81,7 @@ def sony_csv_to_db(csvfile, user_id):
     # now we need to also create the shot data in the db
     new_sonydata = []
     for shot_, data in zip(new_shots, new_shotdata):
-        shot = Shot.objects.get(timestamp=shot_.timestamp)
+        shot = Shot.objects.get(timestamp=shot_.timestamp, user=user)
         new_sonydata.append(SonyData(shot=shot,
                                      swing_type=data['swing_type'],
                                      swing_speed=data['swing_speed'],
