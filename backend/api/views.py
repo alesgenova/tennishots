@@ -28,9 +28,25 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              FriendRequestSerializer, FriendSerializer,
                              SearchUserSerializer, AvatarSerializer,
                              CsvSerializer, SessionSerializerPlus,
+                             SonyProgressSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
+from sony.boxplot import box_plot
+
+class ProgressView(generics.GenericAPIView):
+    serializer_class = SonyProgressSerializer
+    queryset = []
+
+    def get(self, request, *args, **kwargs):
+        progress_dict = {}
+        requested_user = get_object_or_404(User, username=kwargs['username'])
+        period_model = str_to_periodmodel(kwargs['period'])
+        periods = period_model.objects.filter(user=requested_user)
+        for stat in ['swing_speed', 'ball_speed', 'ball_spin']:
+            progress_dict[stat] = (str.encode('data:image/svg+xml;base64,')+box_plot(periods, stat, kwargs['swing'])).decode("utf-8")
+        serializer = SonyProgressSerializer(progress_dict)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UploadCsv(generics.GenericAPIView):
     serializer_class = CsvSerializer

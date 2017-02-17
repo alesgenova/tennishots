@@ -10,11 +10,12 @@ django-rest-auth[with_social]
 djangorestframework-jwt
 django-cors-headers
 #django-celery-results
-numpy
+#numpy
 matplotlib
 Pillow
 pandas
 #git+https://github.com/Zulko/moviepy.git
 # moviepy
 #django-paypal
+colour
 

@@ -60,12 +60,14 @@ export class SimpleanalysisComponent implements OnInit {
       this.userChoices_keys.push(this.userProfile.user);
       this.userChoices[this.userProfile.user] = {username:this.userProfile.user,
                              first_name:"Myself",
-                             last_name:""};
+                             last_name:"",
+                             avatar:this.userProfile.avatar};
       for (let friend of this.userProfile.friends){
           this.userChoices_keys.push(friend.user);
           this.userChoices[friend.user] = {username:friend.user,
                                  first_name:friend.first_name,
-                                 last_name:friend.last_name};
+                                 last_name:friend.last_name,
+                                 avatar:friend.avatar};
       };
       this.onUserSelectClick();
   }

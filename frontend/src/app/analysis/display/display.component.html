@@ -12,13 +12,13 @@
             <div class="col-6" [class.col-12]="!compare" [class.selection1]="compare">
               <strong>{{stroke.count}}</strong>&nbsp;<span class="small">shots</span>
               <div *ngIf="expanded[stroke.name]">
-                <img *ngIf="stroke.count > 0" class="img-fluid" [src]="stroke.stats?.heatmap">
+                <img *ngIf="stroke.count > 0" class="img-fluid" style="max-height:85px;" [src]="stroke.stats?.heatmap">
               </div>
             </div>
             <div *ngIf="compare" class="col selection2">
               <strong>{{stats2?.strokes[i+j*4]?.count}}</strong>&nbsp;<span class="small">shots</span>
               <div *ngIf="expanded[stroke.name] && stats2.count > 0">
-                <img *ngIf="stats2.strokes[i+j*4].count > 0" class="img-fluid" [src]="stats2?.strokes[i+j*4]?.stats?.heatmap">
+                <img *ngIf="stats2.strokes[i+j*4].count > 0" class="img-fluid" style="max-height:85px;" [src]="stats2?.strokes[i+j*4]?.stats?.heatmap">
               </div>
             </div>
           </div>

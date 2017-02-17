@@ -15,3 +15,11 @@ export class UserPeriodsList {
   month: Period[] = [];
   year: Period[] = [];
 }
+
+
+export const PERIOD_CHOICES = [
+    {key:"session", label:"Session"},
+    {key:"week", label:"Week"},
+    {key:"month", label:"Month"},
+    {key:"year", label:"Year"}
+]

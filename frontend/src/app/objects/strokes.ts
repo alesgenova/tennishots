@@ -32,3 +32,14 @@ export const SONY_STROKES = {
         bgColor:"#80CBC4"
     }
 }
+
+export const SONY_STROKES_CHOICES = [
+    {key:"FH", label:"Forehand"},
+    {key:"BH", label:"Backhand"},
+    {key:"FS", label:"Forehand Slice"},
+    {key:"BS", label:"Backhand Slice"},
+    {key:"FV", label:"Forehand Volley"},
+    {key:"BV", label:"Backhand Volley"},
+    {key:"SE", label:"Serve"},
+    {key:"SE", label:"Smash"}
+]

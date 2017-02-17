@@ -121,4 +121,10 @@ export class TennistatService {
           .map((response: Response) => {return response.json()} );
   }
 
+  get_progress(user:string, periodname:string, swing:string){
+      return this.authHttp
+          .get(this.ApiUrl+user+'/progress/'+periodname+'/'+swing)
+          .map(res => res.json());
+  }
+
 }
