@@ -15,6 +15,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, mixins, generics
 from rest_framework import serializers
+from rest_framework import permissions
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -31,6 +32,8 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              SonyProgressSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
+from api.permissions import is_owner_or_friend
+
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 from sony.boxplot import box_plot
 
@@ -41,6 +44,7 @@ class ProgressView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         progress_dict = {}
         requested_user = get_object_or_404(User, username=kwargs['username'])
+        permission = is_owner_or_friend(request, kwargs['username'])
         period_model = str_to_periodmodel(kwargs['period'])
         periods = period_model.objects.filter(user=requested_user)
         for stat in ['swing_speed', 'ball_speed', 'ball_spin']:
@@ -292,6 +296,7 @@ class ShotsFilter(generics.GenericAPIView):
     def get_queryset(self, filter_serializer, *args, **kwargs):
         username = filter_serializer.validated_data['username']
         requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         queryset = apply_sonyfilter(filter_serializer.validated_data)
         return queryset
 
@@ -311,6 +316,7 @@ class LabelList(mixins.ListModelMixin,
                   generics.GenericAPIView):
     serializer_class = LabelSerializer
     def get_queryset(self, *args, **kwargs):
+        permission = is_owner_or_friend(self.request, self.kwargs['username'])
         queryset = SessionLabel.objects.filter(user__username=self.kwargs['username'])
         return queryset
 
@@ -355,6 +361,7 @@ class PeriodDetail(APIView):
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         model_class = _str_to_periodmodel(self.kwargs['period'])
         period_obj = _url_to_object(requested_user, **self.kwargs)
         queryset = period_obj.shots.all()
@@ -387,6 +394,7 @@ class YearList(mixins.ListModelMixin,
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         self.queryset = Year.objects.filter(user=requested_user)
         return self.queryset.order_by("-timestamp")
 
@@ -399,6 +407,7 @@ class MonthList(mixins.ListModelMixin,
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         self.queryset = Month.objects.filter(user=requested_user)
         return self.queryset.order_by("-timestamp")
 
@@ -411,6 +420,7 @@ class WeekList(mixins.ListModelMixin,
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         self.queryset = Week.objects.filter(user=requested_user)
         return self.queryset.order_by("-timestamp")
 
@@ -423,6 +433,7 @@ class DayList(mixins.ListModelMixin,
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         self.queryset = Day.objects.filter(user=requested_user)
         return self.queryset.order_by("-timestamp")
 
@@ -432,38 +443,12 @@ class SessionList(mixins.ListModelMixin,
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         self.queryset = Session.objects.filter(user=requested_user)
         return self.queryset.order_by("-timestamp")
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
-
-class DayList_(APIView):
-    def get_queryset(self, *args, **kwargs):
-        username = self.kwargs['username']
-        self.queryset = Day.objects.filter(user__username=username)
-        return self.queryset
-
-    def get(self, request):
-        # Validate the incoming input (provided through query parameters)
-        #serializer = IncredibleInputSerializer(data=request.query_params)
-        #serializer.is_valid(raise_exception=True)
-
-        # Get the model input
-        #data = serializer.validated_data
-        #model_input = data["model_input"]
-        #nshots = len(self.queryset)
-        # Perform the complex calculations
-        #complex_result = model_input + "xyz"
-        response = DaySerializer(self.queryset,many=True)
-        #
-
-
-        # Return it in your custom format
-        #return Response({
-        #    "complex_result": complex_result,
-        #})
-        return Response(response.data)
 
 class PeriodStrokeDetail(APIView):
     def get_queryset(self):

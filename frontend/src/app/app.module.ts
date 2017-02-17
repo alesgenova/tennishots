@@ -11,6 +11,7 @@ import { Http, RequestOptions } from '@angular/http';
 import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
 
 import { AuthService } from './services/auth.service';
+import { AuthGuard } from './services/auth.guard';
 import { TennistatService } from './services/tennistat.service';
 import { ProfileService } from './services/profile.service';
 
@@ -54,6 +55,8 @@ import { SimpleanalysisComponent } from './simpleanalysis/simpleanalysis.compone
 import { TaglistComponent } from './analysis/taglist/taglist.component';
 import { ProgressComponent } from './progress/progress.component';
 import { BoxplotComponent } from './boxplot/boxplot.component';
+import { MainComponent } from './main/main.component';
+import { HomeAnonymComponent } from './home-anonym/home-anonym.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -85,7 +88,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SimpleanalysisComponent,
     TaglistComponent,
     ProgressComponent,
-    BoxplotComponent
+    BoxplotComponent,
+    MainComponent,
+    HomeAnonymComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -103,7 +108,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     Angular2FontawesomeModule,
     FileUploadModule
   ],
-  providers: [AuthService, TennistatService, ProfileService,
+  providers: [AuthService, TennistatService, ProfileService, AuthGuard,
               {
                 provide: AuthHttp,
                 useFactory: authHttpServiceFactory,

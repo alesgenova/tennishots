@@ -1,3 +1,5 @@
+import { Routes } from '@angular/router';
+
 import { TestComponent } from './test/test.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -8,25 +10,27 @@ import { ProfileComponent } from './profile/profile.component';
 import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
 import { CsvuploadComponent } from './csvupload/csvupload.component';
-import { HomeComponent } from './home/home.component';
+import { MainComponent } from './main/main.component';
 import { ProgressComponent } from './progress/progress.component';
 
-import { Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
+
+
 
 export const routes: Routes = [
-  { path: '',       component: HomeComponent },
+  { path: '',       component: MainComponent },
   { path: 'login',  component: LoginComponent },
-  { path: 'logout',  component: LogoutComponent },
+  { path: 'logout',  component: LogoutComponent, canActivate: [AuthGuard] },
   { path: 'register',  component: RegisterComponent },
-  { path: 'summary',  component: SimpleanalysisComponent },
-  { path: 'summary/:user',  component: SimpleanalysisComponent },
-  { path: 'analyze',  component: AnalysisComponent },
-  { path: 'profile',  component: ProfileComponent },
-  { path: 'friends',  component: FriendsComponent },
-  { path: 'tags',  component: LabelsComponent },
-  { path: 'import',  component: CsvuploadComponent },
+  { path: 'summary',  component: SimpleanalysisComponent , canActivate: [AuthGuard]},
+  { path: 'summary/:user',  component: SimpleanalysisComponent, canActivate: [AuthGuard] },
+  { path: 'analyze',  component: AnalysisComponent, canActivate: [AuthGuard] },
+  { path: 'profile',  component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'friends',  component: FriendsComponent, canActivate: [AuthGuard] },
+  { path: 'tags',  component: LabelsComponent, canActivate: [AuthGuard] },
+  { path: 'import',  component: CsvuploadComponent, canActivate: [AuthGuard] },
   { path: 'test',  component: TestComponent },
-  { path: 'progress',  component: ProgressComponent },
+  { path: 'progress',  component: ProgressComponent, canActivate: [AuthGuard] },
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },
 //  { path: '**',     component: Login },
