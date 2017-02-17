@@ -1,7 +1,7 @@
 <div class="container">
   <br>
   <div class="row">
-    <div class="col-lg-8 offset-lg-2">
+    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
       <div class="card my-card text-center">
         <div class="card-block">
           <div class="row">
@@ -86,7 +86,7 @@
           <!-- The Session Stats -->
           <tr *ngIf="sessionsExpand[i]">
             <td colspan="3">
-            <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
+                  <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
             </td>
           </tr>
         </tbody>

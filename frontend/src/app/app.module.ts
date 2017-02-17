@@ -52,6 +52,8 @@ import { CsvuploadComponent } from './csvupload/csvupload.component';
 import { HomeComponent } from './home/home.component';
 import { SimpleanalysisComponent } from './simpleanalysis/simpleanalysis.component';
 import { TaglistComponent } from './analysis/taglist/taglist.component';
+import { ProgressComponent } from './progress/progress.component';
+import { BoxplotComponent } from './boxplot/boxplot.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -81,7 +83,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CsvuploadComponent,
     HomeComponent,
     SimpleanalysisComponent,
-    TaglistComponent
+    TaglistComponent,
+    ProgressComponent,
+    BoxplotComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
