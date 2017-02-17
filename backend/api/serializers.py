@@ -5,6 +5,11 @@ from sony.constants import SWING_TYPES
 from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 
+class SonyProgressSerializer(serializers.Serializer):
+    swing_speed = serializers.SlugField()
+    ball_speed = serializers.CharField()
+    ball_spin = serializers.CharField()
+
 
 class CsvSerializer(serializers.Serializer):
     sonycsv = serializers.FileField(max_length=None, required=False, use_url=True)

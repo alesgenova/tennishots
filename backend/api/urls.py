@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^(?P<username>.+)/month/$', views.MonthList.as_view()),
     url(r'^(?P<username>.+)/year/$', views.YearList.as_view()),
     url(r'^(?P<username>.+)/(?P<period>session|day|month|year|week)/(?P<year>[0-9]{4})(?:/(?P<month>[0-9]{1,2}))?(?:/(?P<day>[0-9]{1,2}))?(?:/(?P<hour>[0-9]{1,2}))?/?$', views.PeriodDetail.as_view()),
+    url(r'^(?P<username>.+)/progress/(?P<period>session|day|month|year|week)/(?P<swing>[A-Z]{2})/?$', views.ProgressView.as_view()),
     url(r'^addsessionlabel/$', views.AddSessionLabel.as_view()),
     url(r'^shotsfilter/$', views.ShotsFilter.as_view()),
     url(r'^test/$', views.TestView.as_view()),

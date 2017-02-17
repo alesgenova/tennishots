@@ -1,19 +1,11 @@
-<div class="chart-wrapper" id="chart-distro1"></div>
-
-<script type="text/javascript">
-    var chart1;
-
-    chart1 = makeDistroChart({
-        data:[1,2,3,4,5],
-        xName:'date',
-        yName:'value',
-        axisLabels: {xAxis: null, yAxis: 'Values'},
-        selector:"#chart-distro1",
-        chartSize:{height:460, width:960},
-        constrainExtremes:true});
-    chart1.renderBoxPlot();
-    chart1.renderDataPlots();
-    chart1.renderNotchBoxes({showNotchBox:false});
-    chart1.renderViolinPlot({showViolinPlot:false});
-
-</script>
+<div class="row">
+  <div *ngFor="let plot of plots" class="col-md-6">
+    <div class="card text-center">
+      <div class="card-block">
+        <h5 class="card-title">{{plot.label}}</h5>
+        <img class="img-fluid" [src]="sanitizer.bypassSecurityTrustResourceUrl(plot.img)">
+      </div>
+    </div>
+    <br>
+  </div>
+</div>

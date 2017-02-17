@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser'
+
+import { TennistatService } from '../services/tennistat.service';
 
 @Component({
-  selector: 'app-boxplot',
+  selector: 'boxplot',
   templateUrl: './boxplot.component.html',
   styleUrls: ['./boxplot.component.css']
 })
 export class BoxplotComponent implements OnInit {
 
-  constructor() { }
+  @Input() plots: any[];
 
-  ngOnInit() {
-  }
+  constructor(private tennistatService: TennistatService,
+              private sanitizer: DomSanitizer) { }
+
+  ngOnInit() { }
 
 }

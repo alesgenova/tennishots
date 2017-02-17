@@ -1,7 +1,7 @@
 <div class="container">
   <br>
   <div class="row">
-    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+    <div class="col-md-10 offset-md-1">
       <div class="card my-card text-center">
         <div class="card-block">
           <div class="row">
@@ -60,37 +60,29 @@
       <!-- The recent activity -->
       <br>
       <h4 class="text-center">Recent Activity</h4>
-
-      <table  class="table">
-        <tbody>
-          <tr *ngIf="recentActivity?.length < 1">
-            <td class="text-center">
-              There is no recent activity from you or your friends yet.
-            </td>
-          </tr>
-        </tbody>
-          <!-- The Session Info -->
-          <tbody *ngFor="let session of recentActivity; let i=index">
-          <tr role="button" (click)="onSessionExpand(i)">
-            <td width="50px">
-              <img [src]="session.player.avatar" class="rounded" height="50px" >
-            </td>
-            <td>
-              {{session.player.first_name}} <span class="text-muted small">({{session.player.user}})</span> played on {{session.timestamp|date}} <br>
-               <span class="text-muted small">{{session.shot_count}} shots <span *ngIf="session.video_count > 0">and {{session.video_count}} video</span> in this session.</span>
-            </td>
-            <td class=text-right>
-              <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
-            </td>
-          </tr>
-          <!-- The Session Stats -->
-          <tr *ngIf="sessionsExpand[i]">
-            <td colspan="3">
-                  <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <hr>
+      <div *ngFor="let session of recentActivity; let i=index" class="row">
+        <div class="col-12 recent-col" role="button" (click)="onSessionExpand(i)">
+          <div style="width:75px;">
+            <img [src]="session.player.avatar" class="rounded" height="50px" >
+          </div>
+          <div class="mr-auto">
+            {{session.player.first_name}} <span class="text-muted small">({{session.player.user}})</span> played on {{session.timestamp|date}} <br>
+             <span class="text-muted small">{{session.shot_count}} shots <span *ngIf="session.video_count > 0">and {{session.video_count}} video</span> in this session.</span>
+          </div>
+          <div >
+            <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
+          </div>
+        </div>
+        <div class="col-12">
+          <hr>
+        </div>
+        <!-- The Session Stats -->
+        <div class="col-12" *ngIf="sessionsExpand[i]">
+          <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
+          <hr>
+        </div>
+      </div>
     </div>
   </div>
 </div>
