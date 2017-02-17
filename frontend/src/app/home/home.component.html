@@ -1,26 +1,27 @@
 <div class="container">
   <br>
   <div class="row">
-    <div class="col-md-10 offset-md-1">
+    <div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
       <div class="card my-card text-center">
         <div class="card-block">
           <div class="row">
             <div class="col-sm-4">
               <p>
-                <img [src]="'//localhost:8000'+getProfile().avatar" style="max-height:175px;" class="img-thumbnail img-fluid" alt="Profile Pic">
+                <img [src]="'//localhost:8000'+getProfile()?.avatar" style="max-height:175px;" class="img-thumbnail img-fluid" alt="Profile Pic">
               </p>
             </div>
             <div class="col-sm-8">
-              <h3 class="card-title"><strong>{{getProfile().first_name}} {{getProfile().last_name}}</strong></h3>
-              <div class="btn-group" role="group" aria-label="Profile actions">
-                <a role="button" class="btn btn-secondary" [routerLink]="['profile']">Edit Profile</a>
-                <a role="button" class="btn btn-secondary">Due</a>
-              </div>
-              <a role="button" class="btn btn-danger" [routerLink]="['import']">Import Shot Data</a>
+              <h3 class="card-title"><strong>{{getProfile()?.first_name}} {{getProfile()?.last_name}}</strong></h3>
+              <p>
+              <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['profile']">Edit Profile</a>
+              <a role="button" class="btn btn-sm btn-secondary">Due</a>
+              <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['import']">Import Shot Data</a>
+              <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['friends']">Friends</a>
+              <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['tags']">Tags</a>
+              </p>
             </div>
           </div>
-        </div>
-        <div class="card-block">
+
           <hr>
           <div class="row">
             <div class="col-md-4">
@@ -28,7 +29,7 @@
               <p class="lead">Total Shots</p>
               <div class="btn-group">
                 <a class="btn btn-secondary" [routerLink]="['analyze']" role="button">Details</a>
-                <a class="btn btn-secondary" [routerLink]="['']" role="button">Progress</a>
+                <a class="btn btn-secondary" [routerLink]="['progress']" role="button">Progress</a>
               </div>
               <div class="hidden-md-up">
                 <hr>
