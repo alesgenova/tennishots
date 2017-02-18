@@ -7,6 +7,32 @@
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
 @import "../node_modules/nouislider/distribute/nouislider.css";
 
+html {
+  height: 100%;
+}
+body {
+  height: 101%;
+  background-image: url("/assets/img/clay.jpg");
+}
+.container {
+    max-width: 60rem;
+}
+.main-wrapper{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.content-wrapper {
+  flex: 1 0 auto;
+  background-color: #ffffff;
+}
+.footer {
+}
+
+.content{
+
+}
+
 .clay-top{
     background-image: url("/assets/img/clay.jpg");
     color:#ffffff;
@@ -21,58 +47,11 @@
     background-image: url("/assets/img/grass_faded.jpg");
 }
 
-.my-top {
+.my-top{
     padding-top: 4rem;
     padding-bottom: 4rem;
     margin-bottom: 2rem;
     padding: 2rem 15px;
     text-align: center;
     background-color:#f7f7f9;
-    /*color:#373f51;
-    background-color: #bfcde0;
-background-color:#efefef;
-    color: #cdbfe3;
-    background:rgba(250,250,250,0.5);*/
-}
-
-/*
-.container{
-    background-color: #efefef;
-}*/
-
-html {
-    overflow-y:scroll;
-}
-
-body {
-    /* Show it is fixed to the top
-  min-height: 100%;
- padding-top: 1.0rem; */
-  /* The background image
-  background-image: url("/static/shot/logo_bg.png");
-  background-attachment: fixed;
-  background-position: 50% 70%;
-  background-repeat: no-repeat;
-  background-size: 60vh; */
-  /* Set a specified height, or the minimum height for the background image */
-  /* min-height: 500px; */
-  /* Set background image to fixed (don't scroll along with the page) */
-  /* Center the background image */
-
-
-  /* Set the background image to no repeat */
-  /* Scale the background image to be as large as possible */
-}
-
-.Site {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  background-image: url("/assets/img/grass_faded.jpg");
-  /*background-color: #ffffff;
-  background-image: url("/assets/img/clay.jpg");*/
-}
-
-.Site-content {
-  flex: 1;
 }
