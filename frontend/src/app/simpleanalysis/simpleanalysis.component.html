@@ -1,74 +1,67 @@
-<div class="clay-top my-top">
-  <div class="container">
+<div class="my-top">
     <h2>Activity Summary</h2>
+</div>
+
+<div class="row">
+  <div class="col">
+    <img [src]="'//localhost:8000'+userChoices[activeUser].avatar" class="rounded" height="37px" >
+    <select (click)="onUserSelectClick()" id="userpicker" [(ngModel)]="activeUser" class="custom-select">
+          <option *ngFor="let key of userChoices_keys" [value]="userChoices[key].username">{{userChoices[key].first_name}} {{userChoices[key].last_name}}</option>
+    </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
+  </div>
+  <div class="col">
+    Advanced mode: <button [routerLink]="['','analyze']" class="btn btn-secondary">Off</button>
   </div>
 </div>
-<div class="container text-center">
-  <div class="row">
-    <div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
-      <div class="row">
-        <div class="col">
-          <img [src]="'//localhost:8000'+userChoices[activeUser].avatar" class="rounded" height="37px" >
-          <select (click)="onUserSelectClick()" id="userpicker" [(ngModel)]="activeUser" class="custom-select">
-                <option *ngFor="let key of userChoices_keys" [value]="userChoices[key].username">{{userChoices[key].first_name}} {{userChoices[key].last_name}}</option>
-          </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
-        </div>
-        <div class="col">
-          Advanced mode: <button [routerLink]="['','analyze']" class="btn btn-secondary">Off</button>
+<hr>
+<p>
+  <button class="btn" (click)="onPeriodChange('session')" [class.btn-primary]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>
+  <button class="btn" (click)="onPeriodChange('week')" [class.btn-primary]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>
+  <button class="btn" (click)="onPeriodChange('month')" [class.btn-primary]="activePeriod=='month'" [class.btn-secondary]="activePeriod!='month'">Months</button>
+  <button class="btn" (click)="onPeriodChange('year')" [class.btn-primary]="activePeriod=='year'" [class.btn-secondary]="activePeriod!='year'">Years</button>
+  <button class="btn" (click)="onPeriodChange('all')" [class.btn-primary]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
+</p>
+<div class="row">
+  <p *ngIf="activePeriod=='session'" class="lead">
+    <span *ngFor="let tag of tagList">
+      <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
+        <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
+      </span>
+    </span>
+  </p>
+  <div *ngIf="periodsSubset?.length == 0" class="col-12">
+    No matching sessions
+  </div>
+  <div *ngFor="let period of periodsSubset" class="col-6 col-sm-3">
+    <div class="card text-center" [class.card-inverse]="period.pk==activePk" [class.card-primary]="period.pk==activePk">
+      <div class="card-block" [class.card-block-session]="activePeriod=='session'" role="button" (click)="onPeriodSelect(period.pk)">
+        <h6 class="card-title">{{period.timestamp|date}}</h6>
+        <strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span>
+      </div>
+      <div *ngIf="activePeriod=='session'" class="dropdown">
+        <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{period.labels.length}}&nbsp;tags
+        </span>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p>
+            <a *ngFor="let tag of period.labels">
+              <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
+            </a>
+          </p>
+          <div *ngIf="activePeriod=='session' && period.labels.length > 0" class="dropdown-divider"></div>
+          <a [routerLink]="['','tags']" role="button" class="dropdown-item">
+            <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;
+            <span>Edit tags</span>
+          </a>
         </div>
       </div>
-      <hr>
-      <p>
-        <button class="btn" (click)="onPeriodChange('session')" [class.btn-primary]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>
-        <button class="btn" (click)="onPeriodChange('week')" [class.btn-primary]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>
-        <button class="btn" (click)="onPeriodChange('month')" [class.btn-primary]="activePeriod=='month'" [class.btn-secondary]="activePeriod!='month'">Months</button>
-        <button class="btn" (click)="onPeriodChange('year')" [class.btn-primary]="activePeriod=='year'" [class.btn-secondary]="activePeriod!='year'">Years</button>
-        <button class="btn" (click)="onPeriodChange('all')" [class.btn-primary]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
-      </p>
-      <div class="row">
-        <p *ngIf="activePeriod=='session'" class="lead">
-          <span *ngFor="let tag of tagList">
-            <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
-              <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
-            </span>
-          </span>
-        </p>
-        <div *ngIf="periodsSubset?.length == 0" class="col-12">
-          No matching sessions
-        </div>
-        <div *ngFor="let period of periodsSubset" class="col-6 col-sm-3">
-          <div class="card text-center" [class.card-inverse]="period.pk==activePk" [class.card-primary]="period.pk==activePk">
-            <div class="card-block" [class.card-block-session]="activePeriod=='session'" role="button" (click)="onPeriodSelect(period.pk)">
-              <h6 class="card-title">{{period.timestamp|date}}</h6>
-              <strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span>
-            </div>
-            <div *ngIf="activePeriod=='session'" class="dropdown">
-              <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{period.labels.length}}&nbsp;tags
-              </span>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <p>
-                  <a *ngFor="let tag of period.labels">
-                    <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
-                  </a>
-                </p>
-                <div *ngIf="activePeriod=='session' && period.labels.length > 0" class="dropdown-divider"></div>
-                <a [routerLink]="['','tags']" role="button" class="dropdown-item">
-                  <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;
-                  <span>Edit tags</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <br>
-        </div>
-        <div *ngIf="doPagination"  class="col-12">
-          <ngb-pagination [disabled]="!doPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPage" (pageChange)="onPageChange()" size="sm"></ngb-pagination>
-        </div>
-      </div>
-      <hr>
-      <!-- Display -->
-      <display [stats1]="stats" [compare]="false"></display>
     </div>
+    <br>
+  </div>
+  <div *ngIf="doPagination"  class="col-12">
+    <ngb-pagination [disabled]="!doPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPage" (pageChange)="onPageChange()" size="sm"></ngb-pagination>
   </div>
 </div>
+<hr>
+<!-- Display -->
+<display [stats1]="stats" [compare]="false"></display>
