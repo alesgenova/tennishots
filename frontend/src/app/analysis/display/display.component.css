@@ -4,9 +4,13 @@
     margin-right: 4px;
 }
 
+.no-margin{
+    margin: 0px;
+    padding: 0px;
+}
 .card-block{
-    padding-left: 1px;
-    padding-right: 1px;
+    padding-left: 0px;
+    padding-right: 0px;
     padding-bottom: 5px;
     padding-top: 5px;
 }
