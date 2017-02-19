@@ -4,12 +4,19 @@ from generic.constants import PERIODS, SENSORS
 from sony.constants import SWING_TYPES
 from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
+from video.models import VideoSource, VideoClip
+
+class VideoSourceSerializer(serializers.ModelSerializer):
+    shot_count = serializers.IntegerField(source='shots.count',
+                                          read_only=True)
+    class Meta:
+        model = VideoSource
+        fields = ["pk", "timestamp", "filename", "shot_count", "processed_file", "status", "thumbnail"]
 
 class SonyProgressSerializer(serializers.Serializer):
     swing_speed = serializers.SlugField()
     ball_speed = serializers.CharField()
     ball_spin = serializers.CharField()
-
 
 class CsvSerializer(serializers.Serializer):
     sonycsv = serializers.FileField(max_length=None, required=False, use_url=True)
@@ -121,6 +128,20 @@ class LabelSerializer(serializers.ModelSerializer):
     class Meta:
         model = SessionLabel
         fields = ('pk', 'name', 'slug', 'category')
+
+class SessionSerializerPlusPlus(serializers.ModelSerializer):
+    pk = serializers.IntegerField(read_only=True)
+    shot_count = serializers.IntegerField(source='shots.count',
+                                          read_only=True)
+    video_count = serializers.IntegerField(source='videos.count',
+                                          read_only=True)
+    labels = LabelSerializer(many=True, read_only=True)
+    videos = VideoSourceSerializer(many=True, read_only=True)
+    player = FriendSerializer(source="user.userprofile", read_only=True)
+    #count = 23
+    class Meta:
+        model = Session
+        fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'labels', 'videos', 'player')
 
 class SessionSerializerPlus(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)

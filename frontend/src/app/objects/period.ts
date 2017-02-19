@@ -7,6 +7,7 @@ export class Period {
     shot_count: number;
     video_count: number;
     labels: Label[] = [];
+    videos: any[] = [];
 }
 
 export class UserPeriodsList {
