@@ -58,6 +58,9 @@ import { BoxplotComponent } from './boxplot/boxplot.component';
 import { MainComponent } from './main/main.component';
 import { HomeAnonymComponent } from './home-anonym/home-anonym.component';
 import { FooterComponent } from './footer/footer.component';
+import { VideoComponent } from './video/video.component';
+import { UploadComponent } from './video/upload/upload.component';
+import { PlayComponent } from './video/play/play.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -92,7 +95,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BoxplotComponent,
     MainComponent,
     HomeAnonymComponent,
-    FooterComponent
+    FooterComponent,
+    VideoComponent,
+    UploadComponent,
+    PlayComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

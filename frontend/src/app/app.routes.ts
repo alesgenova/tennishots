@@ -12,6 +12,7 @@ import { LabelsComponent } from './labels/labels.component';
 import { CsvuploadComponent } from './csvupload/csvupload.component';
 import { MainComponent } from './main/main.component';
 import { ProgressComponent } from './progress/progress.component';
+import { VideoComponent } from './video/video.component';
 
 import { AuthGuard } from './services/auth.guard';
 
@@ -31,6 +32,7 @@ export const routes: Routes = [
   { path: 'import',  component: CsvuploadComponent, canActivate: [AuthGuard] },
   { path: 'test',  component: TestComponent },
   { path: 'progress',  component: ProgressComponent, canActivate: [AuthGuard] },
+  { path: 'video',  component: VideoComponent, canActivate: [AuthGuard] },
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },
 //  { path: '**',     component: Login },

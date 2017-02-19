@@ -10,22 +10,42 @@
 html {
   height: 100%;
 }
+
 body {
   height: 101%;
-  background-image: url("/assets/img/clay.jpg");
+  background-color:#f5f5f5;
+  /*background-color:#f7f7f9;
+  background-image: url("/assets/img/clay.jpg");*/
 }
+
 .container {
     max-width: 60rem;
 }
+
 .main-wrapper{
     min-height: 100%;
     display: flex;
     flex-direction: column;
 }
+
 .content-wrapper {
   flex: 1 0 auto;
-  background-color: #ffffff;
 }
+
+.content{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    text-align: center;
+}
+
+.white-bg{
+    background-color: #ffffff;
+}
+
+.semi-bg{
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
 .footer {
 }
 
@@ -33,14 +53,25 @@ body {
 
 }
 
+.hard-top{
+    background-image: url("/assets/img/hard.jpg");
+}
+
+.hard-purple-top{
+    background-image: url("/assets/img/hard-purple.jpg");
+}
+.clay-lg-top{
+    background-image: url("/assets/img/clay-lg.jpg");
+    /*color:#ffffff;*/
+}
 .clay-top{
     background-image: url("/assets/img/clay.jpg");
-    color:#ffffff;
+    /*color:#ffffff;*/
 }
 
 .grass-top{
     background-image: url("/assets/img/grass.jpg");
-    color:#ffffff;
+    /*color:#ffffff;*/
 }
 
 .grass-bg{
@@ -48,10 +79,13 @@ body {
 }
 
 .my-top{
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+    /*background-image: url("/assets/img/clay.jpg");*/
+    text-align: center;
+    /*
     margin-bottom: 2rem;
     padding: 2rem 15px;
-    text-align: center;
     background-color:#f7f7f9;
+    */
 }
