@@ -30,8 +30,8 @@
         No matching sessions
       </div>
       <div *ngFor="let period of periodsSubset" class="col-6 col-sm-3">
-        <div class="card text-center" [class.card-inverse]="period.pk==activePk" [class.card-primary]="period.pk==activePk">
-          <div class="card-block card-block-session" role="button" (click)="onPeriodSelect(period.pk)">
+        <div class="card text-center" [class.card-inverse]="period.pk==activeSession?.pk" [class.card-primary]="period.pk==activeSession?.pk">
+          <div class="card-block card-block-session" role="button" (click)="onSessionSelect(period)">
             <h6 class="card-title">{{period.timestamp|date}}</h6>
             <strong>{{period.video_count}}</strong>&nbsp;<span class="small">video</span>
           </div>
@@ -57,6 +57,22 @@
       </div>
       <div *ngIf="doSessionPagination"  class="col-12">
         <ngb-pagination [disabled]="!doSessionPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPageSession" (pageChange)="onSessionPageChange()" size="sm"></ngb-pagination>
+      </div>
+    </div>
+    <hr>
+    <!-- Video list -->
+    <div class="row">
+      <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
+        <div class="card text-center" [class.card-inverse]="video.pk==activeVideo?.pk" [class.card-primary]="video.pk==activeVideo?.pk">
+          <div class="card-block card-block-session" role="button" (click)="onVideoSelect(video)">
+            <h6 class="card-title">{{video.timestamp+timeZoneString|date:'shortTime'}}</h6>
+            <strong>111</strong>&nbsp;<span class="small">video</span>
+          </div>
+        </div>
+        <br>
+      </div>
+      <div *ngIf="doVideoPagination"  class="col-12">
+        <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="periodsPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
       </div>
     </div>
     <hr>

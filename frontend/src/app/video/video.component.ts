@@ -21,18 +21,25 @@ export class VideoComponent implements OnInit {
     userChoices: any;
     userChoices_keys:any[];
     activeUser: string;
-    activeSessionPk: number = -1;
+    activeSession = new Period();
     previousUser: string = '';
     userProfile: any;
     doSessionPagination: boolean;
     nPeriods: number;
     periodsPerPage: number = 4;
     currPageSession: number;
+    doVideoPagination: boolean;
+    nVideos: number;
+    currPageVideo: number;
+    videoSubset: any[] = [];
     sessionList: Period[];
     filteredSession: Period[];
     periodsSubset: Period[];
     tagList: Label[] = [];
     selectedTags: number[] = [];
+
+    timeZoneOffset = (new Date().getTimezoneOffset());
+    timeZoneString = "";
 
   constructor(  private route: ActivatedRoute,
                 private router: Router,
@@ -40,6 +47,7 @@ export class VideoComponent implements OnInit {
                 private tennistatService: TennistatService) { }
 
   ngOnInit() {
+      this.timeZoneString = this.getTimezoneString(this.timeZoneOffset);
       this.userProfile = this.profileService.getProfile();
       this.activeUser = this.route.snapshot.params['user'];
       if (this.activeUser == null){
@@ -78,7 +86,6 @@ export class VideoComponent implements OnInit {
           this.refreshTags(this.activeUser);
           //this.onPeriodChange(this.activePeriod);
           this.previousUser = this.activeUser;
-          this.activeSessionPk = -1
       }
   }
 
@@ -191,4 +198,48 @@ export class VideoComponent implements OnInit {
           return 'fa-square';
       }
   }
+
+  onSessionSelect(session:Period){
+      if (!(this.activeSession.pk == session.pk)){
+          this.activeSession = session;
+          this.onVideoPagination();
+      }
+  }
+
+  onVideoPagination(){
+      this.nVideos = this.activeSession.videos.length;
+      this.doVideoPagination = (this.nVideos > this.periodsPerPage);
+      this.currPageVideo = 1;
+      if (this.doSessionPagination){
+          this.videoSubset = this.activeSession.videos.slice(0,this.periodsPerPage);
+      }else{
+          this.videoSubset = this.activeSession.videos;
+      }
+  }
+
+  onVideoPageChange(){
+      var start: number;
+      var stop: number;
+      start = (this.currPageVideo-1)*this.periodsPerPage;
+      stop = start+this.periodsPerPage;
+      this.videoSubset = this.activeSession.videos.slice(start,stop);
+  }
+
+  getTimezoneString(timezoneOffset:number){
+      let outString = '';
+      if (timezoneOffset > 0){
+          outString += '-';
+      }else{
+          timezoneOffset = -timezoneOffset;
+          outString += '+';
+      }
+      let hours = Math.floor(timezoneOffset/60)
+      if (hours < 10){
+          outString += '0'+hours+':00'
+      }else{
+          outString += hours+':00'
+      }
+      return outString
+  }
+
 }

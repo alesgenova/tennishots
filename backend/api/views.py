@@ -29,6 +29,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              FriendRequestSerializer, FriendSerializer,
                              SearchUserSerializer, AvatarSerializer,
                              CsvSerializer, SessionSerializerPlus,
+                             SessionSerializerPlusPlus,
                              SonyProgressSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
@@ -439,7 +440,7 @@ class DayList(mixins.ListModelMixin,
 
 class SessionList(mixins.ListModelMixin,
                   generics.GenericAPIView):
-    serializer_class = SessionSerializer
+    serializer_class = SessionSerializerPlusPlus
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
