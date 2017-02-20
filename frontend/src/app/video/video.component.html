@@ -63,10 +63,18 @@
     <!-- Video list -->
     <div class="row">
       <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
-        <div class="card text-center" [class.card-inverse]="video.pk==activeVideo?.pk" [class.card-primary]="video.pk==activeVideo?.pk">
-          <div class="card-block card-block-session" role="button" (click)="onVideoSelect(video)">
-            <h6 class="card-title">{{video.timestamp+timeZoneString|date:'shortTime'}}</h6>
-            <strong>111</strong>&nbsp;<span class="small">video</span>
+        <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
+            <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
+            <img *ngIf="video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
+            <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px" style="background-color:rgba(255,255,255,0);">
+          <div class="card-img-overlay">
+            <h6 class="card-title">
+              {{video.timestamp+timezoneString|date:'shortTime'}}
+            </h6>
+            <p *ngIf="video.status == 'U'" class="card-text"><span class="badge badge-danger">Upload</span></p>
+            <p *ngIf="video.status == 'P'" class="card-text"><span class="badge badge-info">Processing</span></p>
+            <p *ngIf="video.status == 'F'" class="card-text"><span class="badge badge-warning">Failed</span></p>
+            <p *ngIf="video.status == 'C'" class="card-text"><span class="badge badge-success">{{video.shot_count}} shots</span></p>
           </div>
         </div>
         <br>
@@ -76,6 +84,16 @@
       </div>
     </div>
     <hr>
-    <!-- Play video -->
+    <!-- Upload video -->
+    <div *ngIf="activeVideo?.status=='U'">
+      <p-fileUpload name="videofile" [url]="uploadSourceUrl" (onSelect)="checkUploadFilename($event)" (onBeforeSend)="onBeforeSend($event)" accept="video/*" maxFileSize="3.5*1000*1000*1000">
+        <template pTemplate="toolbar">
+            <div>Upload <strong>{{activeVideo.filename}}</strong> to Tennistat</div>
+        </template>
+        <template pTemplate="content">
+            <div><span style="color:red;">{{fileUploadError}}</span></div>
+        </template>
+      </p-fileUpload>
+    </div>
   </div>
 </div>

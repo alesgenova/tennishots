@@ -6,6 +6,9 @@ from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 from video.models import VideoSource, VideoClip
 
+class VideoUploadSerializer(serializers.Serializer):
+    videofile = serializers.FileField(max_length=None, required=False, use_url=True)
+
 class VideoSourceSerializer(serializers.ModelSerializer):
     shot_count = serializers.IntegerField(source='shots.count',
                                           read_only=True)

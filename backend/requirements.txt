@@ -15,7 +15,7 @@ matplotlib
 Pillow
 pandas
 #git+https://github.com/Zulko/moviepy.git
-# moviepy
+moviepy
 #django-paypal
 colour
 
