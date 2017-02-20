@@ -265,4 +265,8 @@ export class VideoComponent implements OnInit {
       //this.fileUploadError = "Blaaaaa!"
   }
 
+  onUpload(event){
+      this.activeVideo.status = "P";
+  }
+
 }

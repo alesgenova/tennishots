@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -182,6 +183,10 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL ='/media/'
+
+# CELERY
+CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
+CELERY_RESULT_BACKEND = 'django-db'
 
 # Gmail SETUP
 EMAIL_USE_TLS = True

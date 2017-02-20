@@ -39,15 +39,15 @@ def process_video_source(user, video_source):
     shots_pk = list(shots_pk.astype(str))
     leftie = user.userprofile.arm == 'L'
     imperial = user.userprofile.units == 'M'
-    make_shots_video_multi(shots_pk, processed_filename, 'lax',
-                                 (video_source.width,video_source.height), leftie, imperial,
-                                 'videosource', video_source.pk)
-    #result = make_shots_video_multi.apply_async((shots_pk, processed_filename, 'lax',
+    #make_shots_video_multi(shots_pk, processed_filename, 'lax',
     #                             (video_source.width,video_source.height), leftie, imperial,
-    #                             'videosource', video_source.pk),
-    #                             queue='video')
-    #video_source.task_id = result.task_id
-    #video_source.save()
+    #                             'videosource', video_source.pk)
+    result = make_shots_video_multi.apply_async((shots_pk, processed_filename, 'lax',
+                                 (video_source.width,video_source.height), leftie, imperial,
+                                 'videosource', video_source.pk),
+                                 queue='video')
+    video_source.task_id = result.task_id
+    video_source.save()
     return
 
 def process_video_clip(user, videoclip):

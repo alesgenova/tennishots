@@ -1,6 +1,6 @@
 # Create your tasks here
 from __future__ import absolute_import, unicode_literals
-#from celery import shared_task
+from celery import shared_task
 from shot.models import Year, Month, Week, Day, Session, Shot, SonyData
 from shot.import_sony import csv2shotsvideos
 from video.models import VideoSource
@@ -9,7 +9,7 @@ import pandas as pd
 from django.contrib.auth.models import User
 #from payment.models import CustomerProfile
 
-#@shared_task
+@shared_task
 def sony_csv_to_db(csvfile, user_id):
     user = User.objects.get(pk=user_id)
     shots_videos = csv2shotsvideos(csvfile=csvfile)

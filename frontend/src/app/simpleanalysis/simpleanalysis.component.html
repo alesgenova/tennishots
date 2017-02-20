@@ -26,13 +26,15 @@
       <button class="btn" (click)="onPeriodChange('all')" [class.btn-primary]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
     </p>
     <div class="row">
-      <p *ngIf="activePeriod=='session'" class="lead">
-        <span *ngFor="let tag of tagList">
-          <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
-            <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
+      <div class="col-12">
+        <p *ngIf="activePeriod=='session'" class="lead">
+          <span *ngFor="let tag of tagList">
+            <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
+              <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
+            </span>
           </span>
-        </span>
-      </p>
+        </p>
+      </div>
       <div *ngIf="periodsSubset?.length == 0" class="col-12">
         No matching sessions
       </div>

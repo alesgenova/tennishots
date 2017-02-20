@@ -1,0 +1,15 @@
+celery -A tennistat worker -l info -c 1 -Q video,db
+
+remove @ line from /etc/ImageMagick-6/policy.xml
+
+sudo apt install rabbitmq-server
+
+virtualenv -p /home/alessandro/anaconda3/bin/python --no-site-packages venv
+source ./venv/bin/activate
+pip install -r requirements.txt
+
+add self.proc.wait() to ./venv/lib/python3.5/site-packages/moviepy/audio/io/readers.py and ./venv/lib/python3.5/site-packages/moviepy/video/io/ffmpeg_reader.py
+
+sudo apt install sendemail
+
+letsencrypt renew --agree-tos --pre-hook "service nginx stop" --post-hook "service nginx start"
