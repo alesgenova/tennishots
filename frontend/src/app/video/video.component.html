@@ -19,13 +19,15 @@
     </div>
     <hr>
     <div class="row">
-      <p class="lead">
-        <span *ngFor="let tag of tagList">
-          <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
-            <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
+      <div class="col-12">
+        <p class="lead">
+          <span *ngFor="let tag of tagList">
+            <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
+              <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
+            </span>
           </span>
-        </span>
-      </p>
+        </p>
+      </div>
       <div *ngIf="periodsSubset?.length == 0" class="col-12">
         No matching sessions
       </div>
@@ -86,7 +88,7 @@
     <hr>
     <!-- Upload video -->
     <div *ngIf="activeVideo?.status=='U'">
-      <p-fileUpload name="videofile" [url]="uploadSourceUrl" (onSelect)="checkUploadFilename($event)" (onBeforeSend)="onBeforeSend($event)" accept="video/*" maxFileSize="3.5*1000*1000*1000">
+      <p-fileUpload name="videofile" [url]="uploadSourceUrl" (onSelect)="checkUploadFilename($event)" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload($event)" accept="video/*" maxFileSize="3.5*1000*1000*1000">
         <template pTemplate="toolbar">
             <div>Upload <strong>{{activeVideo.filename}}</strong> to Tennistat</div>
         </template>
@@ -96,9 +98,14 @@
       </p-fileUpload>
     </div>
     <!-- Processing Message -->
-    <p *ngIf="activeVideo?.status=='P'">
-      Your video recording is being processed and will be ready soon.
-    </p>
+    <div *ngIf="activeVideo?.status=='P'">
+      <p>
+        Your video recording is being processed, and will be ready soon(ish).
+      </p>
+      <p>
+        In the meantime, you can upload more videos.
+      </p>
+    </div>
     <!-- Play Video -->
     <p *ngIf="activeVideo?.status=='C'">
       <video  width="100%" height='auto' controls>

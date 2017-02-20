@@ -1,6 +1,6 @@
 # Create your tasks here
 from __future__ import absolute_import, unicode_literals
-#from celery import shared_task
+from celery import shared_task
 from shot.models import Shot
 import datetime as dt
 from video.models import VideoSource, VideoShot
@@ -13,7 +13,7 @@ import os
 from video.moviepy_blob import make_shots_video_multi_bare
 
 
-# @shared_task
+@shared_task
 def make_shots_video_multi(shots_pk, fileout, stitching='lax', sizeout=(1920,1080), leftie=False, imperial=False, model='videosource', model_pk=-1):
 
     shots = []
