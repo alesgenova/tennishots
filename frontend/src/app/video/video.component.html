@@ -65,7 +65,7 @@
       <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
         <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
             <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
-            <img *ngIf="video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
+            <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
             <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px" style="background-color:rgba(255,255,255,0);">
           <div class="card-img-overlay">
             <h6 class="card-title">
@@ -95,5 +95,19 @@
         </template>
       </p-fileUpload>
     </div>
+    <!-- Processing Message -->
+    <p *ngIf="activeVideo?.status=='P'">
+      Your video recording is being processed and will be ready soon.
+    </p>
+    <!-- Play Video -->
+    <p *ngIf="activeVideo?.status=='C'">
+      <video  width="100%" height='auto' controls>
+        <source [src]="activeVideo.processed_file" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+    </p>
+    <!-- Failed Message -->
+
+
   </div>
 </div>

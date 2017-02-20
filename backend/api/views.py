@@ -540,8 +540,8 @@ def _handle_videosource_upload(f,user, videosource):
         vclip.reader.close()
         del vclip
         nshots = match_shots_to_source(user, videosource)
-        #if nshots > 0:
-        #    process_video_source(request.user, source)
+        if nshots > 0:
+            process_video_source(user, videosource)
 
         #shots_results = csv_to_shots_db.apply_async((destination_file,user.pk), queue='db')
         #videos_results = csv_to_videos_db.apply_async((destination_file,user.pk), queue='db')

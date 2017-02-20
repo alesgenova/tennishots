@@ -5,6 +5,7 @@
   transitions accordingly.
   compositing uses moviepy
 """
+
 from moviepy.editor import *
 from PIL import Image
 #from video.models import VideoShot
@@ -17,6 +18,7 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
     FPS = 29.97
     #FPS = 30
     nshots = len(shots)
+    mi2km = 1.609344
 
     if stitching == 'tight':
         new_clip_offset = 2
@@ -91,8 +93,8 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
         swing_type = shot.shot.data.swing_type
         impact_position = int(shot.shot.data.impact_position)
         if imperial:
-            swing_speed = round(shot.shot.data.swing_speed)
-            ball_speed = round(shot.shot.data.ball_speed)
+            swing_speed = round(shot.shot.data.swing_speed/mi2km)
+            ball_speed = round(shot.shot.data.ball_speed/mi2km)
         else:
             swing_speed = round(shot.shot.data.swing_speed)
             ball_speed = round(shot.shot.data.ball_speed)

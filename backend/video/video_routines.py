@@ -31,7 +31,7 @@ def match_shots_to_source(user, video_source):
     return shots.count()
 
 def process_video_source(user, video_source):
-    shots_pk = np.array(video_source.videoshot_set.values_list('pk')).flatten()
+    shots_pk = np.array(video_source.videoshots.values_list('pk')).flatten()
     processed_dir = os.path.join(MEDIA_ROOT,'user_{0}/video_sources/processed/'.format(user.id))
     processed_filename = os.path.join(processed_dir, video_source.filename)
     if not os.path.exists(processed_dir):

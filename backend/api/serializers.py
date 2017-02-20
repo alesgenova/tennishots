@@ -10,7 +10,7 @@ class VideoUploadSerializer(serializers.Serializer):
     videofile = serializers.FileField(max_length=None, required=False, use_url=True)
 
 class VideoSourceSerializer(serializers.ModelSerializer):
-    shot_count = serializers.IntegerField(source='shots.count',
+    shot_count = serializers.IntegerField(source='videoshots.count',
                                           read_only=True)
     class Meta:
         model = VideoSource
