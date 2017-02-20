@@ -7,6 +7,7 @@ from django.db.models import Q
 
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
 from shot.tasks import sony_csv_to_db
+from video.models import VideoSource
 from profiles.models import UserProfile, FriendRequest
 
 from django.http import Http404, HttpResponse
@@ -30,7 +31,8 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              SearchUserSerializer, AvatarSerializer,
                              CsvSerializer, SessionSerializerPlus,
                              SessionSerializerPlusPlus,
-                             SonyProgressSerializer,
+                             SonyProgressSerializer, VideoSourceSerializer,
+                             VideoUploadSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from api.permissions import is_owner_or_friend
@@ -63,6 +65,21 @@ class UploadCsv(generics.GenericAPIView):
             if 'sonycsv' in serializer.data:
                 _handle_csvfile_upload(request.FILES['sonycsv'], request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VideoSourceUpload(generics.GenericAPIView):
+    serializer_class = VideoUploadSerializer
+    queryset = []#UserProfile.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        serializer = VideoUploadSerializer(data=request.data)
+        videosource = get_object_or_404(VideoSource, user=request.user, pk=kwargs['pk'])
+        if serializer.is_valid():
+            if 'videofile' in serializer.data:
+                _handle_videosource_upload(request.FILES['videofile'], request.user, videosource)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class UploadAvatar(generics.GenericAPIView):
     serializer_class = AvatarSerializer
@@ -494,3 +511,38 @@ def _handle_csvfile_upload(f,user):
     #shots_results = csv_to_shots_db.apply_async((destination_file,user.pk), queue='db')
     #videos_results = csv_to_videos_db.apply_async((destination_file,user.pk), queue='db')
     import_result = sony_csv_to_db(destination_file, user.pk)
+
+
+def _handle_videosource_upload(f,user, videosource):
+    import os
+    from tennistat.settings import MEDIA_ROOT
+    filename = f.name
+    if filename == videosource.filename:
+        destination_dir = os.path.join(MEDIA_ROOT,'user_'+str(user.pk),'video_sources','original')
+        destination_file = os.path.join(destination_dir,filename)
+        if not os.path.exists(destination_dir):
+            os.makedirs(destination_dir)
+
+        with open(destination_file, 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
+        from moviepy.editor import VideoFileClip
+        from video.video_routines import match_shots_to_source, process_video_source
+        v_file = destination_file
+        vclip = VideoFileClip(v_file)
+        videosource.original_file = destination_file
+        videosource.duration = dt.timedelta(seconds=int(vclip.duration))
+        videosource.width = vclip.size[0]
+        videosource.height = vclip.size[1]
+        videosource.status = 'P'
+        videosource.save()
+        vclip.reader.close()
+        del vclip
+        nshots = match_shots_to_source(user, videosource)
+        #if nshots > 0:
+        #    process_video_source(request.user, source)
+
+        #shots_results = csv_to_shots_db.apply_async((destination_file,user.pk), queue='db')
+        #videos_results = csv_to_videos_db.apply_async((destination_file,user.pk), queue='db')
+        #import_result = sony_csv_to_db(destination_file, user.pk)

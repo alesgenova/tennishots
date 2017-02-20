@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^shotsfilter/$', views.ShotsFilter.as_view()),
     url(r'^test/$', views.TestView.as_view()),
     url(r'^label/(?P<pk>[0-9]+)/$', views.LabelDetail.as_view()),
+    url(r'^sourceupload/(?P<pk>[0-9]+)/$', views.VideoSourceUpload.as_view()),
     url(r'^avatarupload/$', views.UploadAvatar.as_view()),
     url(r'^csvupload/$', views.UploadCsv.as_view()),
     url(r'^csrf/$', views.CsrfView),

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
+import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload';
+
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
 
@@ -37,9 +39,11 @@ export class VideoComponent implements OnInit {
     periodsSubset: Period[];
     tagList: Label[] = [];
     selectedTags: number[] = [];
-
-    timeZoneOffset = (new Date().getTimezoneOffset());
-    timeZoneString = "";
+    activeVideo: any;
+    activeVideoPk: number = 0;
+    uploadSourceUrl: string;
+    timezoneString: string = "";
+    fileUploadError = "";
 
   constructor(  private route: ActivatedRoute,
                 private router: Router,
@@ -47,7 +51,8 @@ export class VideoComponent implements OnInit {
                 private tennistatService: TennistatService) { }
 
   ngOnInit() {
-      this.timeZoneString = this.getTimezoneString(this.timeZoneOffset);
+      this.timezoneString = this.profileService.getTimezoneString();
+
       this.userProfile = this.profileService.getProfile();
       this.activeUser = this.route.snapshot.params['user'];
       if (this.activeUser == null){
@@ -117,6 +122,10 @@ export class VideoComponent implements OnInit {
           this.periodsSubset = this.filteredSession.slice(0,this.periodsPerPage);
       }else{
           this.periodsSubset = this.filteredSession;
+      }
+      if (this.nPeriods > 0){
+          this.activeSession = this.filteredSession[0];
+          this.onVideoPagination();
       }
   }
 
@@ -201,6 +210,7 @@ export class VideoComponent implements OnInit {
 
   onSessionSelect(session:Period){
       if (!(this.activeSession.pk == session.pk)){
+          this.activeVideo = null;
           this.activeSession = session;
           this.onVideoPagination();
       }
@@ -225,21 +235,34 @@ export class VideoComponent implements OnInit {
       this.videoSubset = this.activeSession.videos.slice(start,stop);
   }
 
-  getTimezoneString(timezoneOffset:number){
-      let outString = '';
-      if (timezoneOffset > 0){
-          outString += '-';
+  onVideoSelect(video:any){
+      this.activeVideo = null;
+      this.activeVideo = video;
+      this.activeVideoPk = video.pk;
+  }
+
+  onBeforeSend(event) {
+      this.fileUploadError = "";
+      event.xhr.setRequestHeader('Authorization', 'JWT ' + localStorage.getItem("id_token"));
+  }
+
+  checkUploadFilename(event){
+      this.fileUploadError = "";
+      this.uploadSourceUrl = "";
+      let uploadFile = event.files[0];
+      if (uploadFile.name == this.activeVideo.filename){
+          this.uploadSourceUrl = 'http://localhost:8000/api/sourceupload/'+this.activeVideo.pk+'/';
+          console.log("Same!")
       }else{
-          timezoneOffset = -timezoneOffset;
-          outString += '+';
+          console.log("Different!")
+
+          this.fileUploadError = "Please make sure you are selecting the correct video."
+          //let actVid = this.activeVideo;
+          //this.activeVideo = null;
+          //this.activeVideo = actVid;
       }
-      let hours = Math.floor(timezoneOffset/60)
-      if (hours < 10){
-          outString += '0'+hours+':00'
-      }else{
-          outString += hours+':00'
-      }
-      return outString
+      //console.log(event.files[0]);
+      //this.fileUploadError = "Blaaaaa!"
   }
 
 }
