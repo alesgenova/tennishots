@@ -5,7 +5,7 @@
 </div>
 
 <div class="container white-bg">
-  <div class="content">
+  <div class="content text-center">
     <div class="row">
       <div class="col">
         <img [src]="'//localhost:8000'+userChoices[activeUser].avatar" class="rounded" height="37px" >
@@ -14,7 +14,7 @@
         </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
       </div>
       <div class="col">
-        Advanced mode: <button [routerLink]="['']" class="btn btn-secondary">Off</button>
+        <button [routerLink]="['','videocollection']" class="btn btn-secondary" role="button">Go to video recordings</button>
       </div>
     </div>
     <hr>
@@ -114,7 +114,13 @@
       </video>
     </p>
     <!-- Failed Message -->
-
-
+    <div *ngIf="activeVideo?.status=='F'">
+      <p>
+        Well, this is embarassing! Something went wrong while processing your video. Click the button below to try again.
+      </p>
+      <p>
+        <button class="btn btn-sm btn-warning" role="button" (click)="onRetry(activeVideo.pk)">Retry</button>
+      </p>
+    </div>
   </div>
 </div>

@@ -42,6 +42,12 @@ export class TennistatService {
           .map(res => res.json());
   }
 
+  get_sessions_videos(username:string){
+      return this.authHttp
+          .get(this.ApiUrl+username+'/session_video/')
+          .map(res => res.json());
+  }
+
   get_recentactivity(){
       return this.authHttp
           .get(this.ApiUrl+'latestactivity/')
@@ -124,6 +130,17 @@ export class TennistatService {
   get_progress(user:string, periodname:string, swing:string){
       return this.authHttp
           .get(this.ApiUrl+user+'/progress/'+periodname+'/'+swing)
+          .map(res => res.json());
+  }
+
+  process_video(model: string, pk: number){
+      return this.authHttp.post(this.ApiUrl+'processvideo/',{model:model, pk:pk}, this.jsonPostOptions)
+          .map((response: Response) => {return response.json()} );
+  }
+
+  get_videocollections(user:string){
+      return this.authHttp
+          .get(this.ApiUrl+user+'/videocollections/')
           .map(res => res.json());
   }
 

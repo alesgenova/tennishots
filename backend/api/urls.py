@@ -9,6 +9,8 @@ period_regex = '^(?P<username>.+)/(?P<period>day|month|year|week)/(?P<year>[0-9]
 urlpatterns = [
     url(r'^(?P<username>.+)/labels/$', views.LabelList.as_view()),
     url(r'^(?P<username>.+)/session/$', views.SessionList.as_view()),
+    url(r'^(?P<username>.+)/session_video/$', views.VideoSourceView.as_view()),
+    url(r'^(?P<username>.+)/videocollections/$', views.VideoCollectionView.as_view()),
     url(r'^(?P<username>.+)/day/$', views.DayList.as_view()),
     url(r'^(?P<username>.+)/week/$', views.WeekList.as_view()),
     url(r'^(?P<username>.+)/month/$', views.MonthList.as_view()),
@@ -30,6 +32,7 @@ urlpatterns = [
     url(r'^friendrequests/$', views.PendingFriendRequests.as_view()),
     url(r'^searchuser/$', views.SearchUser.as_view()),
     url(r'^latestactivity/$', views.LatestActivity.as_view()),
+    url(r'^processvideo/$', views.VideoProcessRetry.as_view()),
     #url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
 ]
 

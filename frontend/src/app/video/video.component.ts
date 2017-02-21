@@ -7,8 +7,7 @@ import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
 
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
-import { Period, UserPeriodsList } from '../objects/period';
-import { SonyResponse } from '../objects/sonyresponse';
+import { Period } from '../objects/period';
 import { Label } from '../objects/label';
 
 import 'rxjs/add/operator/switchMap';
@@ -86,7 +85,7 @@ export class VideoComponent implements OnInit {
   onUserSelectClick() {
       if (!(this.activeUser == this.previousUser)){
           this.sessionList = [];
-          this.getUserSessions(this.activeUser);
+          this.getUserSessionsVideos(this.activeUser);
           this.selectedTags = [];
           this.refreshTags(this.activeUser);
           //this.onPeriodChange(this.activePeriod);
@@ -94,8 +93,8 @@ export class VideoComponent implements OnInit {
       }
   }
 
-  getUserSessions(user:string) {
-      this.tennistatService.get_periods(user, 'session')
+  getUserSessionsVideos(user:string) {
+      this.tennistatService.get_sessions_videos(user)
         .subscribe(data=>{
             for (let session of data){
                 if (session.video_count > 0){
@@ -220,7 +219,7 @@ export class VideoComponent implements OnInit {
       this.nVideos = this.activeSession.videos.length;
       this.doVideoPagination = (this.nVideos > this.periodsPerPage);
       this.currPageVideo = 1;
-      if (this.doSessionPagination){
+      if (this.doVideoPagination){
           this.videoSubset = this.activeSession.videos.slice(0,this.periodsPerPage);
       }else{
           this.videoSubset = this.activeSession.videos;
@@ -266,6 +265,12 @@ export class VideoComponent implements OnInit {
   }
 
   onUpload(event){
+      this.activeVideo.status = "P";
+  }
+
+  onRetry(pk: number){
+      this.tennistatService.process_video("VideoSource", pk)
+            .subscribe( res => {});
       this.activeVideo.status = "P";
   }
 
