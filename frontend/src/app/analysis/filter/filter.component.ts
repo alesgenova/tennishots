@@ -17,6 +17,7 @@ export class FilterComponent implements OnInit {
   @Input() filter: SonyFilter;
   @Input() listOfPeriods: UserPeriodsList;
   @Input() tagList: Label[];
+  @Input() expanded: boolean = false;
   advancedFilter: boolean = false;
   users: any[];
   swing_speed: number[] = [0,240];
@@ -34,6 +35,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
+      this.advancedFilter = this.expanded;
       //this.filter.filters.periods.name = "session";
       /*
       this.getPeriods(localStorage["username"],"sessions");

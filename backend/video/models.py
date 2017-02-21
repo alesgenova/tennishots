@@ -49,16 +49,19 @@ class VideoShot(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class VideoClip(models.Model):
+class VideoCollection(models.Model):
+    STATUS_CHOICES = ( ("P", "Processing"),
+                       ("F", "Failed"),
+                       ("C", "Complete") )
     timestamp = models.DateTimeField()
     title = models.CharField(max_length=20, default='')
     description = models.TextField(max_length=200, default='')
     thumbnail = models.ImageField(upload_to=vclip_user_proc_path, null=True, blank=True)
     processed_file = models.FileField(upload_to=vsource_user_proc_path, null=True, blank=True)
-    #shotscount = models.IntegerField()
-    videoshot = models.ManyToManyField(VideoShot)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P', blank=True)
+    videoshots = models.ManyToManyField(VideoShot)
     task_id = models.CharField(max_length=100, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return str(self.title)
+        return "{} - {}".format(self.user.username, self.title)

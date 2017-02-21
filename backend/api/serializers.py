@@ -4,7 +4,18 @@ from generic.constants import PERIODS, SENSORS
 from sony.constants import SWING_TYPES
 from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
-from video.models import VideoSource, VideoClip
+from video.models import VideoSource, VideoCollection
+
+class VideoCollectionSerializer(serializers.ModelSerializer):
+    shot_count = serializers.IntegerField(source='videoshots.count',
+                                      read_only=True)
+    class Meta:
+        model = VideoCollection
+        fields = ["pk", "timestamp", "title", "description", "shot_count", "processed_file", "status", "thumbnail"]
+
+class VideoRetrySerializer(serializers.Serializer):
+    model = serializers.CharField()
+    pk = serializers.IntegerField(min_value=1)
 
 class VideoUploadSerializer(serializers.Serializer):
     videofile = serializers.FileField(max_length=None, required=False, use_url=True)

@@ -29,7 +29,7 @@
             <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
           </div>
           <div *ngIf="gotPeriods1 && showFilter" [class.filter1]="compare">
-            <sony-filter [filter]="filter1" [listOfPeriods]="listOfPeriods1" [tagList]="tagList1"></sony-filter>
+            <sony-filter [filter]="filter1" [listOfPeriods]="listOfPeriods1" [tagList]="tagList1" [expanded]="false"></sony-filter>
           </div>
         </template>
       </ngb-tab>
@@ -47,7 +47,7 @@
             <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
           </div>
           <div *ngIf="gotPeriods2 && showFilter" class="filter2">
-            <sony-filter [filter]="filter2" [listOfPeriods]="listOfPeriods2" [tagList]="tagList2"></sony-filter>
+            <sony-filter [filter]="filter2" [listOfPeriods]="listOfPeriods2" [tagList]="tagList2" [expanded]="false"></sony-filter>
           </div>
         </template>
       </ngb-tab>

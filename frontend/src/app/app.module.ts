@@ -61,6 +61,7 @@ import { FooterComponent } from './footer/footer.component';
 import { VideoComponent } from './video/video.component';
 import { UploadComponent } from './video/upload/upload.component';
 import { PlayComponent } from './video/play/play.component';
+import { VideocollectionComponent } from './videocollection/videocollection.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -98,7 +99,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FooterComponent,
     VideoComponent,
     UploadComponent,
-    PlayComponent
+    PlayComponent,
+    VideocollectionComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

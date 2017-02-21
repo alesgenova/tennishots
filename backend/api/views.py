@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
 from shot.tasks import sony_csv_to_db
-from video.models import VideoSource
+from video.models import VideoSource, VideoCollection
 from profiles.models import UserProfile, FriendRequest
 
 from django.http import Http404, HttpResponse
@@ -21,6 +21,8 @@ from rest_framework import permissions
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
+from django_celery_results.models import TaskResult
+
 from generic.routines import str_to_periodmodel, url_to_object
 from api.serializers import (YearSerializer, MonthSerializer,
                              WeekSerializer, DaySerializer, SessionSerializer,
@@ -32,13 +34,96 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              CsvSerializer, SessionSerializerPlus,
                              SessionSerializerPlusPlus,
                              SonyProgressSerializer, VideoSourceSerializer,
-                             VideoUploadSerializer,
+                             VideoUploadSerializer, VideoRetrySerializer,
+                             VideoCollectionSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from api.permissions import is_owner_or_friend
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 from sony.boxplot import box_plot
+
+class VideoCollectionView(mixins.ListModelMixin,
+                  generics.GenericAPIView):
+    serializer_class = VideoCollectionSerializer
+    def get_queryset(self, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
+        self._check_failed_vcollection(requested_user)
+        self.queryset = VideoCollection.objects.filter(user=requested_user)
+        return self.queryset.order_by("-timestamp")
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def _check_failed_vcollection(self,user):
+        video_collections = VideoCollection.objects.filter(user=user)
+        if len(video_collections) == 0:
+            return
+        for video in video_collections:
+            if video.status == 'P':
+                try:
+                    status = TaskResult.objects.get(task_id=video.task_id).status
+                    if status == 'FAILURE':
+                        video.status = 'F'
+                        video.save()
+                except Exception:
+                    pass
+
+class VideoProcessRetry(generics.GenericAPIView):
+
+    def post(self, request, *args, **kwargs):
+        serializer = VideoRetrySerializer(data=request.data)
+        if serializer.is_valid():
+            if serializer.data['model'] == "VideoSource":
+                video = get_object_or_404(VideoSource, user=request.user, pk=serializer.data['pk'])
+                if video.status == 'F':
+                    from video.video_routines import process_video_source
+                    process_video_source(request.user, video)
+            elif serializer.data['model'] == "VideoClip":
+                pass
+            return Response(status=status.HTTP_202_ACCEPTED)
+
+class VideoSourceUpload(generics.GenericAPIView):
+    serializer_class = VideoUploadSerializer
+    queryset = []#UserProfile.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        serializer = VideoUploadSerializer(data=request.data)
+        videosource = get_object_or_404(VideoSource, user=request.user, pk=kwargs['pk'])
+        if serializer.is_valid():
+            if 'videofile' in serializer.data:
+                _handle_videosource_upload(request.FILES['videofile'], request.user, videosource)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class VideoSourceView(mixins.ListModelMixin,
+                  generics.GenericAPIView):
+    serializer_class = SessionSerializerPlusPlus
+    def get_queryset(self, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
+        self._check_failed_vsource(requested_user)
+        self.queryset = Session.objects.filter(user=requested_user)
+        return self.queryset.order_by("-timestamp")
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def _check_failed_vsource(self,user):
+        video_sources = VideoSource.objects.filter(user=user)
+        if len(video_sources) == 0:
+            return
+        for video in video_sources:
+            if video.status == 'P':
+                try:
+                    status = TaskResult.objects.get(task_id=video.task_id).status
+                    if status == 'FAILURE':
+                        video.status = 'F'
+                        video.save()
+                except Exception:
+                    pass
 
 class ProgressView(generics.GenericAPIView):
     serializer_class = SonyProgressSerializer
@@ -457,7 +542,7 @@ class DayList(mixins.ListModelMixin,
 
 class SessionList(mixins.ListModelMixin,
                   generics.GenericAPIView):
-    serializer_class = SessionSerializerPlusPlus
+    serializer_class = SessionSerializer
     def get_queryset(self, *args, **kwargs):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)

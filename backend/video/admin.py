@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import VideoShot, VideoSource, VideoClip
+from .models import VideoShot, VideoSource, VideoCollection
 
-admin.site.register([VideoShot, VideoSource, VideoClip])
+admin.site.register([VideoShot, VideoSource, VideoCollection])
