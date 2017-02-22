@@ -46,23 +46,77 @@
           <br>
         </div>
         <div *ngIf="doVideoPagination"  class="col-12">
-          <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="periodsPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
+          <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="videosPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
         </div>
       </div>
       <hr>
+      <!-- Processing Message -->
+      <div *ngIf="activeVideo?.status=='P'">
+        <p>
+          Your video collection is being processed, and will be ready soon(ish).
+        </p>
+      </div>
+      <!-- Play Video -->
+      <p *ngIf="activeVideo?.status=='C'">
+        <video  width="100%" height='auto' controls>
+          <source [src]="activeVideo.processed_file" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+      </p>
+      <!-- Failed Message -->
+      <div *ngIf="activeVideo?.status=='F'">
+        <p>
+          Well, this is embarassing! Something went wrong while processing your video. Click the button below to try again.
+        </p>
+        <p>
+          <button class="btn btn-sm btn-warning" role="button" (click)="onRetry(activeVideo.pk)">Retry</button>
+        </p>
+      </div>
     </div>
     <div *ngIf="doCreate">
       <p>
-        <button class="btn btn-sm btn-primary btn-block" (click)="doCreate=!doCreate" role="button">View your video collection</button>
+        <button class="btn btn-sm btn-primary btn-block" (click)="doCreate=!doCreate" role="button">View your video collections</button>
       </p>
       <p>
-        <sony-filter [filter]="filter" [listOfPeriods]="listOfPeriods" [tagList]="tagList" [expanded]="true"></sony-filter>
+        Apply filters to choose your best shots and create the perfect video collection.
       </p>
       <p>
-        <button class="btn btn-sm btn-danger btn-block" role="button">Filter</button>
+        <sony-filter [filter]="filter" [listOfPeriods]="listOfPeriods" [tagList]="tagList" [expanded]="true" [videoOnly]="true"></sony-filter>
       </p>
+      <p>
+        <button class="btn btn-sm btn-danger btn-block" role="button" (click)="onFilter()">Filter</button>
+      </p>
+      <div  *ngIf="filterCount > 100" class="row">
+        <div class="col-12">
+          <div class="alert alert-danger text-center">
+            <b><strong>{{filterCount}}</strong></b> video shots matched your filter criteria.<br>
+            Due to limited resources, the maximum number of shots for each video collection is <strong>100</strong>.<br>
+            Please apply more restrictive filters.
+          </div>
+        </div>
+      </div>
+      <div  *ngIf="filterCount > 0 && filterCount < 101" class="row">
+        <div class="col-12">
+          <div class="alert alert-info text-center">
+            <b><strong>{{filterCount}}</strong></b> video shots matched your filter criteria.
+          </div>
+        </div>
+        <div class="col-12">
+          <form [formGroup]="videoCollectionForm" novalidate (ngSubmit)="onCreateVideo()">
+            <div class="form-group">
+              <input class="form-control" type="text" placeholder="Title" id="title" formControlName="title">
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" placeholder="Description" id="description" formControlName="description"></textarea>
+            </div>
+            <input class="btn btn-primary btn-block" [disabled]="!videoCollectionForm.valid" type="submit" value="Create" />
+          </form>
+        </div>
+      </div>
     </div>
 
     {{filter|json}}
+
+    {{filterCount}}
   </div>
 </div>

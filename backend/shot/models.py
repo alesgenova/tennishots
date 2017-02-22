@@ -13,6 +13,9 @@ class Period(models.Model):
     timestamp = models.DateTimeField()
     url_name = models.CharField(max_length=20)
 
+    def get_videoshot_count(self):
+        return self.shots.filter(videoshot__isnull=False).count()
+
 class Year(Period):
     user = models.ForeignKey(User, related_name='years', on_delete=models.CASCADE, null=False)
 

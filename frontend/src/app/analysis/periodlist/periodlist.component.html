@@ -16,7 +16,8 @@
     <div class="card text-center" [class.card-inverse]="isInPks(period.pk)" [class.card-primary]="isInPks(period.pk)">
       <div class="card-block" [class.card-block-session]="PeriodsPicker?.name=='session'" role="button" (click)="addPkToPks(period.pk)">
         <span class="small"><strong>{{period.timestamp|date}}</strong></span><br>
-        <strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span>
+        <span *ngIf="!videoOnly"><strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span></span>
+        <span *ngIf="videoOnly"><strong>{{period.videoshot_count}}</strong>&nbsp;<span class="small">videoshots</span></span>
       </div>
       <div *ngIf="period?.labels" class="dropdown">
         <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

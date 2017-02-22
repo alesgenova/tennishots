@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
 from shot.tasks import sony_csv_to_db
-from video.models import VideoSource, VideoCollection
+from video.models import VideoSource, VideoCollection, VideoShot
 from profiles.models import UserProfile, FriendRequest
 
 from django.http import Http404, HttpResponse
@@ -35,13 +35,59 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              SessionSerializerPlusPlus,
                              SonyProgressSerializer, VideoSourceSerializer,
                              VideoUploadSerializer, VideoRetrySerializer,
-                             VideoCollectionSerializer,
+                             VideoCollectionSerializer, CreateVideoCollectionSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
-from api.permissions import is_owner_or_friend
+from api.permissions import is_owner_or_friend, is_owner
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 from sony.boxplot import box_plot
+
+
+class CreateVideoCollection(generics.GenericAPIView):
+    serializer_class = CreateVideoCollectionSerializer
+    def get_queryset(self, sonyfilter, *args, **kwargs):
+        username = sonyfilter['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner(self.request, username)
+        # apply_sonyfilter
+        queryset = apply_sonyfilter(sonyfilter, video_only=True)
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        serializer = CreateVideoCollectionSerializer(data=request.data)
+        if serializer.is_valid():
+            queryset = self.get_queryset(serializer.validated_data['sonyfilter'], *args, **kwargs)
+            if queryset.count() > 100:
+                return Response({"message":'too many shots'}, status=status.HTTP_200_Ok)
+            title = serializer.validated_data['title']
+            description = serializer.validated_data['description']
+            videocollection = _handle_videocollection_create(request.user, queryset, title, description)
+            serializer_out = VideoCollectionSerializer(videocollection)
+            return Response(serializer_out.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ShotCount(generics.GenericAPIView):
+    serializer_class = SonyFilterSerializer
+    def get_queryset(self, sonyfilter, *args, **kwargs):
+        username = sonyfilter['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner(self.request, username)
+        # apply_sonyfilter
+        queryset = apply_sonyfilter(sonyfilter, video_only=True)
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        filter_serializer = SonyFilterSerializer(data=request.data)
+        if filter_serializer.is_valid():
+            queryset = self.get_queryset(filter_serializer.validated_data, *args, **kwargs)
+            shot_count = queryset.count()
+            return Response({"shot_count":shot_count}, status=status.HTTP_200_OK)
+        else:
+            return Response(filter_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class VideoCollectionView(mixins.ListModelMixin,
                   generics.GenericAPIView):
@@ -81,8 +127,11 @@ class VideoProcessRetry(generics.GenericAPIView):
                 if video.status == 'F':
                     from video.video_routines import process_video_source
                     process_video_source(request.user, video)
-            elif serializer.data['model'] == "VideoClip":
-                pass
+            elif serializer.data['model'] == "VideoCollection":
+                video = get_object_or_404(VideoCollection, user=request.user, pk=serializer.data['pk'])
+                if video.status == 'F':
+                    from video.video_routines import process_video_collection
+                    process_video_collection(request.user, video)
             return Response(status=status.HTTP_202_ACCEPTED)
 
 class VideoSourceUpload(generics.GenericAPIView):
@@ -598,7 +647,7 @@ def _handle_csvfile_upload(f,user):
     import_result = sony_csv_to_db(destination_file, user.pk)
 
 
-def _handle_videosource_upload(f,user, videosource):
+def _handle_videosource_upload(f, user, videosource):
     import os
     from tennistat.settings import MEDIA_ROOT
     filename = f.name
@@ -631,3 +680,22 @@ def _handle_videosource_upload(f,user, videosource):
         #shots_results = csv_to_shots_db.apply_async((destination_file,user.pk), queue='db')
         #videos_results = csv_to_videos_db.apply_async((destination_file,user.pk), queue='db')
         #import_result = sony_csv_to_db(destination_file, user.pk)
+
+def _handle_videocollection_create(user, shots, title, description):
+    timestamp = dt.datetime.now()
+    videocollection = VideoCollection()
+    videocollection.timestamp = timestamp
+    videocollection.title = title
+    videocollection.description = description
+    videocollection.user = user
+    videocollection.save()
+
+    for shot in shots:
+        # Take advantage of the fact that Shot and VideoShot have the same pk (OneToOne field)
+        videoshot = VideoShot.objects.get(pk=shot.pk, user=user)
+        videocollection.videoshots.add(videoshot)
+    #videoclip.save()
+    from video.video_routines import process_video_collection
+    process_video_collection(user, videocollection)
+
+    return videocollection
