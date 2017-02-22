@@ -184,8 +184,9 @@ class ProgressView(generics.GenericAPIView):
         permission = is_owner_or_friend(request, kwargs['username'])
         period_model = str_to_periodmodel(kwargs['period'])
         periods = period_model.objects.filter(user=requested_user)
+        imperial_units = request.user.userprofile.units == 'M'
         for stat in ['swing_speed', 'ball_speed', 'ball_spin']:
-            progress_dict[stat] = (str.encode('data:image/svg+xml;base64,')+box_plot(periods, stat, kwargs['swing'])).decode("utf-8")
+            progress_dict[stat] = (str.encode('data:image/svg+xml;base64,')+box_plot(periods, stat, kwargs['swing'], imperial_units)).decode("utf-8")
         serializer = SonyProgressSerializer(progress_dict)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

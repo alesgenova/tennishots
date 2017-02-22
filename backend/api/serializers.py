@@ -117,6 +117,7 @@ class SonyFilterListSerializer(serializers.Serializer):
 class SonyFilterSerializer(serializers.Serializer):
     username = serializers.CharField()
     sensor = serializers.ChoiceField(choices=SENSORS)
+    imperial_units = serializers.BooleanField()
     filters = SonyFilterListSerializer(required=False)
 
 class ShotSetSerializer(serializers.Serializer):

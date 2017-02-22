@@ -14,7 +14,12 @@ def apply_sonyfilter(filter_obj, input_queryset=None, video_only=False):
     username = filter_obj['username']
     QS = Q(user__username=username)
     filters = filter_obj['filters']
-    imperial_units = False
+    imperial_units = filter_obj['imperial_units']
+    mi2km = 1.609344
+    if imperial_units:
+        conv_factor = 1./mi2km
+    else:
+        conv_factor = 1.
     use_daterange = True
     if 'periods' in filters:
         pks = filters['periods']['pks']
@@ -39,13 +44,13 @@ def apply_sonyfilter(filter_obj, input_queryset=None, video_only=False):
             end = dt.datetime(**filters['date_range']['max'],hour=23, minute=59, second=59)
             QS.add(Q(timestamp__lt=end), Q.AND)
     if 'swing_speed' in filters:
-        minimum = filters['swing_speed'][0]
-        maximum = filters['swing_speed'][1]
+        minimum = conv_factor*filters['swing_speed'][0]
+        maximum = conv_factor*filters['swing_speed'][1]
         QS.add(Q(data__swing_speed__gte=minimum), Q.AND)
         QS.add(Q(data__swing_speed__lte=maximum), Q.AND)
     if 'ball_speed' in filters:
-        minimum = filters['ball_speed'][0]
-        maximum = filters['ball_speed'][1]
+        minimum = conv_factor*filters['ball_speed'][0]
+        maximum = conv_factor*filters['ball_speed'][1]
         QS.add(Q(data__ball_speed__gte=minimum), Q.AND)
         QS.add(Q(data__ball_speed__lte=maximum), Q.AND)
     if 'ball_spin' in filters:
@@ -129,11 +134,19 @@ class SonyShotSetDetail(object):
                         labels = ['']*bins
                         if imperial_units:
                             vals = vals/mi2km
-                            rang = (20,100)
-                            labels[5], labels[10], labels[15], labels[20], labels[25], labels[30], labels[35] = (30,40,50,60,70,80,90)
+                            if stroke == 'SE':
+                                rang = (60,140)
+                                labels[5], labels[10], labels[15], labels[20], labels[25], labels[30], labels[35] = (70,80,90,100,110,120,130)
+                            else:
+                                rang = (20,100)
+                                labels[5], labels[10], labels[15], labels[20], labels[25], labels[30], labels[35] = (30,40,50,60,70,80,90)
                         else:
-                            rang = (30,160)
-                            labels[6], labels[12], labels[18], labels[24], labels[30], labels[36] = (50, 70, 90, 110, 130, 150)
+                            if stroke == 'SE':
+                                rang = (90,220)
+                                labels[6], labels[12], labels[18], labels[24], labels[30], labels[36] = (110, 130, 150, 170, 190, 210)
+                            else:
+                                rang = (30,160)
+                                labels[6], labels[12], labels[18], labels[24], labels[30], labels[36] = (50, 70, 90, 110, 130, 150)
                         labels[0], labels[bins-1] = (rang[0],rang[1])
                     y, x = np.histogram(vals, bins=bins, range=rang)
                     statdict['x'] = labels #x[:-1]
@@ -155,11 +168,20 @@ class SonyShotSetDetail(object):
                         bins=40
                         labels = ['']*bins
                         if imperial_units:
-                            rang = (20,100)
-                            labels[5], labels[10], labels[15], labels[20], labels[25], labels[30], labels[35] = (30,40,50,60,70,80,90)
+                            vals = vals/mi2km
+                            if stroke == 'SE':
+                                rang = (60,140)
+                                labels[5], labels[10], labels[15], labels[20], labels[25], labels[30], labels[35] = (70,80,90,100,110,120,130)
+                            else:
+                                rang = (20,100)
+                                labels[5], labels[10], labels[15], labels[20], labels[25], labels[30], labels[35] = (30,40,50,60,70,80,90)
                         else:
-                            rang = (30,160)
-                            labels[6], labels[12], labels[18], labels[24], labels[30], labels[36] = (50, 70, 90, 110, 130, 150)
+                            if stroke == 'SE':
+                                rang = (90,220)
+                                labels[6], labels[12], labels[18], labels[24], labels[30], labels[36] = (110, 130, 150, 170, 190, 210)
+                            else:
+                                rang = (30,160)
+                                labels[6], labels[12], labels[18], labels[24], labels[30], labels[36] = (50, 70, 90, 110, 130, 150)
                         labels[0], labels[bins-1] = (rang[0],rang[1])
                     statdict['x'] = labels #x[:-1]
                     statdict['y'] = []
