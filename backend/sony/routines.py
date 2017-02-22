@@ -6,7 +6,7 @@ from generic.routines import str_to_periodmodel
 from sony.impact_heatmap import make_heatmap
 from shot.models import Session, Day, Week, Month, Year, Shot, SessionLabel
 
-def apply_sonyfilter(filter_obj, input_queryset=None):
+def apply_sonyfilter(filter_obj, input_queryset=None, video_only=False):
     """
     Routine to apply a SonyFilter (which is simply a Dict validated from a JSON request through serializers)
     and return a queryset of shots.
@@ -60,9 +60,17 @@ def apply_sonyfilter(filter_obj, input_queryset=None):
             the_label = SessionLabel.objects.filter(user__username=username,pk=pk)
             the_sessions = the_sessions.filter(labels__in=the_label)
         QS.add(Q(session__in=the_sessions), Q.AND)
+    if 'swing_type' in filters:
+        strokes = filters['swing_type']
+        if len(strokes) > 0:
+            QS.add(Q(data__swing_type__in=strokes), Q.AND)
+    if video_only:
+        QS.add(Q(videoshot__isnull=False), Q.AND)
 
-
-    queryset = Shot.objects.filter(QS)
+    if input_queryset is None:
+        queryset = Shot.objects.filter(QS)
+    else:
+        queryset = input_queryset.filter(QS)
     return queryset
 
 

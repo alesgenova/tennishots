@@ -20,3 +20,11 @@ def is_owner_or_friend(request, requested_user):
             return True
         else:
             raise PermissionDenied
+
+def is_owner(request, requested_user):
+    from_user = request.user
+    to_user = User.objects.get(username=requested_user)
+    if from_user.username == to_user.username:
+        return True
+    else:
+        raise PermissionDenied

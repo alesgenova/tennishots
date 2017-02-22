@@ -13,10 +13,10 @@
       <button *ngIf="expanded" type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[6]" (click)="handlePeriodChange('strokes')" [innerHTML]="isFilterModified('strokes')"></button>
     </div>
     <div class="period-container col-9">
-      <periodlist *ngIf="periodSelector[0] && listOfPeriods.session.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'session'" [periodsPicker]="filter.filters.periods"></periodlist>
-      <periodlist *ngIf="periodSelector[1] && listOfPeriods.week.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'week'" [periodsPicker]="filter.filters.periods"></periodlist>
-      <periodlist *ngIf="periodSelector[2] &&listOfPeriods.month.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'month'" [periodsPicker]="filter.filters.periods"></periodlist>
-      <periodlist *ngIf="periodSelector[3] && listOfPeriods.year.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'year'" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[0] && listOfPeriods.session.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'session'" [periodsPicker]="filter.filters.periods" [videoOnly]="videoOnly"></periodlist>
+      <periodlist *ngIf="periodSelector[1] && listOfPeriods.week.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'week'" [periodsPicker]="filter.filters.periods" [videoOnly]="videoOnly"></periodlist>
+      <periodlist *ngIf="periodSelector[2] &&listOfPeriods.month.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'month'" [periodsPicker]="filter.filters.periods" [videoOnly]="videoOnly"></periodlist>
+      <periodlist *ngIf="periodSelector[3] && listOfPeriods.year.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'year'" [periodsPicker]="filter.filters.periods" [videoOnly]="videoOnly"></periodlist>
       <taglist *ngIf="periodSelector[5] && tagList.length > 0" [tagList]="tagList" [tagsPicker]="filter.filters.labels"></taglist>
       <strokelist *ngIf="periodSelector[6]" [strokesPicker]="filter.filters.swing_type"></strokelist>
       <div *ngIf="periodSelector[4]" class="row">

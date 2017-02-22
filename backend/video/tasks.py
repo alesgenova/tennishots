@@ -4,7 +4,7 @@ from celery import shared_task
 from shot.models import Shot
 import datetime as dt
 from video.models import VideoSource, VideoShot
-from video.models import VideoClip as VideoClipModel
+from video.models import VideoCollection
 import pandas as pd
 from django.contrib.auth.models import User
 import os
@@ -28,10 +28,11 @@ def make_shots_video_multi(shots_pk, fileout, stitching='lax', sizeout=(1920,108
         obj.thumbnail.name = 'user_{0}/video_sources/processed/{1}'.format(shots[0].user.id, os.path.split(fileout)[1]+".png")
         obj.status = 'C'
         obj.save()
-    elif model == 'videoclip':
-        obj = VideoClipModel.objects.get(pk=model_pk)
-        obj.processed_file.name = 'user_{0}/video_clips/{1}'.format(shots[0].user.id, os.path.split(fileout)[1])
-        obj.thumbnail.name = 'user_{0}/video_clips/{1}'.format(shots[0].user.id, os.path.split(fileout)[1]+".png")
+    elif model == 'videocollection':
+        obj = VideoCollection.objects.get(pk=model_pk)
+        obj.processed_file.name = 'user_{0}/video_collections/{1}'.format(shots[0].user.id, os.path.split(fileout)[1])
+        obj.thumbnail.name = 'user_{0}/video_collections/{1}'.format(shots[0].user.id, os.path.split(fileout)[1]+".png")
+        obj.status = 'C'
         obj.save()
 
     return

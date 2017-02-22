@@ -47,14 +47,15 @@ def process_video_source(user, video_source):
                                  'videosource', video_source.pk),
                                  queue='video')
     video_source.task_id = result.task_id
+    video_source.status = 'P'
     video_source.save()
     return
 
-def process_video_clip(user, videoclip):
+def process_video_collection(user, videocollection):
     #shots_pk = list(shots_pk_.astype(str))
-    shots_pk = np.array(videoclip.videoshot.values_list('pk')).flatten()
-    timestamp_str = videoclip.timestamp.strftime('%Y%m%d%H%M%S')
-    processed_dir = os.path.join(MEDIA_ROOT,'user_{0}/video_clips/'.format(user.id))
+    shots_pk = np.array(videocollection.videoshots.values_list('pk')).flatten()
+    timestamp_str = videocollection.timestamp.strftime('%Y%m%d%H%M%S')
+    processed_dir = os.path.join(MEDIA_ROOT,'user_{0}/video_collections/'.format(user.id))
     processed_filename = os.path.join(processed_dir, '{0}.mp4'.format(timestamp_str))
     if not os.path.exists(processed_dir):
         os.makedirs(processed_dir)
@@ -63,8 +64,9 @@ def process_video_clip(user, videoclip):
     imperial = user.userprofile.units == 'M'
     result = make_shots_video_multi.apply_async((shots_pk, processed_filename, 'lax',
                                  (1280,720), leftie, imperial,
-                                 'videoclip', videoclip.pk),
+                                 'videocollection', videocollection.pk),
                                  queue='video')
-    videoclip.task_id = result.task_id
-    videoclip.save()
+    videocollection.task_id = result.task_id
+    videocollection.status = 'P'
+    videocollection.save()
     return

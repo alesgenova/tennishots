@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
 import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload';
 
@@ -39,10 +40,14 @@ export class VideocollectionComponent implements OnInit {
     tagList: Label[] = [];
     filter: SonyFilter = new SonyFilter();
 
+    filterCount: number;
+    videoCollectionForm: FormGroup;
+
   constructor(  private route: ActivatedRoute,
                 private router: Router,
+                private fb: FormBuilder,
                 private profileService: ProfileService,
-                private tennistatService: TennistatService) { }
+                private tennistatService: TennistatService ) { }
 
   ngOnInit() {
       this.timezoneString = this.profileService.getTimezoneString();
@@ -78,6 +83,9 @@ export class VideocollectionComponent implements OnInit {
       this.listOfPeriods = new UserPeriodsList();
       this.getUserPeriods(this.userProfile.user);
       this.refreshTags(this.userProfile.user);
+      this.filter.username = this.userProfile.user;
+
+      this.createVideoCollectionForm();
   }
 
   onUserSelectClick() {
@@ -104,7 +112,13 @@ export class VideocollectionComponent implements OnInit {
   getPeriods(user:string, name:string) {
       this.tennistatService.get_periods(user, name)
         .subscribe(data=>{
-            this.listOfPeriods[name] = data;
+            this.listOfPeriods[name] = [];
+            for (let period of data){
+                if (period.videoshot_count > 0){
+                    this.listOfPeriods[name].push(period);
+                }
+            }
+
         });
   }
 
@@ -158,6 +172,35 @@ export class VideocollectionComponent implements OnInit {
       this.doCreate = true;
       this.activeUser = this.userProfile.user;
       this.previousUser = this.activeUser;
+  }
+
+  onFilter(){
+      this.tennistatService.get_shot_count(this.filter)
+            .subscribe( res => {
+                this.filterCount = res.shot_count;
+            });
+  }
+
+  createVideoCollectionForm(){
+      this.videoCollectionForm = this.fb.group({
+          title: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(20)])],
+          description: ['', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(200)])]
+      });
+  }
+
+  onCreateVideo(){
+      let title = this.videoCollectionForm.value['title'];
+      let description = this.videoCollectionForm.value['description'];
+      this.tennistatService.create_videocollection(this.filter, title, description)
+            .subscribe( res => {
+                this.activeVideo = res;
+                this.activeVideoPk = res.pk;
+                this.previousUser = '';
+                this.onUserSelectClick();
+                this.doCreate = false;
+                this.filter = new SonyFilter();
+                this.filter.username = this.userProfile.user;
+            });
   }
 
 }

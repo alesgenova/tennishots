@@ -12,6 +12,7 @@ export class PeriodlistComponent implements OnInit {
   @Input() periodName: string;
   @Input() listOfPeriods: UserPeriodsList;
   @Input() periodsPicker: PeriodsPicker;
+  @Input() videoOnly: boolean = false;
   doPagination: boolean;
   nPeriods: number;
   periodsPerPage: number = 8;

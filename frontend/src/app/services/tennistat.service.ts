@@ -60,6 +60,12 @@ export class TennistatService {
           .map(res => res.json());
   }
 
+  get_shot_count(filter:SonyFilter){
+      return this.authHttp
+          .post(this.ApiUrl+'shotcount/',filter, this.jsonPostOptions)
+          .map(res => res.json());
+  }
+
   get_friends(){
       return this.authHttp
           .get(this.ApiUrl+'friends/')
@@ -142,6 +148,11 @@ export class TennistatService {
       return this.authHttp
           .get(this.ApiUrl+user+'/videocollections/')
           .map(res => res.json());
+  }
+
+  create_videocollection(filter:SonyFilter, title: string, description: number){
+      return this.authHttp.post(this.ApiUrl+'createvideocollection/',{sonyfilter:filter, title:title, description:description}, this.jsonPostOptions)
+          .map((response: Response) => {return response.json()} );
   }
 
 }

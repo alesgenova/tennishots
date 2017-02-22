@@ -33,6 +33,8 @@ urlpatterns = [
     url(r'^searchuser/$', views.SearchUser.as_view()),
     url(r'^latestactivity/$', views.LatestActivity.as_view()),
     url(r'^processvideo/$', views.VideoProcessRetry.as_view()),
+    url(r'^shotcount/$', views.ShotCount.as_view()),
+    url(r'^createvideocollection/$', views.CreateVideoCollection.as_view()),
     #url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
 ]
 

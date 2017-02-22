@@ -18,6 +18,7 @@ export class FilterComponent implements OnInit {
   @Input() listOfPeriods: UserPeriodsList;
   @Input() tagList: Label[];
   @Input() expanded: boolean = false;
+  @Input() videoOnly: boolean = false;
   advancedFilter: boolean = false;
   users: any[];
   swing_speed: number[] = [0,240];
