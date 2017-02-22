@@ -41,5 +41,5 @@ export const SONY_STROKES_CHOICES = [
     {key:"FV", label:"Forehand Volley"},
     {key:"BV", label:"Backhand Volley"},
     {key:"SE", label:"Serve"},
-    {key:"SE", label:"Smash"}
+    {key:"SM", label:"Smash"}
 ]

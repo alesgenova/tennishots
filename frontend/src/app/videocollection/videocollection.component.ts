@@ -85,6 +85,12 @@ export class VideocollectionComponent implements OnInit {
           this.videoList = [];
           this.getUserVideoCollections(this.activeUser);
           this.previousUser = this.activeUser;
+          if (this.doCreate){
+            if (this.activeUser != this.userProfile.user){
+                this.doCreate = false;
+            }
+          }
+
       }
   }
 
@@ -150,7 +156,8 @@ export class VideocollectionComponent implements OnInit {
 
   onCreateSwitch(){
       this.doCreate = true;
-      this.activeUser = this.userProfile.user
+      this.activeUser = this.userProfile.user;
+      this.previousUser = this.activeUser;
   }
 
 }
