@@ -6,7 +6,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import base64
 
-def box_plot( periods, stat, swing ):
+def box_plot( periods, stat, swing, imperial_units ):
+    mi2km = 1.609344
     box_per_axis = 14
     max_boxes = box_per_axis * 2
     box_fill = SWING_COLORS[swing]
@@ -29,6 +30,8 @@ def box_plot( periods, stat, swing ):
         vals = period.shots.filter(data__swing_type=swing).values_list('data__'+stat)
         #vals = np.zeros(50)
         vals = np.array(vals).flatten()
+        if stat in ['swing_speed', 'ball_speed'] and imperial_units:
+            vals /= mi2km
         data_labels.append(str(period))
         data.append(np.abs(vals))
         upperLabels.append('({})'.format(len(vals)))
@@ -38,18 +41,26 @@ def box_plot( periods, stat, swing ):
     #fig.subplots_adjust(hspace=0.4)
     y_min = 20
     y_max = 160
+    if imperial_units:
+        y_min = 10
+        y_max = 100
+    if swing == 'SE':
+        if imperial_units:
+            y_min = 50
+            y_max = 140
+        else:
+            y_min = 80
+            y_max = 220
     if stat == 'swing_speed':
-        y_label = 'Swing Speed (km/h)'
+        if imperial_units:
+            y_label = 'Swing Speed (mi/h)'
+        else:
+            y_label = 'Swing Speed (km/h)'
     elif stat == 'ball_speed':
-        y_label = 'Ball Speed (km/h)'
-    elif stat == 'swing_speed_mi':
-        y_label = 'Swing Speed (mi/h)'
-        y_min = 10
-        y_max = 100
-    elif stat == 'ball_speed_mi':
-        y_label = 'Ball Speed (mi/h)'
-        y_min = 10
-        y_max = 100
+        if imperial_units:
+            y_label = 'Ball Speed (mi/h)'
+        else:
+            y_label = 'Ball Speed (km/h)'
     elif stat == 'ball_spin':
         y_label = 'Ball Spin (abs)'
         y_min = 0
