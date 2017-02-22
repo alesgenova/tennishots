@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-6">
+    <p>
+      <a class="btn btn-sm btn-secondary" role="button"(click)="onSelectAll(true)">Select all</a>
+    </p>
+  </div>
+  <div class="col-6">
+    <p>
+      <a class="btn btn-sm btn-secondary" role="button"(click)="onSelectAll(false)">Select none</a>
+    </p>
+  </div>
+</div>
+
+<p class="lead">
+  <span *ngFor="let stroke of SONY_STROKES_CHOICES">
+    <span [ngClass]="['badge', 'badge-default']" (click)="addPkToPks(stroke.key)" role="button">
+      <i [ngClass]="['fa', getCheckClass(stroke.key)]" aria-hidden="true"></i>&nbsp;&nbsp;{{stroke.label}}
+    </span>
+  </span>
+</p>

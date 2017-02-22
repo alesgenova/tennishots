@@ -2,20 +2,23 @@
   <br>
   <div class="row">
     <div class="col-3">
-      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[0]" (click)="handlePeriodChange('sessions')">Sessions</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[1]" (click)="handlePeriodChange('weeks')">Weeks</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[2]" (click)="handlePeriodChange('months')">Months</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[3]" (click)="handlePeriodChange('years')">Years</button>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[4]" (click)="handlePeriodChange('date_range')">Date Range</button><hr>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[5]" (click)="handlePeriodChange('tags')">Tags</button><hr>
-      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[0]" (click)="handlePeriodChange('sessions')" [innerHTML]="isFilterModified('session')"></button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[1]" (click)="handlePeriodChange('weeks')" [innerHTML]="isFilterModified('week')"></button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[2]" (click)="handlePeriodChange('months')" [innerHTML]="isFilterModified('month')"></button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[3]" (click)="handlePeriodChange('years')" [innerHTML]="isFilterModified('year')"></button>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[4]" (click)="handlePeriodChange('date_range')" [innerHTML]="isFilterModified('date_range')"></button>
+      <hr>
+      <button type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[5]" (click)="handlePeriodChange('tags')" [innerHTML]="isFilterModified('tags')"></button><hr>
+      <button *ngIf="!expanded" type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
+      <button *ngIf="expanded" type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[6]" (click)="handlePeriodChange('strokes')" [innerHTML]="isFilterModified('strokes')"></button>
     </div>
     <div class="period-container col-9">
-      <periodlist *ngIf="periodSelector[0] && listOfPeriods.session.length > 0" [periods]="listOfPeriods.session" [periodsPicker]="filter.filters.periods"></periodlist>
-      <periodlist *ngIf="periodSelector[1] && listOfPeriods.week.length > 0" [periods]="listOfPeriods.week" [periodsPicker]="filter.filters.periods"></periodlist>
-      <periodlist *ngIf="periodSelector[2] &&listOfPeriods.month.length > 0" [periods]="listOfPeriods.month" [periodsPicker]="filter.filters.periods"></periodlist>
-      <periodlist *ngIf="periodSelector[3] && listOfPeriods.year.length > 0" [periods]="listOfPeriods.year" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[0] && listOfPeriods.session.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'session'" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[1] && listOfPeriods.week.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'week'" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[2] &&listOfPeriods.month.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'month'" [periodsPicker]="filter.filters.periods"></periodlist>
+      <periodlist *ngIf="periodSelector[3] && listOfPeriods.year.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'year'" [periodsPicker]="filter.filters.periods"></periodlist>
       <taglist *ngIf="periodSelector[5] && tagList.length > 0" [tagList]="tagList" [tagsPicker]="filter.filters.labels"></taglist>
+      <strokelist *ngIf="periodSelector[6]" [strokesPicker]="filter.filters.swing_type"></strokelist>
       <div *ngIf="periodSelector[4]" class="row">
         <div class="col-6">
           <label>From</label>
