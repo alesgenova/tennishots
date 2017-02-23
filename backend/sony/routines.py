@@ -17,7 +17,7 @@ def apply_sonyfilter(filter_obj, input_queryset=None, video_only=False):
     imperial_units = filter_obj['imperial_units']
     mi2km = 1.609344
     if imperial_units:
-        conv_factor = 1./mi2km
+        conv_factor = mi2km
     else:
         conv_factor = 1.
     use_daterange = True
@@ -91,6 +91,7 @@ class SonyShotSetDetail(object):
         self.count = len(queryset)
         self.imperial_units = imperial_units
         self.strokes = []
+        mi2km = 1.609344
         for stroke in strokes:
             strokedict = OrderedDict()
             strokedict['name'] = stroke
@@ -151,7 +152,11 @@ class SonyShotSetDetail(object):
                     y, x = np.histogram(vals, bins=bins, range=rang)
                     statdict['x'] = labels #x[:-1]
                     #statdict['y'] = y/np.max(y)
-                    statdict['y'] = y/np.sum(y)
+                    nshot_in_rang = np.sum(y)
+                    if nshot_in_rang > 0:
+                        statdict['y'] = y/np.sum(y)
+                    else:
+                        statdict['y'] = np.zeros(len(y), dtype=int)
                     #strokedict['stats'].append(statdict)
                     strokedict['stats'][stat] = statdict
 
@@ -168,7 +173,6 @@ class SonyShotSetDetail(object):
                         bins=40
                         labels = ['']*bins
                         if imperial_units:
-                            vals = vals/mi2km
                             if stroke == 'SE':
                                 rang = (60,140)
                                 labels[5], labels[10], labels[15], labels[20], labels[25], labels[30], labels[35] = (70,80,90,100,110,120,130)

@@ -86,6 +86,14 @@
       <p>
         <button class="btn btn-sm btn-danger btn-block" role="button" (click)="onFilter()">Filter</button>
       </p>
+      <div  *ngIf="filterCount == 0" class="row">
+        <div class="col-12">
+          <div class="alert alert-danger text-center">
+            <b><strong>0</strong></b> video shots matched your filter criteria.<br>
+            Try applying less restrictive filters.
+          </div>
+        </div>
+      </div>
       <div  *ngIf="filterCount > 100" class="row">
         <div class="col-12">
           <div class="alert alert-danger text-center">
@@ -114,9 +122,5 @@
         </div>
       </div>
     </div>
-
-    {{filter|json}}
-
-    {{filterCount}}
   </div>
 </div>

@@ -38,6 +38,8 @@ export class AnalysisComponent implements OnInit {
   tagList1: Label[] = [];
   tagList2: Label[] = [];
 
+  imperial_units: boolean = false;
+
   constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
   ngOnInit() {
@@ -47,8 +49,11 @@ export class AnalysisComponent implements OnInit {
       for (let friend of this.userProfile.friends){
           this.userChoices.push({username:friend.user,first_name:friend.first_name});
       };
+      this.imperial_units = (this.userProfile.units == 'M');
       this.filter1.username = this.userProfile.user;
       this.filter2.username = this.userProfile.user;
+      this.filter1.imperial_units = this.imperial_units;
+      this.filter2.imperial_units = this.imperial_units;
       this.getUserPeriods(this.filter1.username,1);
       this.listOfPeriods2 = this.listOfPeriods1;
       this.gotPeriods2 = true;
