@@ -63,6 +63,7 @@ import { UploadComponent } from './video/upload/upload.component';
 import { PlayComponent } from './video/play/play.component';
 import { VideocollectionComponent } from './videocollection/videocollection.component';
 import { StrokelistComponent } from './analysis/strokelist/strokelist.component';
+import { LandingComponent } from './landing/landing.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -102,7 +103,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UploadComponent,
     PlayComponent,
     VideocollectionComponent,
-    StrokelistComponent
+    StrokelistComponent,
+    LandingComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

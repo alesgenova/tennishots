@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'profiles',
+    'customers',
     'shot',
     'video',
     'api',
