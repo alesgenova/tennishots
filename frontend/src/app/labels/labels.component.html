@@ -5,14 +5,14 @@
 </div>
 
 <div class="container white-bg">
-  <div class="content">
-    <h5 class="text-justify">
+  <div class="content text-center">
+    <p class="lead">
       <span *ngFor="let tag of tagList">
         <span [ngClass]="['badge', getTagClass(tag.category)]">{{tag.name}}&nbsp;&nbsp;
           <i role="button" (click)="onDeleteTag(tag.pk)" class="fa fa-times" aria-hidden="true"></i>
         </span>
       </span>
-    </h5>
+    </p>
     <hr>
     <form [formGroup]="newTag" novalidate (ngSubmit)="onCreateTag()">
       <div class="input-group input-group-sm">

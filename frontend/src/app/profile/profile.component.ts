@@ -60,4 +60,8 @@ export class ProfileComponent implements OnInit {
       event.xhr.setRequestHeader('Authorization', 'JWT ' + localStorage.getItem("id_token"));
   }
 
+  onUpload(event){
+      this.profileService.refreshProfile();
+  }
+
 }

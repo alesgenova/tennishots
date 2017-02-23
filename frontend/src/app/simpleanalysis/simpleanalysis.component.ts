@@ -160,6 +160,8 @@ export class SimpleanalysisComponent implements OnInit {
       if (!(pk==this.activePk)){
           let filter = new SonyFilter();
           filter.username = this.activeUser;
+          let imperial_units = (this.userProfile.units == 'M');
+          filter.imperial_units = imperial_units;
           if (pk==0){
               filter.filters.periods.name = "session"; // doesn't matter, we're taking all shots
               filter.filters.periods.pks = [];

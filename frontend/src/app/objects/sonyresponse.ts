@@ -1,7 +1,7 @@
 export class SonyResponse {
     username?: string;
     count: number = 0;
-    imperial_units: boolean;
+    imperial_units: boolean = false;
     strokes: SonyStroke[] = [];
 }
 

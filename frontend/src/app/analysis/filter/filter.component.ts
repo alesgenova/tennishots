@@ -21,9 +21,9 @@ export class FilterComponent implements OnInit {
   @Input() videoOnly: boolean = false;
   advancedFilter: boolean = false;
   users: any[];
-  swing_speed: number[] = [0,240];
-  ball_speed: number[] = [0,240];
-  ball_spin: number[] = [-10,10];
+  //swing_speed: number[] = [0,230];
+  //ball_speed: number[] = [0,240];
+  //ball_spin: number[] = [-10,10];
   num1 : number = 0;
   num2 : number = 220;
   periodSelector: boolean[] = [true,false,false,false,false,false];
@@ -31,12 +31,21 @@ export class FilterComponent implements OnInit {
   weeks: Period[];
   months: Period[];
   years: Period[];
+  speed_min: number;
+  speed_max: number;
 
   constructor(private tennistatService: TennistatService) {
   }
 
   ngOnInit() {
       this.advancedFilter = this.expanded;
+      if (this.filter.imperial_units){
+          this.speed_min = 10;
+          this.speed_max = 140;
+      }else{
+          this.speed_min = 20;
+          this.speed_max = 220;
+      }
       //this.filter.filters.periods.name = "session";
       /*
       this.getPeriods(localStorage["username"],"sessions");

@@ -1,6 +1,7 @@
 export class SonyFilter {
     username: string;
     sensor: string = 'SO';
+    imperial_units: boolean = false;
     filters: SOFilters = new SOFilters();
 }
 

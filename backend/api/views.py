@@ -457,7 +457,11 @@ class ShotsFilter(generics.GenericAPIView):
         filter_serializer = SonyFilterSerializer(data=request.data)
         if filter_serializer.is_valid():
             queryset = self.get_queryset(filter_serializer, *args, **kwargs)
-            detail_obj = SonyShotSetDetail(queryset)
+            imperial_units = filter_serializer.validated_data['imperial_units']
+            username = filter_serializer.validated_data['username']
+            requested_user = get_object_or_404(User, username=username)
+            leftie = (requested_user.userprofile.arm == 'L')
+            detail_obj = SonyShotSetDetail(queryset, imperial_units=imperial_units, leftie=leftie)
             summary_serializer = ShotSetSerializer(detail_obj)
             return Response(summary_serializer.data, status=200)
         else:

@@ -13,6 +13,7 @@ import { SonyResponse } from '../objects/sonyresponse';
 })
 export class HomeComponent implements OnInit {
 
+  userProfile: any;
   recentActivity:any[];
   sessionsStats: SonyResponse[] = [];
   sessionsExpand: boolean[] = [];
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
       this.getRecentActivity();
+      this.userProfile = this.getProfile();
       //this.getSessionStats('ales', 109);
   }
 
@@ -45,6 +47,8 @@ export class HomeComponent implements OnInit {
   getSessionStats(iRecent:number, user:string, sessionpk:number){
       if (this.sessionsStats[iRecent].count == 0){
           let filter = new SonyFilter();
+          let imperial_units = (this.userProfile.units == 'M');
+          filter.imperial_units = imperial_units;
           filter.username = user;
           filter.filters.periods.name = 'session';
           filter.filters.periods.pks = [sessionpk];
