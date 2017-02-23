@@ -9,6 +9,7 @@ from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
 from shot.tasks import sony_csv_to_db
 from video.models import VideoSource, VideoCollection, VideoShot
 from profiles.models import UserProfile, FriendRequest
+from customers.models import CustomerProfile, RateChange
 
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -356,6 +357,8 @@ class UserProfileView(generics.GenericAPIView):
             serializer = UserProfileSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save(user=request.user)
+                _create_default_labels(request.user)
+                _create_customer_profile(request.user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -475,7 +478,7 @@ class LabelList(mixins.ListModelMixin,
     def get_queryset(self, *args, **kwargs):
         permission = is_owner_or_friend(self.request, self.kwargs['username'])
         queryset = SessionLabel.objects.filter(user__username=self.kwargs['username'])
-        return queryset
+        return queryset.order_by("category")
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -704,3 +707,60 @@ def _handle_videocollection_create(user, shots, title, description):
     process_video_collection(user, videocollection)
 
     return videocollection
+
+def __create_default_labels(user):
+    category_choices = ((0,'Surface'),
+                        (1, 'Opponent'),
+                        (2, 'Game type'),
+                        (3, 'Competition'),
+                        (4, 'Condition'),
+                        (5, 'Other'))
+    default_labels = []
+    default_labels.append(SessionLabel(user=user, category=0, name='Clay'))
+    default_labels.append(SessionLabel(user=user, category=0, name='Hard'))
+    default_labels.append(SessionLabel(user=user, category=0, name='Grass'))
+    default_labels.append(SessionLabel(user=user, category=2, name='Singles'))
+    default_labels.append(SessionLabel(user=user, category=2, name='Doubles'))
+    default_labels.append(SessionLabel(user=user, category=3, name='Practice'))
+    default_labels.append(SessionLabel(user=user, category=3, name='Match'))
+    default_labels.append(SessionLabel(user=user, category=4, name='Indoor'))
+    default_labels.append(SessionLabel(user=user, category=4, name='Outdooor'))
+    default_labels.append(SessionLabel(user=user, category=4, name='Windy'))
+    SessionLabel.objects.bulk_create(default_labels)
+    return
+
+def _create_default_labels(user):
+    label = SessionLabel(user=user, category=0, name='Clay')
+    label.save()
+    label = SessionLabel(user=user, category=0, name='Hard')
+    label.save()
+    label = SessionLabel(user=user, category=0, name='Grass')
+    label.save()
+    label = SessionLabel(user=user, category=2, name='Singles')
+    label.save()
+    label = SessionLabel(user=user, category=2, name='Doubles')
+    label.save()
+    label = SessionLabel(user=user, category=3, name='Practice')
+    label.save()
+    label = SessionLabel(user=user, category=3, name='Match')
+    label.save()
+    label = SessionLabel(user=user, category=4, name='Indoor')
+    label.save()
+    label = SessionLabel(user=user, category=4, name='Outdooor')
+    label.save()
+    label = SessionLabel(user=user, category=4, name='Windy')
+    label.save()
+    return
+
+def _create_customer_profile(user):
+    customer_profile = CustomerProfile(user=user,
+                                       outstanding_shots=0,
+                                       outstanding_videoshots=0,
+                                       shot_rate=0.001,
+                                       videoshot_rate=0.002,
+                                       amount_due=0.)
+    customer_profile.save()
+    rate_change = RateChange(user=user,
+                             shot_rate=0.001,
+                             videoshot_rate=0.002)
+    rate_change.save()

@@ -37,7 +37,7 @@ class UserProfile(models.Model):
     backhand = models.IntegerField(choices=backhand_choices)
     privacy = models.CharField(max_length=2, choices=privacy_choices)
 
-    friends = models.ManyToManyField("self", null=True, blank=True)
+    friends = models.ManyToManyField("self")
 
     def save(self, *args, **kwargs):
         try:
@@ -46,7 +46,7 @@ class UserProfile(models.Model):
             # ImageOps compatible mode
             if image_obj.mode not in ("L", "RGB", "RGBA"):
                 image_obj = image_obj.convert("RGBA")
-            imagefit = ImageOps.fit(image_obj, (500, 500), Image.ANTIALIAS)
+            imagefit = ImageOps.fit(image_obj, (300, 300), Image.ANTIALIAS)
             img_io = io.BytesIO()
             imagefit.save(img_io, 'PNG')
             self.avatar.delete(save=False)
