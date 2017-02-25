@@ -21,7 +21,7 @@ import { ChartsModule } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './accounts/login/login.component';
 import { TestComponent } from './test/test.component';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { FilterComponent } from './analysis/filter/filter.component';
@@ -43,11 +43,11 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { PeriodlistComponent } from './analysis/periodlist/periodlist.component';
 import { DisplayComponent } from './analysis/display/display.component';
 import { TopbarComponent } from './topbar/topbar.component';
-import { LogoutComponent } from './logout/logout.component';
-import { RegisterComponent } from './register/register.component';
+import { LogoutComponent } from './accounts/logout/logout.component';
+import { RegisterComponent } from './accounts/register/register.component';
 import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './accounts/profile/profile.component';
 import { FileuploadComponent } from './fileupload/fileupload.component';
 import { CsvuploadComponent } from './csvupload/csvupload.component';
 import { HomeComponent } from './home/home.component';
@@ -64,6 +64,8 @@ import { PlayComponent } from './video/play/play.component';
 import { VideocollectionComponent } from './videocollection/videocollection.component';
 import { StrokelistComponent } from './analysis/strokelist/strokelist.component';
 import { LandingComponent } from './landing/landing.component';
+import { PasswordresetComponent } from './accounts/passwordreset/passwordreset.component';
+import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpassword.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -104,7 +106,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     PlayComponent,
     VideocollectionComponent,
     StrokelistComponent,
-    LandingComponent
+    LandingComponent,
+    PasswordresetComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
