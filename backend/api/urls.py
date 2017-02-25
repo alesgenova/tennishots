@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^csrf/$', views.CsrfView),
     url(r'^shots/$', views.PeriodStrokeDetail.as_view()),
     url(r'^profile/$', views.UserProfileView.as_view()),
+    url(r'^player/$', views.PlayerProfileView.as_view()),
     url(r'^friends/$', views.GetFriends.as_view()),
     url(r'^addfriend/$', views.AddFriend.as_view()),
     url(r'^friendrequests/$', views.PendingFriendRequests.as_view()),

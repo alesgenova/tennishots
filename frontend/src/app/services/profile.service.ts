@@ -7,6 +7,8 @@ export class ProfileService {
 
     private loggedIn:boolean;
     private userProfile:any = null;
+    private customerProfile:any = null;
+    private playerProfile:any = null;
     private timezoneString: string = '';
 
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
@@ -27,6 +29,25 @@ export class ProfileService {
             return JSON.parse(localStorage.getItem('userProfile'))
         }else{
             return this.userProfile
+        }
+    }
+
+    refreshPlayerProfile(){
+        if (this.authService.loggedIn()){
+            this.tennistatService.get_player_profile()
+                  .subscribe(res => {
+                      this.playerProfile = res;
+                      localStorage.setItem('playerProfile', JSON.stringify(res));
+                      return this.playerProfile
+                  });
+        }
+    }
+
+    getPlayerProfile(){
+        if (this.playerProfile === null){
+            return JSON.parse(localStorage.getItem('playerProfile'))
+        }else{
+            return this.playerProfile
         }
     }
 

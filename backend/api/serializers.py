@@ -243,6 +243,17 @@ class YearSerializer(serializers.ModelSerializer):
         model = Year
         fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'videoshot_count')
 
+class UserPeriodsListSerializer(serializers.Serializer):
+    session = SessionSerializerPlusPlus(many=True)
+    week = WeekSerializer(many=True)
+    month = MonthSerializer(many=True)
+    year = YearSerializer(many=True)
+
+class PlayerProfileSerializer(serializers.Serializer):
+    periods = UserPeriodsListSerializer()
+    shot_count = serializers.IntegerField()
+    videoshot_count = serializers.IntegerField()
+
 class ShotGroup(object):
     def __init__(self, num1, num2):
         self.result = num1 + num2
