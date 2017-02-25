@@ -4,11 +4,11 @@ import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms
 
 import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload';
 
-import { UserProfile } from '../objects/registration';
-import { TennistatService } from  '../services/tennistat.service';
-import { ProfileService } from  '../services/profile.service';
+import { UserProfile } from '../../objects/registration';
+import { TennistatService } from  '../../services/tennistat.service';
+import { ProfileService } from  '../../services/profile.service';
 
-import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../objects/registration';
+import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../../objects/registration';
 
 @Component({
   selector: 'app-profile',

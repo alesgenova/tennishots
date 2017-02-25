@@ -8,6 +8,9 @@
   <div class="content">
     <div class="row">
       <div class="col-6 offset-3 col-md-4 offset-md-4">
+        <p class="text-center">
+          <img class="rounded-circle" src="//localhost:8000/media/no-avatar.svg" height="100px">
+        </p>
         <form [formGroup]="loginForm" novalidate (ngSubmit)="onLogin()">
           <div class="form-group">
             <input class="form-control" type="text" placeholder="Username" id="username" formControlName="username">
@@ -18,6 +21,13 @@
           </div>
           <input class="btn btn-primary btn-block" [disabled]="!loginForm.valid" type="submit" value="Log In" />
         </form>
+        <br>
+        <p class="text-muted text-right">
+          <a [routerLink]="['/resetpassword']">Forgot your password?</a>
+        </p>
+        <p class="text-muted text-right">
+          <a [routerLink]="['/register']">Not a member?</a>
+        </p>
       </div>
     </div>
   </div>

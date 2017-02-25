@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
-import { AuthService } from '../services/auth.service';
-import { TennistatService } from '../services/tennistat.service';
-import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../objects/registration';
+import { AuthService } from '../../services/auth.service';
+import { TennistatService } from '../../services/tennistat.service';
+import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../../objects/registration';
 
 @Component({
   selector: 'register',
@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit {
       this.emailError = "";
       this.passwordError = "";
 
-      console.log(this.registrationForm.value.user.password1);
+      //console.log(this.registrationForm.value.user.password1);
       passwordmatch = (this.registrationForm.value.user.password1 == this.registrationForm.value.user.password2)
       if (!passwordmatch){
           this.passwordError = "The two password fields didn't match."
@@ -76,16 +76,16 @@ export class RegisterComponent implements OnInit {
                                     localStorage.setItem('username', res.user.username);
                                     localStorage.setItem('id_token', res.token);
                                     success = true;
-                                    console.log("Registration Success");
+                                    //console.log("Registration Success");
                                     this.tennistatService.create_profile(this.registrationForm.value.profile)
                                           .subscribe( res => { localStorage.setItem('userProfile', JSON.stringify(res)) } );
-                                    console.log("Userprofile Success");
-                                    this.router.navigate([''])
+                                    //console.log("Userprofile Success");
+                                    this.router.navigate(['landing'])
                                 }
                                },
                         err => {
-                                console.log("error!!")
-                                console.log(err.json());
+                                //console.log("error!!")
+                                //console.log(err.json());
                                 let theError:any = err.json()
                                 if (typeof theError.username != "undefined") {
                                     this.usernameError = theError.username[0]

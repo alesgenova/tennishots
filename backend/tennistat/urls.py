@@ -20,6 +20,7 @@ from django.contrib import admin
 from tennistat import settings
 
 urlpatterns = [
+    url(r'^', include('django.contrib.auth.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('api.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),

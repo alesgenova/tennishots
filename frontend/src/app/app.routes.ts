@@ -1,12 +1,14 @@
 import { Routes } from '@angular/router';
 
 import { TestComponent } from './test/test.component';
-import { LoginComponent } from './login/login.component';
-import { LogoutComponent } from './logout/logout.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './accounts/login/login.component';
+import { LogoutComponent } from './accounts/logout/logout.component';
+import { RegisterComponent } from './accounts/register/register.component';
+import { PasswordresetComponent } from './accounts/passwordreset/passwordreset.component';
+import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpassword.component';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { SimpleanalysisComponent } from './simpleanalysis/simpleanalysis.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './accounts/profile/profile.component';
 import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
 import { CsvuploadComponent } from './csvupload/csvupload.component';
@@ -37,6 +39,8 @@ export const routes: Routes = [
   { path: 'video',  component: VideoComponent, canActivate: [AuthGuard] },
   { path: 'videocollection',  component: VideocollectionComponent, canActivate: [AuthGuard] },
   { path: 'landing',  component: LandingComponent, canActivate: [AuthGuard] },
+  { path: 'resetpassword',  component: ForgotpasswordComponent },
+  { path: 'reset/:uid/:token',  component: PasswordresetComponent },
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },
 //  { path: '**',     component: Login },

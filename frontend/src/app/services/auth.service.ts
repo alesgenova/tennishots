@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map';
 export class AuthService {
 
     public token: string;
+    jsonPostOptions = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
     ApiUrl: string = 'http://localhost:8000/rest-auth/'
     ApiUrl2: string = 'http://localhost:8000/api/'
 
@@ -22,10 +23,7 @@ export class AuthService {
     }
 
     login(username:string, password:string): Observable<boolean>{
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-
-        return this.http.post(this.ApiUrl+'login/',JSON.stringify({ username: username, password: password }), options)
+        return this.http.post(this.ApiUrl+'login/',JSON.stringify({ username: username, password: password }), this.jsonPostOptions)
             .map((response: Response) => {
                 console.log(response)
                 // login successful if there's a jwt token in the response
@@ -49,18 +47,22 @@ export class AuthService {
     }
 
     login2(username:string, password:string){
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-
-        return this.http.post(this.ApiUrl+'login/',JSON.stringify({ username: username, password: password }), options)
+        return this.http.post(this.ApiUrl+'login/',JSON.stringify({ username: username, password: password }), this.jsonPostOptions)
             .map( (response: Response) => response.json() );
     }
 
     register(userForm:UserForm){
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.ApiUrl+'registration/',userForm, this.jsonPostOptions)
+            .map( (response: Response) => response.json() );
+    }
 
-        return this.http.post(this.ApiUrl+'registration/',userForm, options)
+    passwordResetEmail(emailForm:any){
+        return this.http.post(this.ApiUrl+'password/reset/',emailForm, this.jsonPostOptions)
+            .map( (response: Response) => response.json() );
+    }
+
+    passwordResetConfirm(resetForm:any){
+        return this.http.post(this.ApiUrl+'password/reset/confirm/',resetForm, this.jsonPostOptions)
             .map( (response: Response) => response.json() );
     }
 
