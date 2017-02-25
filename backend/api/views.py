@@ -33,7 +33,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              FriendRequestSerializer, FriendSerializer,
                              SearchUserSerializer, AvatarSerializer,
                              CsvSerializer, SessionSerializerPlus,
-                             SessionSerializerPlusPlus,
+                             SessionSerializerPlusPlus, PlayerProfileSerializer,
                              SonyProgressSerializer, VideoSourceSerializer,
                              VideoUploadSerializer, VideoRetrySerializer,
                              VideoCollectionSerializer, CreateVideoCollectionSerializer,
@@ -44,6 +44,23 @@ from api.permissions import is_owner_or_friend, is_owner
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 from sony.boxplot import box_plot
 
+class PlayerProfileView(generics.GenericAPIView):
+    """
+    List all friends profiles, or create own user profile.
+    """
+    serializer_class = PlayerProfileSerializer
+    def get(self, request):
+        user = request.user
+        player_profile = {}
+        player_profile['shot_count'] = user.shots.count()
+        player_profile['videoshot_count'] = user.videoshots.count()
+        player_profile['periods'] = {}
+        player_profile['periods']['session'] = user.sessions.all()
+        player_profile['periods']['week'] = user.weeks.all()
+        player_profile['periods']['month'] = user.months.all()
+        player_profile['periods']['year'] = user.years.all()
+        serializer = PlayerProfileSerializer(player_profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CreateVideoCollection(generics.GenericAPIView):
     serializer_class = CreateVideoCollectionSerializer

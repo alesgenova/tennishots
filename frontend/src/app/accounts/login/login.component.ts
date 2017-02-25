@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
                     if (typeof res.token != "undefined") {
                         localStorage.setItem('id_token', res.token);
                         this.profileService.refreshProfile();
+                        this.profileService.refreshPlayerProfile();
                         this.router.navigate([''])
                     }
                             },

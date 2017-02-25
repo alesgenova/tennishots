@@ -72,6 +72,7 @@ export class AuthService {
         //localStorage.removeItem('currentUser');
         localStorage.removeItem('id_token');
         localStorage.removeItem('userProfile');
+        localStorage.removeItem('playerProfile');
         //localStorage.removeItem('username');
     }
 

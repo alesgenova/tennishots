@@ -46,7 +46,7 @@ class VideoShot(models.Model):
     shot = models.OneToOneField(Shot, primary_key=True)
     video = models.ForeignKey(VideoSource, related_name='videoshots', on_delete=models.CASCADE)
     seconds = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='videoshots', on_delete=models.CASCADE)
 
 
 class VideoCollection(models.Model):
