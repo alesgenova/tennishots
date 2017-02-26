@@ -61,7 +61,7 @@ class VideoCollection(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P', blank=True)
     videoshots = models.ManyToManyField(VideoShot)
     task_id = models.CharField(max_length=100, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, related_name='collections', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return "{} - {}".format(self.user.username, self.title)

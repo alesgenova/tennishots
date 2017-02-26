@@ -26,7 +26,7 @@ class Transaction(models.Model):
     user = models.ForeignKey(User)
     shot_count = models.IntegerField()
     videoshot_count = models.IntegerField()
-    dollar_amount = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    dollar_amount = models.FloatField()
     order = models.OneToOneField(Order, null=True, blank=True) # only payment events will have an associated order
 
     def __str__(self):

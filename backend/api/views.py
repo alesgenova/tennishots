@@ -54,6 +54,8 @@ class PlayerProfileView(generics.GenericAPIView):
         player_profile = {}
         player_profile['shot_count'] = user.shots.count()
         player_profile['videoshot_count'] = user.videoshots.count()
+        player_profile['recording_count'] = user.videos.count()
+        player_profile['collection_count'] = user.collections.count()
         player_profile['periods'] = {}
         player_profile['periods']['session'] = user.sessions.all()
         player_profile['periods']['week'] = user.weeks.all()
@@ -669,7 +671,7 @@ def _handle_csvfile_upload(f,user):
             destination.write(chunk)
     #shots_results = csv_to_shots_db.apply_async((destination_file,user.pk), queue='db')
     #videos_results = csv_to_videos_db.apply_async((destination_file,user.pk), queue='db')
-    import_result = sony_csv_to_db(destination_file, user.pk)
+    import_result = sony_csv_to_db.apply_async((destination_file, user.pk), queue='db')
 
 
 def _handle_videosource_upload(f, user, videosource):

@@ -14,6 +14,7 @@ export class ImportGuard implements CanActivate {
     // has the user already imported some shots?
     let playerProfile = this.profileService.getPlayerProfile();
     if (playerProfile.shot_count == 0){
+        this.profileService.refreshPlayerProfile();
         this.router.navigate(['/landing']);
         return false;
     }

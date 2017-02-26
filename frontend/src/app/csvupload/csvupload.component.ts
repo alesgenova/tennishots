@@ -8,6 +8,8 @@ import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-u
 })
 export class CsvuploadComponent implements OnInit {
 
+  uploaded: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
@@ -15,6 +17,10 @@ export class CsvuploadComponent implements OnInit {
 
   onBeforeSend(event) {
       event.xhr.setRequestHeader('Authorization', 'JWT ' + localStorage.getItem("id_token"));
+  }
+
+  onUpload(event){
+      this.uploaded = true;
   }
 
 }
