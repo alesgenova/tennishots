@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ProfileService } from '../services/profile.service';
+
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private profileService:ProfileService) { }
 
   ngOnInit() {
+    this.profileService.refreshPlayerProfile();
   }
 
 }

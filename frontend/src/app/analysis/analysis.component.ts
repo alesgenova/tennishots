@@ -73,15 +73,14 @@ export class AnalysisComponent implements OnInit {
   }
 
   beforeTabChange($event: NgbTabChangeEvent) {
-      console.log("I'm here!")
+      this.showFilter = true;
       if ($event.nextId === 'tabS') {
-        $event.preventDefault();
-    }else if ($event.nextId === 'tabD') {
         $event.preventDefault();
       }
     };
 
   onUserSelectClick(num:number) {
+      this.showFilter = true;
       if (num ==1){
           //this.gotPeriods1 = false;
           this.listOfPeriods1 = new UserPeriodsList();
