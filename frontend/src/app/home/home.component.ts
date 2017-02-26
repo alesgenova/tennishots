@@ -14,6 +14,7 @@ import { SonyResponse } from '../objects/sonyresponse';
 export class HomeComponent implements OnInit {
 
   userProfile: any;
+  playerProfile: any;
   recentActivity:any[];
   sessionsStats: SonyResponse[] = [];
   sessionsExpand: boolean[] = [];
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
       this.getRecentActivity();
       this.userProfile = this.getProfile();
+      this.playerProfile = this.profileService.getPlayerProfile();
       //this.getSessionStats('ales', 109);
   }
 

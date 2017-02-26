@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
 import { UserProfile } from '../objects/registration';
@@ -17,7 +18,7 @@ export class TopbarComponent implements OnInit {
   Profile = new UserProfile();
   navbarLogoUrl = "assets/img/logo_nav_small.png"
 
-  constructor(private authService: AuthService, private profileService: ProfileService) { }
+  constructor(private authService: AuthService, private profileService: ProfileService, private router: Router) { }
 
   ngOnInit() {
       if (this.loggedIn()){
@@ -34,6 +35,7 @@ export class TopbarComponent implements OnInit {
   logOut(){
       this.authService.logout();
       this.Profile = null;
+      this.router.navigate([''])
   }
 
   getProfile(){

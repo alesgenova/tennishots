@@ -7,7 +7,7 @@ from video.models import VideoSource
 import datetime as dt
 import pandas as pd
 from django.contrib.auth.models import User
-#from payment.models import CustomerProfile
+from customers.models import CustomerProfile, Transaction
 
 @shared_task
 def sony_csv_to_db(csvfile, user_id):
@@ -91,13 +91,21 @@ def sony_csv_to_db(csvfile, user_id):
                                     )
                             )
     SonyData.objects.bulk_create(new_sonydata)
-
-    #new_shots_billed = len(new_shots)
     VideoSource.objects.bulk_create(new_videos)
-    #customer = CustomerProfile.objects.get(user=user)
-    #customer.new_shots += new_shots_billed
-    #customer.amount_due += new_shots_billed*customer.shot_rate
-    #customer.save()
+
+    new_shots_billed = len(new_shots)
+    customer = CustomerProfile.objects.get(user=user)
+    dollar_amount = new_shots_billed*customer.shot_rate
+    customer.outstanding_shots += new_shots_billed
+    customer.amount_due += dollar_amount
+    customer.save()
+    transaction = Transaction()
+    transaction.user = user
+    transaction.shot_count = new_shots_billed
+    transaction.videoshot_count = 0
+    transaction.dollar_amount = dollar_amount
+    transaction.save()
+
     return
 
 def _shorten_swing_type(swing_type):

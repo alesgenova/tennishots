@@ -253,6 +253,8 @@ class PlayerProfileSerializer(serializers.Serializer):
     periods = UserPeriodsListSerializer()
     shot_count = serializers.IntegerField()
     videoshot_count = serializers.IntegerField()
+    recording_count = serializers.IntegerField()
+    collection_count = serializers.IntegerField()
 
 class ShotGroup(object):
     def __init__(self, num1, num2):
