@@ -16,7 +16,7 @@
         </tr>
         <tr *ngFor="let request of friendRequests">
           <td width="50px">
-            <img [src]="'//localhost:8000'+request.from_avatar" class="rounded" height="50px" >
+            <img [src]="'https://api.tennistat.xyz'+request.from_avatar" class="rounded" height="50px" >
           </td>
           <td>
             {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
@@ -36,7 +36,7 @@
       <tbody>
         <tr *ngFor="let friend of friends" role="button" (click)="onFriendClick(friend.user)">
           <td width="50px">
-            <img [src]="'//localhost:8000'+friend.avatar" class="rounded" height="50px" >
+            <img [src]="'https://api.tennistat.xyz'+friend.avatar" class="rounded" height="50px" >
           </td>
           <td>
             {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
@@ -61,7 +61,7 @@
         <tr>
         <tr *ngFor="let user of users">
           <td width="50px">
-            <img [src]="'//localhost:8000'+user.avatar" class="rounded" height="50px" >
+            <img [src]="'https://api.tennistat.xyz'+user.avatar" class="rounded" height="50px" >
           </td>
           <td>
               {{user.first_name}} {{user.last_name}} <span class="text-muted small">({{user.user}})</span><br>

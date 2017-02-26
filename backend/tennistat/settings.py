@@ -25,9 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'pg_dns8)rkmo*d=&&03)rgysu%ff$hc4(u%5!*c@a4t2hypbd!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost']
+#ALLOWED_HOSTS = ['tennistat.xyz','www.tennistat.xyz', 'api.tennistat.xyz']
+ALLOWED_HOSTS = ['api.tennistat.xyz']
 
 SITE_ID = 1
 
@@ -74,7 +75,9 @@ ROOT_URLCONF = 'tennistat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        #'DIRS': [],
+        'DIRS':  [os.path.join(BASE_DIR, 'templates')],
+        #'DIRS': ['/home/tennistat/webapps/tennistat2/frontend/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,8 +98,9 @@ WSGI_APPLICATION = 'tennistat.wsgi.application'
 
 # CORS allowed hosts
 CORS_ORIGIN_WHITELIST = (
-    #'www.tennistat.xyz',
-    'localhost:4200',
+    'www.tennistat.xyz',
+    'tennistat.xyz',
+    #'localhost:4200',
     #'localhost:8000',
 )
 

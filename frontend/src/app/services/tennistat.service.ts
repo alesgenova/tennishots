@@ -11,7 +11,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class TennistatService {
 
-  ApiUrl: string = 'http://localhost:8000/api/'
+  //ApiUrl: string = 'http://localhost:8000/api/'
+  ApiUrl: string = 'https://api.tennistat.xyz/api/'
   jsonPostOptions = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
 
   constructor(private http: Http, private authHttp: AuthHttp) { }

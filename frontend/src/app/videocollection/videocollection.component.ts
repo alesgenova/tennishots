@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
-import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload';
-
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
 

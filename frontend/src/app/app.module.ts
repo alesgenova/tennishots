@@ -18,7 +18,7 @@ import { TennistatService } from './services/tennistat.service';
 import { ProfileService } from './services/profile.service';
 
 // highcharts module
-import { ChartModule } from 'angular2-highcharts';
+//import { ChartModule } from 'angular2-highcharts';
 import { ChartsModule } from 'ng2-charts';
 
 import { routes } from './app.routes';
@@ -30,7 +30,7 @@ import { FilterComponent } from './analysis/filter/filter.component';
 import { ResultsComponent } from './analysis/results/results.component';
 
 // file uploader
-import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
+//import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import {FileUploadModule} from 'primeng/primeng';
 
 // ng2-bootstrap components
@@ -38,7 +38,8 @@ import {FileUploadModule} from 'primeng/primeng';
 //import { AlertModule } from 'ng2-bootstrap';
 // ng-bootstrap
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { NouisliderComponent } from 'ng2-nouislider';
+//import { NouisliderComponent } from 'ng2-nouislider';
+//import { NouisliderModule } from 'ng2-nouislider';
 //font-awesome
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 
@@ -81,7 +82,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AnalysisComponent,
     FilterComponent,
     ResultsComponent,
-    NouisliderComponent,
+    //NouisliderComponent,
     PeriodlistComponent,
     DisplayComponent,
     TopbarComponent,
@@ -92,8 +93,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ProfileComponent,
     FileuploadComponent,
     // ng2-file-upload
-    FileSelectDirective,
-    FileDropDirective,
+    //FileSelectDirective,
+    //FileDropDirective,
     CsvuploadComponent,
     HomeComponent,
     SimpleanalysisComponent,
@@ -122,7 +123,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     NgbModule.forRoot(),
     //NouisliderModule,
     //highcharts
-    ChartModule,
+    //ChartModule,
     ChartsModule,
     //font-awesome
     Angular2FontawesomeModule,
