@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TennistatService } from '../../services/tennistat.service';
 
 import { SonyFilter, PeriodsPicker, DateRange } from '../../objects/sonyfilter';
-import {SelectItem} from 'primeng/primeng';
+//import {SelectItem} from 'primeng/primeng';
 import { Period, UserPeriodsList } from '../../objects/period';
 import { Label } from '../../objects/label';
 

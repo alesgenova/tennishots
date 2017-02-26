@@ -19,7 +19,7 @@
       <ul *ngIf="loggedIn()" class="nav flex-row">
         <li class="nav-item dropdown">
           <a role="button" href="#" id="dropdownAvatar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img [src]="'//localhost:8000'+getProfile()?.avatar" class="rounded-circle" height="35px">
+            <img [src]="'https://api.tennistat.xyz'+getProfile()?.avatar" class="rounded-circle" height="35px">
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownAvatar">
             <a class="dropdown-item" [routerLink]="['profile']">

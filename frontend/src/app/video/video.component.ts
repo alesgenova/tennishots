@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload';
-
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
 
@@ -250,7 +248,7 @@ export class VideoComponent implements OnInit {
       this.uploadSourceUrl = "";
       let uploadFile = event.files[0];
       if (uploadFile.name == this.activeVideo.filename){
-          this.uploadSourceUrl = 'http://localhost:8000/api/sourceupload/'+this.activeVideo.pk+'/';
+          this.uploadSourceUrl = 'https://api.tennistat.xyz/api/sourceupload/'+this.activeVideo.pk+'/';
           console.log("Same!")
       }else{
           console.log("Different!")

@@ -14,8 +14,8 @@ export class AuthService {
 
     public token: string;
     jsonPostOptions = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
-    ApiUrl: string = 'http://localhost:8000/rest-auth/'
-    ApiUrl2: string = 'http://localhost:8000/api/'
+    ApiUrl: string = 'https://api.tennistat.xyz/rest-auth/'
+    ApiUrl2: string = 'https://api.tennistat.xyz/api/'
 
     constructor(private http: Http, private authHttp: AuthHttp) {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));

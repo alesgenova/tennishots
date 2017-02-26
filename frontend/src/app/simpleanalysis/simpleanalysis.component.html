@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-12" style="display:flex;">
         <div class="ml-auto mr-auto">
-          <img [src]="'//localhost:8000'+userChoices[activeUser].avatar" class="rounded" height="37px" >
+          <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
           <select (click)="onUserSelectClick()" id="userpicker" [(ngModel)]="activeUser" class="custom-select">
                 <option *ngFor="let key of userChoices_keys" [value]="userChoices[key].username">{{userChoices[key].first_name}} {{userChoices[key].last_name}}</option>
           </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->

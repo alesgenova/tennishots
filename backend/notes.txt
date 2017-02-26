@@ -13,3 +13,5 @@ add self.proc.wait() to ./venv/lib/python3.5/site-packages/moviepy/audio/io/read
 sudo apt install sendemail
 
 letsencrypt renew --agree-tos --pre-hook "service nginx stop" --post-hook "service nginx start"
+
+/usr/bin/uwsgi_python3 --emperor /home/tennistat/webapps/tennistat/uwsgi/
