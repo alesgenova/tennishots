@@ -245,7 +245,9 @@ class UploadAvatar(generics.GenericAPIView):
         if serializer.is_valid():
             profile = request.user.userprofile
             if 'avatar' in serializer.data:
-                profile.avatar.delete()
+                curr_avatar = profile.avatar
+                if curr_avatar.name != 'no-avatar.svg':
+                    profile.avatar.delete()
                 profile.avatar = request.FILES['avatar']
                 profile.save()
             serializer_out = UserProfileSerializer(profile)

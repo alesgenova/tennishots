@@ -69,6 +69,7 @@ import { StrokelistComponent } from './analysis/strokelist/strokelist.component'
 import { LandingComponent } from './landing/landing.component';
 import { PasswordresetComponent } from './accounts/passwordreset/passwordreset.component';
 import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpassword.component';
+import { VerifyemailComponent } from './accounts/verifyemail/verifyemail.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -111,7 +112,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     StrokelistComponent,
     LandingComponent,
     PasswordresetComponent,
-    ForgotpasswordComponent
+    ForgotpasswordComponent,
+    VerifyemailComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -6,6 +6,7 @@ import { LogoutComponent } from './accounts/logout/logout.component';
 import { RegisterComponent } from './accounts/register/register.component';
 import { PasswordresetComponent } from './accounts/passwordreset/passwordreset.component';
 import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpassword.component';
+import { VerifyemailComponent } from './accounts/verifyemail/verifyemail.component';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { SimpleanalysisComponent } from './simpleanalysis/simpleanalysis.component';
 import { ProfileComponent } from './accounts/profile/profile.component';
@@ -43,6 +44,7 @@ export const routes: Routes = [
   { path: 'landing',  component: LandingComponent, canActivate: [AuthGuard] },
   { path: 'resetpassword',  component: ForgotpasswordComponent },
   { path: 'reset/:uid/:token',  component: PasswordresetComponent },
+  { path: 'verify-email/:key',  component: VerifyemailComponent },
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },
 //  { path: '**',     component: Login },

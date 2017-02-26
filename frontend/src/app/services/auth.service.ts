@@ -66,6 +66,11 @@ export class AuthService {
             .map( (response: Response) => response.json() );
     }
 
+    verifyEmail(key:string){
+        return this.http.post(this.ApiUrl+'registration/verify-email/',{key:key}, this.jsonPostOptions)
+            .map( (response: Response) => response.json() );
+    }
+
     logout(): void {
         // clear token remove user from local storage to log user out
         this.token = null;

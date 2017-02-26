@@ -15,3 +15,25 @@ sudo apt install sendemail
 letsencrypt renew --agree-tos --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 /usr/bin/uwsgi_python3 --emperor /home/tennistat/webapps/tennistat/uwsgi/
+
+FIX FOR confirmation EMAIL URL
+modify the following function in 
+
+venv/lib/python3.6/site-packages/allauth/account/adapter.py
+
+def get_email_confirmation_url(self, request, emailconfirmation):
+    """Constructs the email confirmation (activation) url.
+
+    Note that if you have architected your system such that email
+    confirmations are sent outside of the request context `request`
+    can be `None` here.
+    """
+    #url = reverse(
+    #    "account_confirm_email",
+    #    args=[emailconfirmation.key])
+    #ret = build_absolute_uri(
+    #    request,
+    #    url)
+    ret = "https://tennistat.xyz/verify-email/"+emailconfirmation.key
+    return ret
+
