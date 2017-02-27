@@ -106,6 +106,10 @@ def sony_csv_to_db(csvfile, user_id):
     transaction.dollar_amount = dollar_amount
     transaction.save()
 
+    profile = user
+    profile.last_change = timezone.now()
+    profile.save()
+
     return
 
 def _shorten_swing_type(swing_type):

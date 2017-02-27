@@ -39,6 +39,9 @@ def process_video_source(user, video_source):
     shots_pk = list(shots_pk.astype(str))
     leftie = user.userprofile.arm == 'L'
     imperial = user.userprofile.units == 'M'
+    profile = user.userprofile
+    profile.last_change = timezone.now()
+    profile.save()
     #make_shots_video_multi(shots_pk, processed_filename, 'lax',
     #                             (video_source.width,video_source.height), leftie, imperial,
     #                             'videosource', video_source.pk)
@@ -62,6 +65,9 @@ def process_video_collection(user, videocollection):
     shots_pk = list(shots_pk.astype(str))
     leftie = user.userprofile.arm == 'L'
     imperial = user.userprofile.units == 'M'
+    profile = user.userprofile
+    profile.last_change = timezone.now()
+    profile.save()
     result = make_shots_video_multi.apply_async((shots_pk, processed_filename, 'lax',
                                  (1280,720), leftie, imperial,
                                  'videocollection', videocollection.pk),

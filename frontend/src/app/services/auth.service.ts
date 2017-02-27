@@ -74,10 +74,13 @@ export class AuthService {
     logout(): void {
         // clear token remove user from local storage to log user out
         this.token = null;
+        localStorage.clear();
         //localStorage.removeItem('currentUser');
-        localStorage.removeItem('id_token');
-        localStorage.removeItem('userProfile');
-        localStorage.removeItem('playerProfile');
+
+        //localStorage.removeItem('id_token');
+        //localStorage.removeItem('userProfile');
+        //localStorage.removeItem('playerProfile');
+
         //localStorage.removeItem('username');
     }
 

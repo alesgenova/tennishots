@@ -4,6 +4,7 @@ import datetime as dt
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.utils import timezone
 
 from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
 from shot.tasks import sony_csv_to_db
@@ -37,6 +38,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              SonyProgressSerializer, VideoSourceSerializer,
                              VideoUploadSerializer, VideoRetrySerializer,
                              VideoCollectionSerializer, CreateVideoCollectionSerializer,
+                             LastChangeSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from api.permissions import is_owner_or_friend, is_owner
@@ -44,23 +46,47 @@ from api.permissions import is_owner_or_friend, is_owner
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 from sony.boxplot import box_plot
 
+class LastChanges(generics.GenericAPIView):
+    """
+    List the last changes for the user and all of its friends, so that a deep refresh of the data can be triggered in the frontend.
+    """
+    serializer_class = LastChangeSerializer
+    queryset = []
+    def get(self, request):
+        user = request.user
+        friends = user.userprofile.friends.all()
+        lastchanges = []
+        last_dict = {}
+        lastchanges.append({"user":user.username, "lastchange":user.userprofile.last_change})
+        for friend in friends:
+            lastchanges.append({"user":friend.user.username, "lastchange":friend.last_change})
+        serializer = LastChangeSerializer(lastchanges, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class PlayerProfileView(generics.GenericAPIView):
     """
     List all friends profiles, or create own user profile.
     """
     serializer_class = PlayerProfileSerializer
-    def get(self, request):
-        user = request.user
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
         player_profile = {}
-        player_profile['shot_count'] = user.shots.count()
-        player_profile['videoshot_count'] = user.videoshots.count()
-        player_profile['recording_count'] = user.videos.count()
-        player_profile['collection_count'] = user.collections.count()
+        player_profile['user'] = username
+        player_profile['lastchange'] = requested_user.userprofile.last_change
+        player_profile['shot_count'] = requested_user.shots.count()
+        player_profile['videoshot_count'] = requested_user.videoshots.count()
+        player_profile['recording_count'] = requested_user.videos.count()
+        player_profile['collection_count'] = requested_user.collections.count()
         player_profile['periods'] = {}
-        player_profile['periods']['session'] = user.sessions.all()
-        player_profile['periods']['week'] = user.weeks.all()
-        player_profile['periods']['month'] = user.months.all()
-        player_profile['periods']['year'] = user.years.all()
+        player_profile['periods']['session'] = requested_user.sessions.all()
+        player_profile['periods']['week'] = requested_user.weeks.all()
+        player_profile['periods']['month'] = requested_user.months.all()
+        player_profile['periods']['year'] = requested_user.years.all()
+        player_profile['collections'] = requested_user.collections.all()
+        player_profile['labels'] = requested_user.labels.all()
         serializer = PlayerProfileSerializer(player_profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -223,19 +249,6 @@ class UploadCsv(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class VideoSourceUpload(generics.GenericAPIView):
-    serializer_class = VideoUploadSerializer
-    queryset = []#UserProfile.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        serializer = VideoUploadSerializer(data=request.data)
-        videosource = get_object_or_404(VideoSource, user=request.user, pk=kwargs['pk'])
-        if serializer.is_valid():
-            if 'videofile' in serializer.data:
-                _handle_videosource_upload(request.FILES['videofile'], request.user, videosource)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 class UploadAvatar(generics.GenericAPIView):
     serializer_class = AvatarSerializer
     queryset = UserProfile.objects.all()
@@ -248,8 +261,7 @@ class UploadAvatar(generics.GenericAPIView):
                 curr_avatar = profile.avatar
                 if curr_avatar.name != 'no-avatar.svg':
                     profile.avatar.delete()
-                profile.avatar = request.FILES['avatar']
-                profile.save()
+                _handle_avatar_upload(request.FILES['avatar'], profile)
             serializer_out = UserProfileSerializer(profile)
             return Response(serializer_out.data, status=status.HTTP_201_CREATED)
 
@@ -315,6 +327,10 @@ class PendingFriendRequests(generics.GenericAPIView):
             to_user = get_object_or_404(UserProfile, user__username=serializer.data['to_user'])
             friend_request = get_object_or_404(FriendRequest, from_user=from_user, to_user=to_user)
             if serializer.data['action'] == "accept":
+                from_user.last_change = timezone.now()
+                to_user.last_change = timezone.now()
+                from_user.save()
+                to_user.save()
                 friend_request.accept()
             elif serializer.data['action'] == "refuse":
                 friend_request.refuse()
@@ -463,6 +479,9 @@ class AddSessionLabel(generics.GenericAPIView):
                 session.labels.add(label)
             elif action == 'remove':
                 session.labels.remove(label)
+            profile = request.user.userprofile
+            profile.last_change = timezone.now()
+            profile.save()
             serializer.validated_data['success'] = True
             return Response(serializer.data, status=200)
         else:
@@ -503,6 +522,9 @@ class LabelList(mixins.ListModelMixin,
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        profile = self.request.user.userprofile
+        profile.last_change = timezone.now()
+        profile.save()
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -536,6 +558,9 @@ class LabelDetail(APIView):
     def delete(self, request, pk, format=None):
         label = self.get_object(pk)
         label.delete()
+        profile = request.user.userprofile
+        profile.last_change = timezone.now()
+        profile.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class PeriodDetail(APIView):
@@ -701,6 +726,7 @@ def _handle_videosource_upload(f, user, videosource):
         videosource.status = 'P'
         videosource.save()
         vclip.reader.close()
+
         del vclip
         nshots = match_shots_to_source(user, videosource)
         if nshots > 0:
@@ -785,3 +811,30 @@ def _create_customer_profile(user):
                              shot_rate=0.001,
                              videoshot_rate=0.002)
     rate_change.save()
+
+def _handle_avatar_upload(f, userprofile):
+    import os
+    from PIL import Image, ImageOps
+    from tennistat.settings import MEDIA_ROOT
+    filename = f.name
+    print(filename)
+    #destination_name = 'user_'+str(userprofile.user.pk)+'/avatar/avatar.png'
+    destination_dir = os.path.join(MEDIA_ROOT,'user_'+str(userprofile.user.pk),'avatar')
+    #destination_file = os.path.join(destination_dir,filename)
+    destination_file = os.path.join(destination_dir,os.path.splitext(filename)[0]+".png")
+
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
+
+    # resize the avatar to make it small and square.
+    image_obj = Image.open(f)
+    # ImageOps compatible mode
+    if image_obj.mode not in ("L", "RGB", "RGBA"):
+        image_obj = image_obj.convert("RGBA")
+    imagefit = ImageOps.fit(image_obj, (300, 300), Image.ANTIALIAS)
+    imagefit.save(destination_file, 'PNG')
+
+    userprofile.avatar.name = 'user_{0}/avatar/{1}'.format(userprofile.user.pk, os.path.splitext(filename)[0]+".png")
+    #userprofile.avatar.name = destination_file
+    userprofile.last_change = timezone.now()
+    userprofile.save()

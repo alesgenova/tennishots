@@ -24,14 +24,13 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
       this.getRecentActivity();
-      this.userProfile = this.getProfile();
-      this.playerProfile = this.profileService.getPlayerProfile();
-      //this.getSessionStats('ales', 109);
+      this.userProfile = this.profileService.getProfile();
+      this.playerProfile = this.profileService.getPlayerProfile("");
+      console.log(this.playerProfile);
   }
 
   getProfile(){
-      //console.log("got Profile")
-      return this.profileService.getProfile();
+    return this.userProfile;
   }
 
   getRecentActivity(){

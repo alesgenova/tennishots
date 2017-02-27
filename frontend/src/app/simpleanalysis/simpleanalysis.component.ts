@@ -74,41 +74,16 @@ export class SimpleanalysisComponent implements OnInit {
 
   onUserSelectClick() {
       if (!(this.activeUser == this.previousUser)){
-          this.listOfPeriods = new UserPeriodsList();
-          this.getUserPeriods(this.activeUser);
-          this.selectedTags = [];
-          this.refreshTags(this.activeUser);
-          //this.onPeriodChange(this.activePeriod);
+          let activePlayer = this.profileService.getPlayerProfile(this.activeUser);
+          this.listOfPeriods = activePlayer.periods;
+          this.tagList = activePlayer.labels;
+          this.onPeriodChange(this.activePeriod);
           this.previousUser = this.activeUser;
           this.activePk = -1
           if (this.activePeriod == 'all'){
               this.onPeriodSelect(0);
           }
       }
-  }
-
-  getUserPeriods(user:string){
-      this.getPeriods(user, "session");
-      this.getPeriods(user, "week");
-      this.getPeriods(user, "month");
-      this.getPeriods(user, "year");
-  }
-
-  getPeriods(user:string, name:string) {
-      this.tennistatService.get_periods(user, name)
-        .subscribe(data=>{
-            this.listOfPeriods[name] = data;
-            if (name == this.activePeriod){
-                this.onPeriodChange(name);
-            }
-        });
-  }
-
-  refreshTags(user:string) {
-      this.tennistatService.get_tags(user)
-            .subscribe( res => {
-                this.tagList = res;
-            });
   }
 
   onPeriodChange(name:string){

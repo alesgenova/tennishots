@@ -35,4 +35,8 @@ def make_shots_video_multi(shots_pk, fileout, stitching='lax', sizeout=(1920,108
         obj.status = 'C'
         obj.save()
 
+    profile = shots[0].user.userprofile
+    profile.last_change = timezone.now()
+    profile.save()
+
     return

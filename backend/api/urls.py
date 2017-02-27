@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^csrf/$', views.CsrfView),
     url(r'^shots/$', views.PeriodStrokeDetail.as_view()),
     url(r'^profile/$', views.UserProfileView.as_view()),
-    url(r'^player/$', views.PlayerProfileView.as_view()),
+    url(r'^(?P<username>.+)/player/$', views.PlayerProfileView.as_view()),
     url(r'^friends/$', views.GetFriends.as_view()),
     url(r'^addfriend/$', views.AddFriend.as_view()),
     url(r'^friendrequests/$', views.PendingFriendRequests.as_view()),
@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^processvideo/$', views.VideoProcessRetry.as_view()),
     url(r'^shotcount/$', views.ShotCount.as_view()),
     url(r'^createvideocollection/$', views.CreateVideoCollection.as_view()),
+    url(r'^lastchanges/$', views.LastChanges.as_view()),
     #url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
 ]
 

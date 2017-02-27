@@ -6,6 +6,10 @@ from profiles.models import UserProfile, FriendRequest
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 from video.models import VideoSource, VideoCollection
 
+class LastChangeSerializer(serializers.Serializer):
+    user = serializers.CharField()
+    lastchange = serializers.DateTimeField()
+
 class VideoCollectionSerializer(serializers.ModelSerializer):
     shot_count = serializers.IntegerField(source='videoshots.count',
                                       read_only=True)
@@ -159,11 +163,11 @@ class SessionSerializerPlusPlus(serializers.ModelSerializer):
                                           read_only=True)
     labels = LabelSerializer(many=True, read_only=True)
     videos = VideoSourceSerializer(many=True, read_only=True)
-    player = FriendSerializer(source="user.userprofile", read_only=True)
+    #player = FriendSerializer(source="user.userprofile", read_only=True)
     #count = 23
     class Meta:
         model = Session
-        fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'labels', 'videos', 'player')
+        fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'labels', 'videos')#, 'player')
 
 class SessionSerializerPlus(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
@@ -250,7 +254,11 @@ class UserPeriodsListSerializer(serializers.Serializer):
     year = YearSerializer(many=True)
 
 class PlayerProfileSerializer(serializers.Serializer):
+    user = serializers.CharField()
+    lastchange = serializers.DateTimeField()
+    labels = LabelSerializer(many=True)
     periods = UserPeriodsListSerializer()
+    collections = VideoCollectionSerializer(many=True)
     shot_count = serializers.IntegerField()
     videoshot_count = serializers.IntegerField()
     recording_count = serializers.IntegerField()

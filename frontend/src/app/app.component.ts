@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   ngOnInit(){
       if (this.authService.loggedIn()){
           this.profileService.refreshProfile();
-          this.profileService.refreshPlayerProfile();
+          this.profileService.checkLastChanges();
       }
   }
 }

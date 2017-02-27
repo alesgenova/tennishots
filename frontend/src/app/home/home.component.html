@@ -28,37 +28,37 @@
         <hr>
         <div class="row text-center">
           <div class="col-4 col-lg-2" role="button" [routerLink]="['/summary']">
-            <h5><strong>{{playerProfile.periods.session.length}}</strong></h5>
+            <h5><strong>{{playerProfile?.periods.session.length}}</strong></h5>
             <p>
               sessions
             </p>
           </div>
           <div class="col-4 col-lg-2" role="button" [routerLink]="['/summary']">
-            <h5><strong>{{playerProfile.shot_count}}</strong></h5>
+            <h5><strong>{{playerProfile?.shot_count}}</strong></h5>
             <p>
               total shots
             </p>
           </div>
           <div class="col-4 col-lg-2" role="button" [routerLink]="['/video']">
-            <h5><strong>{{playerProfile.videoshot_count}}</strong></h5>
+            <h5><strong>{{playerProfile?.videoshot_count}}</strong></h5>
             <p>
               video shots
             </p>
           </div>
           <div class="col-4 col-lg-2" role="button" [routerLink]="['/video']">
-            <h5><strong>{{playerProfile.recording_count}}</strong></h5>
+            <h5><strong>{{playerProfile?.recording_count}}</strong></h5>
             <p>
               video recordings
             </p>
           </div>
           <div class="col-4 col-lg-2" role="button" [routerLink]="['/videocollection']">
-            <h5><strong>{{playerProfile.collection_count}}</strong></h5>
+            <h5><strong>{{playerProfile?.collection_count}}</strong></h5>
             <p>
               video collections
             </p>
           </div>
           <div class="col-4 col-lg-2" role="button" [routerLink]="['/friends']">
-            <h5><strong>{{userProfile.friends.length}}</strong></h5>
+            <h5><strong>{{userProfile?.friends.length}}</strong></h5>
             <p>
               friends
             </p>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
+from django.utils import timezone
 import io
 from PIL import Image, ImageOps
 
@@ -31,7 +32,7 @@ class UserProfile(models.Model):
     # One to one mapping between a user and its profile
     user = models.OneToOneField(User, primary_key=True)
     # Additional items we are interested in for a player
-    avatar = models.ImageField(upload_to=avatar_user_path, default="no-avatar.svg", blank=True)
+    avatar = models.ImageField(default="no-avatar.svg", blank=True)
     arm = models.CharField(max_length=1, choices=arm_choices)
     units = models.CharField(max_length=1, choices=unit_choices)
     backhand = models.IntegerField(choices=backhand_choices)
@@ -39,23 +40,7 @@ class UserProfile(models.Model):
 
     friends = models.ManyToManyField("self")
 
-    def save(self, *args, **kwargs):
-        try:
-            temp_name = self.avatar.name
-            image_obj = Image.open(self.avatar)
-            # ImageOps compatible mode
-            if image_obj.mode not in ("L", "RGB", "RGBA"):
-                image_obj = image_obj.convert("RGBA")
-            imagefit = ImageOps.fit(image_obj, (300, 300), Image.ANTIALIAS)
-            img_io = io.BytesIO()
-            imagefit.save(img_io, 'PNG')
-            self.avatar.delete(save=False)
-            self.avatar.save(temp_name,
-                        content=ContentFile(img_io.getvalue()),
-                        save=False)
-        except Exception:
-            pass
-        super(UserProfile, self).save(*args, **kwargs)
+    last_change = models.DateTimeField(default=timezone.now,blank=True)
 
     def __str__(self):
         return "{}".format(self.user.username)

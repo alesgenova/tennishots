@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'tennistat.wsgi.application'
 CORS_ORIGIN_WHITELIST = (
     'www.tennistat.xyz',
     'tennistat.xyz',
-    #'localhost:4200',
+    'localhost:4200',
     #'localhost:8000',
 )
 

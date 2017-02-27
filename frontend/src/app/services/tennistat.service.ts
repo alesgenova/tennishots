@@ -113,9 +113,15 @@ export class TennistatService {
           .map((response: Response) => {return response.json()} );
   }
 
-  get_player_profile(){
+  get_player_profile(user:string){
       return this.authHttp
-          .get(this.ApiUrl+'player/')
+          .get(this.ApiUrl+user+'/player/')
+          .map(res => res.json());
+  }
+
+  get_last_changes(){
+      return this.authHttp
+          .get(this.ApiUrl+'lastchanges/')
           .map(res => res.json());
   }
 
