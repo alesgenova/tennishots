@@ -60,7 +60,7 @@ export class VideocollectionComponent implements OnInit {
       }else{
           if (this.userProfile.friends.some(x=>x.user==this.activeUser)){
           }else{
-              this.router.navigate(['summary']);
+              this.router.navigate(['videocollection']);
           }
       }
       this.userChoices = {};
@@ -78,9 +78,9 @@ export class VideocollectionComponent implements OnInit {
                                  avatar:friend.avatar};
       };
       this.onUserSelectClick();
-      this.listOfPeriods = new UserPeriodsList();
-      this.getUserPeriods(this.userProfile.user);
-      this.refreshTags(this.userProfile.user);
+      let activePlayer = this.profileService.getPlayerProfile(this.userProfile.user);
+      this.listOfPeriods = activePlayer.periods;
+      this.tagList = activePlayer.labels;
       this.filter.username = this.userProfile.user;
 
       this.createVideoCollectionForm();
@@ -98,33 +98,6 @@ export class VideocollectionComponent implements OnInit {
           }
 
       }
-  }
-
-  getUserPeriods(user:string){
-      this.getPeriods(user, "session");
-      this.getPeriods(user, "week");
-      this.getPeriods(user, "month");
-      this.getPeriods(user, "year");
-  }
-
-  getPeriods(user:string, name:string) {
-      this.tennistatService.get_periods(user, name)
-        .subscribe(data=>{
-            this.listOfPeriods[name] = [];
-            for (let period of data){
-                if (period.videoshot_count > 0){
-                    this.listOfPeriods[name].push(period);
-                }
-            }
-
-        });
-  }
-
-  refreshTags(user:string) {
-      this.tennistatService.get_tags(user)
-            .subscribe( res => {
-                this.tagList = res;
-            });
   }
 
   getUserVideoCollections(user:string) {

@@ -67,7 +67,7 @@ class SessionLabel(models.Model):
                         (4, 'Condition'),
                         (5, 'Other'))
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='labels', on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     category = models.IntegerField(choices=category_choices, default=5)
     slug = models.SlugField()

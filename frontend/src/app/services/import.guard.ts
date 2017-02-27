@@ -12,13 +12,26 @@ export class ImportGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     // has the user already imported some shots?
-    let playerProfile = this.profileService.getPlayerProfile();
-    if (playerProfile.shot_count == 0){
+    let playerProfile = this.profileService.getPlayerProfile("");
+    if (typeof playerProfile == "undefined" || playerProfile === null) {
+      //this.router.navigate(['/landing']);
+      //return false;
+      setTimeout(() => {
+        let url_array: string[] = [];
+        for (let segment of route.url){
+          url_array.push(segment.path);
+        }
+        console.log(url_array);
+        this.router.navigate(url_array);
+        return false;
+      }, 1000);
+    }else if (playerProfile.shot_count == 0){
         //this.profileService.refreshPlayerProfile();
         this.router.navigate(['/landing']);
         return false;
+    }else{
+      // then let them through
+      return true;
     }
-    // then let them through
-    return true;
   }
 }

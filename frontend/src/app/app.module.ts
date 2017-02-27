@@ -51,7 +51,6 @@ import { RegisterComponent } from './accounts/register/register.component';
 import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
 import { ProfileComponent } from './accounts/profile/profile.component';
-import { FileuploadComponent } from './fileupload/fileupload.component';
 import { CsvuploadComponent } from './csvupload/csvupload.component';
 import { HomeComponent } from './home/home.component';
 import { SimpleanalysisComponent } from './simpleanalysis/simpleanalysis.component';
@@ -92,7 +91,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FriendsComponent,
     LabelsComponent,
     ProfileComponent,
-    FileuploadComponent,
     // ng2-file-upload
     //FileSelectDirective,
     //FileDropDirective,

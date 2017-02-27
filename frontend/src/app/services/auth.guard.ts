@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['/login']);
       return false;
     }
+    this.profileService.checkLastChanges();
     // has the user already imported some shots?
     // does the user have any friends?
 

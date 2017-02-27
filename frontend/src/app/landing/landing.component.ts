@@ -12,7 +12,7 @@ export class LandingComponent implements OnInit {
   constructor(private profileService:ProfileService) { }
 
   ngOnInit() {
-    this.profileService.refreshPlayerProfile();
+    this.profileService.checkLastChanges();
   }
 
 }

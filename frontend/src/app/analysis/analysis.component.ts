@@ -24,8 +24,8 @@ export class AnalysisComponent implements OnInit {
   filter2: SonyFilter = new SonyFilter();
   stats1: SonyResponse = new SonyResponse();
   stats2: SonyResponse = new SonyResponse();
-  gotPeriods1 = false;
-  gotPeriods2 = false;
+  gotPeriods1 = true;
+  gotPeriods2 = true;
   //_filter2: SonyFilter = new SonyFilter(); // aux filter to save/delete the state of filter2 when enabling/disabling comparison
 
   //filter2: SonyFilter;
@@ -52,15 +52,8 @@ export class AnalysisComponent implements OnInit {
       this.imperial_units = (this.userProfile.units == 'M');
       this.filter1.username = this.userProfile.user;
       this.filter2.username = this.userProfile.user;
-      this.filter1.imperial_units = this.imperial_units;
-      this.filter2.imperial_units = this.imperial_units;
-      this.getUserPeriods(this.filter1.username,1);
-      this.listOfPeriods2 = this.listOfPeriods1;
-      this.gotPeriods2 = true;
-      //this.getUserPeriods(this.filter2.username,2);
-      this.getTags(this.filter1.username,1);
-      this.getTags(this.filter2.username,2);
-      //this.tagList2 = this.tagList1
+      this.onUserSelectClick(1);
+      this.onUserSelectClick(2);
   }
 
   handleCompareChange() {
@@ -83,47 +76,15 @@ export class AnalysisComponent implements OnInit {
       this.showFilter = true;
       if (num ==1){
           //this.gotPeriods1 = false;
-          this.listOfPeriods1 = new UserPeriodsList();
-          this.getUserPeriods(this.filter1.username,1);
-          this.getTags(this.filter1.username,1);
+          let activePlayer = this.profileService.getPlayerProfile(this.filter1.username);
+          this.listOfPeriods1 = activePlayer.periods;
+          this.tagList1 = activePlayer.labels;
       }else if (num == 2){
           //this.gotPeriods2 = false;
-          this.listOfPeriods2 = new UserPeriodsList();
-          this.getUserPeriods(this.filter2.username,2);
-          this.getTags(this.filter2.username,2);
+          let activePlayer = this.profileService.getPlayerProfile(this.filter2.username);
+          this.listOfPeriods2 = activePlayer.periods;
+          this.tagList2 = activePlayer.labels;
       }
-  }
-
-  getUserPeriods(user:string, num:number){
-      this.getPeriods(user, "session", num);
-      this.getPeriods(user, "week", num);
-      this.getPeriods(user, "month", num);
-      this.getPeriods(user, "year", num);
-  }
-
-  getPeriods(user:string, name:string, num:number) {
-      var periods: Period[];
-      this.tennistatService.get_periods(user, name)
-        .subscribe(data=>{
-            if (num == 1) {
-                this.listOfPeriods1[name] = data;
-                this.gotPeriods1 = true;
-            }else if (num == 2){
-                this.listOfPeriods2[name] = data;
-                this.gotPeriods2 = true;
-            }
-      });
-  }
-
-  getTags(user:string, num:number) {
-      this.tennistatService.get_tags(user)
-            .subscribe( res => {
-                if (num == 1) {
-                    this.tagList1 = res;
-                }else if (num == 2) {
-                    this.tagList2 = res;
-                }
-            });
   }
 
   onSubmitRequest(){

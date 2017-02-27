@@ -8,8 +8,9 @@ export class ProfileService {
     private loggedIn:boolean;
     private userProfile:any = null;
     private customerProfile:any = null;
-    private playerProfile:any = null;
+    //private playerProfile:any = null;
     private timezoneString: string = '';
+    private playerProfiles: any = new Object();
 
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
 
@@ -19,36 +20,71 @@ export class ProfileService {
                   .subscribe(res => {
                       this.userProfile = res;
                       localStorage.setItem('userProfile', JSON.stringify(res));
-                      return this.userProfile
                   });
         }
     }
 
     getProfile() {
         if (this.userProfile === null){
-            return JSON.parse(localStorage.getItem('userProfile'))
-        }else{
-            return this.userProfile
+            this.userProfile = JSON.parse(localStorage.getItem('userProfile'));
         }
+        return this.userProfile
     }
 
-    refreshPlayerProfile(){
+
+    checkLastChanges(){
+      // Kinda complex function to make sure that everything is up to date with the server
+      // we'll have frequen calls to check when is the lates change for each user,
+      // and if something has changed we'll refresh the local copy of the playerProfile
         if (this.authService.loggedIn()){
-            this.tennistatService.get_player_profile()
-                  .subscribe(res => {
-                      this.playerProfile = res;
-                      localStorage.setItem('playerProfile', JSON.stringify(res));
-                      return this.playerProfile
-                  });
+            this.tennistatService.get_last_changes()
+                .subscribe(res => {
+                  for (let entry of res){
+                    let flag = 0;
+                    if (typeof this.playerProfiles[entry.user] != "undefined") {
+                      if (entry.lastchange == this.playerProfiles[entry.user].lastchange){
+                        flag = 1
+                      }
+                    }
+                    if (flag != 1){
+                      this.tennistatService.get_player_profile(entry.user)
+                          .subscribe( res2 => {
+                            this.playerProfiles[entry.user] = res2;
+                            localStorage.setItem(entry.user+'_playerProfile', JSON.stringify(res2));
+                          });
+                      if (entry.user == this.getProfile().user){
+                        this.refreshProfile();
+                      }
+                    }
+                  }
+                } );
         }
     }
 
-    getPlayerProfile(){
-        if (this.playerProfile === null){
-            return JSON.parse(localStorage.getItem('playerProfile'))
-        }else{
-            return this.playerProfile
+//    refreshPlayerProfiles(){
+//      if (this.authService.loggedIn()){
+//            this.tennistatService.get_player_profile()
+//                  .subscribe(res => {
+//                      this.playerProfile = res;
+//                      localStorage.setItem('playerProfile', JSON.stringify(res));
+//                      return this.playerProfile
+//                  });
+//        }
+//    }
+
+    getPlayerProfile(user:string){
+        if (user == ""){
+          let profile = this.getProfile();
+          if (profile === null){
+            return null
+          }else{
+            user = this.getProfile().user;
+          }
         }
+        if (this.playerProfiles[user] === null){
+            this.playerProfiles[user] = JSON.parse(localStorage.getItem(user+'_playerProfile'));
+        }
+        return this.playerProfiles[user]
     }
 
     refreshTimezoneString(){

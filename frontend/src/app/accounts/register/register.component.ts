@@ -78,9 +78,10 @@ export class RegisterComponent implements OnInit {
                                     success = true;
                                     //console.log("Registration Success");
                                     this.tennistatService.create_profile(this.registrationForm.value.profile)
-                                          .subscribe( res => { localStorage.setItem('userProfile', JSON.stringify(res)) } );
+                                          .subscribe( res => { localStorage.setItem('userProfile', JSON.stringify(res));
+                                                              });
                                     //console.log("Userprofile Success");
-                                    this.router.navigate(['landing'])
+                                    this.router.navigate(['landing']);
                                 }
                                },
                         err => {

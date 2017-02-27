@@ -36,7 +36,7 @@ export class VideoComponent implements OnInit {
     periodsSubset: Period[];
     tagList: Label[] = [];
     selectedTags: number[] = [];
-    activeVideo: any;
+    activeVideo: any = null;
     activeVideoPk: number = 0;
     uploadSourceUrl: string;
     timezoneString: string = "";
@@ -82,33 +82,27 @@ export class VideoComponent implements OnInit {
 
   onUserSelectClick() {
       if (!(this.activeUser == this.previousUser)){
-          this.sessionList = [];
-          this.getUserSessionsVideos(this.activeUser);
-          this.selectedTags = [];
-          this.refreshTags(this.activeUser);
-          //this.onPeriodChange(this.activePeriod);
+          this.activeVideo = null;
+          this.activeVideoPk = 0;
+          this.videoSubset = [];
+          this.doVideoPagination = false;
+          this.videoSubset = [];
+          let activePlayer = this.profileService.getPlayerProfile(this.activeUser);
+          this.getUserSessionsVideos(activePlayer.periods.session)
+          this.tagList = activePlayer.labels;
           this.previousUser = this.activeUser;
       }
   }
 
-  getUserSessionsVideos(user:string) {
-      this.tennistatService.get_sessions_videos(user)
-        .subscribe(data=>{
-            for (let session of data){
-                if (session.video_count > 0){
-                    this.sessionList.push(session)
-                }
-            }
-            this.filteredSession = this.sessionList;
-            this.onSessionPagination();
-        });
-  }
-
-  refreshTags(user:string) {
-      this.tennistatService.get_tags(user)
-            .subscribe( res => {
-                this.tagList = res;
-            });
+  getUserSessionsVideos(sessions:Period[]) {
+      this.sessionList = [];
+      for (let session of sessions){
+          if (session.video_count > 0){
+              this.sessionList.push(session)
+          }
+      }
+      this.filteredSession = this.sessionList;
+      this.onSessionPagination();
   }
 
   onSessionPagination(){
