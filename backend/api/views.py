@@ -81,12 +81,12 @@ class PlayerProfileView(generics.GenericAPIView):
         player_profile['recording_count'] = requested_user.videos.count()
         player_profile['collection_count'] = requested_user.collections.count()
         player_profile['periods'] = {}
-        player_profile['periods']['session'] = requested_user.sessions.all()
-        player_profile['periods']['week'] = requested_user.weeks.all()
-        player_profile['periods']['month'] = requested_user.months.all()
-        player_profile['periods']['year'] = requested_user.years.all()
-        player_profile['collections'] = requested_user.collections.all()
-        player_profile['labels'] = requested_user.labels.all()
+        player_profile['periods']['session'] = requested_user.sessions.all().order_by('-timestamp')
+        player_profile['periods']['week'] = requested_user.weeks.all().order_by('-timestamp')
+        player_profile['periods']['month'] = requested_user.months.all().order_by('-timestamp')
+        player_profile['periods']['year'] = requested_user.years.all().order_by('-timestamp')
+        player_profile['collections'] = requested_user.collections.all().order_by('-timestamp')
+        player_profile['labels'] = requested_user.labels.all().order_by('category')
         serializer = PlayerProfileSerializer(player_profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
