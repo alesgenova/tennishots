@@ -1,5 +1,6 @@
 # Create your tasks here
 from __future__ import absolute_import, unicode_literals
+from django.utils import timezone
 from celery import shared_task
 from shot.models import Year, Month, Week, Day, Session, Shot, SonyData
 from shot.import_sony import csv2shotsvideos

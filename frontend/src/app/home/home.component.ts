@@ -6,6 +6,8 @@ import { TennistatService } from '../services/tennistat.service';
 import { SonyFilter } from '../objects/sonyfilter';
 import { SonyResponse } from '../objects/sonyresponse';
 
+import {Subscription} from 'rxjs/Subscription';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -19,14 +21,25 @@ export class HomeComponent implements OnInit {
   sessionsStats: SonyResponse[] = [];
   sessionsExpand: boolean[] = [];
   emptyResponse = new SonyResponse();
+  playerProfileSubscription: Subscription;
 
   constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
   ngOnInit() {
+      this.playerProfileSubscription = this.profileService.myPlayerProfile$
+        .subscribe(profile => {
+          this.playerProfile = profile;
+          //console.log("subscription updated");
+          //console.log(this.playerProfile);
+        });
       this.getRecentActivity();
       this.userProfile = this.profileService.getProfile();
-      this.playerProfile = this.profileService.getPlayerProfile("");
-      console.log(this.playerProfile);
+      //this.playerProfile = this.profileService.getPlayerProfile("");
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.playerProfileSubscription.unsubscribe();
   }
 
   getProfile(){
@@ -38,7 +51,7 @@ export class HomeComponent implements OnInit {
             .subscribe( res => {
                 this.recentActivity = res;
                 for (let i in res){
-                    console.log("ires"+i)
+                    //console.log("ires"+i)
                     this.sessionsStats.push(new SonyResponse());
                     this.sessionsExpand.push(false);
                 };

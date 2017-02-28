@@ -3,6 +3,8 @@ import { TennistatService } from './tennistat.service';
 import { AuthService } from './auth.service';
 import { PlayerProfile } from '../objects/playerprofile';
 
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
 @Injectable()
 export class ProfileService {
 
@@ -13,7 +15,21 @@ export class ProfileService {
     private timezoneString: string = '';
     private playerProfiles: any = new Object();
 
+    private playerProfilesSubject = new BehaviorSubject<any>({});
+    playerProfiles$ = this.playerProfilesSubject.asObservable();
+
+    private myPlayerProfileSubject = new BehaviorSubject<PlayerProfile>(new PlayerProfile());
+    myPlayerProfile$ = this.myPlayerProfileSubject.asObservable();
+
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
+
+    updatedPlayerProfiles() {
+      this.playerProfilesSubject.next(this.playerProfiles);
+    }
+
+    updatedMyPlayerProfile() {
+      this.myPlayerProfileSubject.next(this.playerProfiles['ales']);
+    }
 
     refreshProfile() {
         if (this.authService.loggedIn()){
@@ -38,8 +54,8 @@ export class ProfileService {
       // we'll have frequen calls to check when is the lates change for each user,
       // and if something has changed we'll refresh the local copy of the playerProfile
         if (this.authService.loggedIn()){
-            console.log("playerProfiles");
-            console.log(this.playerProfiles);
+            //console.log("playerProfiles");
+            //console.log(this.playerProfiles);
             this.tennistatService.get_last_changes()
                 .subscribe(res => {
                   for (let entry of res){
@@ -54,6 +70,10 @@ export class ProfileService {
                           .subscribe( res2 => {
                             this.playerProfiles[entry.user] = res2;
                             localStorage.setItem(entry.user+'_playerProfile', JSON.stringify(res2));
+                            this.updatedPlayerProfiles();
+                            if (entry.user == this.getProfile().user){
+                              this.updatedMyPlayerProfile();
+                            }
                           });
                       if (entry.user == this.getProfile().user){
                         this.refreshProfile();

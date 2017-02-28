@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from shot.models import Shot
 from video.models import VideoShot
 import numpy as np
