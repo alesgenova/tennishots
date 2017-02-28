@@ -3,6 +3,7 @@
 /tennistat/static/
 migrations/
 */db.sqlite3
+frontend_dist
 
 # Angular stuff
 typings

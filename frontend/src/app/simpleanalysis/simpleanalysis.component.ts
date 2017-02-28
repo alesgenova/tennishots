@@ -9,6 +9,8 @@ import { Period, UserPeriodsList } from '../objects/period';
 import { SonyResponse } from '../objects/sonyresponse';
 import { Label } from '../objects/label';
 
+import {Subscription} from 'rxjs/Subscription';
+
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -35,6 +37,9 @@ export class SimpleanalysisComponent implements OnInit {
     periodsSubset: Period[];
     tagList: Label[] = [];
     selectedTags: number[] = [];
+
+    playerProfilesSubscription: Subscription;
+    playerProfiles: any;
 
   constructor(  private route: ActivatedRoute,
                 private router: Router,
@@ -69,12 +74,21 @@ export class SimpleanalysisComponent implements OnInit {
                                  last_name:friend.last_name,
                                  avatar:friend.avatar};
       };
-      this.onUserSelectClick();
+      this.playerProfilesSubscription = this.profileService.playerProfiles$
+        .subscribe(profiles => {
+          this.playerProfiles = profiles;
+          this.onUserSelectClick();
+        });
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.playerProfilesSubscription.unsubscribe();
   }
 
   onUserSelectClick() {
       if (!(this.activeUser == this.previousUser)){
-          let activePlayer = this.profileService.getPlayerProfile(this.activeUser);
+          let activePlayer = this.playerProfiles[this.activeUser];
           this.listOfPeriods = activePlayer.periods;
           this.tagList = activePlayer.labels;
           this.onPeriodChange(this.activePeriod);
