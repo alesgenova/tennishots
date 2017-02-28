@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TennistatService } from './tennistat.service';
 import { AuthService } from './auth.service';
+import { PlayerProfile } from '../objects/playerprofile';
 
 @Injectable()
 export class ProfileService {
@@ -37,6 +38,8 @@ export class ProfileService {
       // we'll have frequen calls to check when is the lates change for each user,
       // and if something has changed we'll refresh the local copy of the playerProfile
         if (this.authService.loggedIn()){
+            console.log("playerProfiles");
+            console.log(this.playerProfiles);
             this.tennistatService.get_last_changes()
                 .subscribe(res => {
                   for (let entry of res){
@@ -76,13 +79,14 @@ export class ProfileService {
         if (user == ""){
           let profile = this.getProfile();
           if (profile === null){
-            return null
+            return new PlayerProfile();
           }else{
             user = this.getProfile().user;
           }
         }
         if (this.playerProfiles[user] === null){
-            this.playerProfiles[user] = JSON.parse(localStorage.getItem(user+'_playerProfile'));
+            return new PlayerProfile();
+            //this.playerProfiles[user] = JSON.parse(localStorage.getItem(user+'_playerProfile'));
         }
         return this.playerProfiles[user]
     }
