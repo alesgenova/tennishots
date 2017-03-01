@@ -8,7 +8,9 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 @Injectable()
 export class ProfileService {
 
+    private myUsername: string = "";
     private loggedIn:boolean;
+    private userChoices:any = null;
     private userProfile:any = null;
     private customerProfile:any = null;
     //private playerProfile:any = null;
@@ -18,8 +20,8 @@ export class ProfileService {
     private playerProfilesSubject = new BehaviorSubject<any>({});
     playerProfiles$ = this.playerProfilesSubject.asObservable();
 
-    private myPlayerProfileSubject = new BehaviorSubject<PlayerProfile>(new PlayerProfile());
-    myPlayerProfile$ = this.myPlayerProfileSubject.asObservable();
+    private userChoicesSubject = new BehaviorSubject<any>({});
+    userChoices$ = this.userChoicesSubject.asObservable();
 
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
 
@@ -27,8 +29,8 @@ export class ProfileService {
       this.playerProfilesSubject.next(this.playerProfiles);
     }
 
-    updatedMyPlayerProfile() {
-      this.myPlayerProfileSubject.next(this.playerProfiles['ales']);
+    updatedUserChoices() {
+      this.userChoicesSubject.next(this.userChoices);
     }
 
     refreshProfile() {
@@ -37,8 +39,26 @@ export class ProfileService {
                   .subscribe(res => {
                       this.userProfile = res;
                       localStorage.setItem('userProfile', JSON.stringify(res));
+                      this.refreshUserChoices()
                   });
         }
+    }
+
+    refreshUserChoices(){
+      this.userChoices = {};
+      this.userChoices[this.myUsername] = {username:this.myUsername,
+                             first_name:"Myself",
+                             last_name:"",
+                             avatar:this.userProfile.avatar};
+      for (let friend of this.userProfile.friends){
+          this.userChoices[friend.user] = {username:friend.user,
+                                 first_name:friend.first_name,
+                                 last_name:friend.last_name,
+                                 avatar:friend.avatar};
+      };
+      //console.log("userChoices inside");
+      //console.log(this.userChoices);
+      this.updatedUserChoices();
     }
 
     getProfile() {
@@ -46,6 +66,24 @@ export class ProfileService {
             this.userProfile = JSON.parse(localStorage.getItem('userProfile'));
         }
         return this.userProfile
+    }
+
+    initialize(){
+      if (this.authService.loggedIn()){
+        this.myUsername = localStorage.getItem('username');
+        this.userProfile = JSON.parse(localStorage.getItem('userProfile'));
+        if (this.userProfile !== null){
+          this.playerProfiles[this.myUsername] = JSON.parse(localStorage.getItem(this.myUsername+'_playerProfile'));
+          for (let friend of this.userProfile.friends){
+            this.playerProfiles[friend.user] = JSON.parse(localStorage.getItem(friend.user+'_playerProfile'));
+          }
+          this.refreshUserChoices();
+        }
+        this.checkLastChanges();
+        this.updatedPlayerProfiles();
+        //console.log("on initialize")
+        //console.log(this.playerProfiles)
+      }
     }
 
 
@@ -71,11 +109,11 @@ export class ProfileService {
                             this.playerProfiles[entry.user] = res2;
                             localStorage.setItem(entry.user+'_playerProfile', JSON.stringify(res2));
                             this.updatedPlayerProfiles();
-                            if (entry.user == this.getProfile().user){
-                              this.updatedMyPlayerProfile();
-                            }
+                            //if (entry.user == this.myUsername){
+                            //  this.updatedMyPlayerProfile();
+                            //}
                           });
-                      if (entry.user == this.getProfile().user){
+                      if (entry.user == this.myUsername){
                         this.refreshProfile();
                       }
                     }
@@ -95,6 +133,7 @@ export class ProfileService {
 //        }
 //    }
 
+/*
     getPlayerProfile(user:string){
         if (user == ""){
           let profile = this.getProfile();
@@ -110,6 +149,29 @@ export class ProfileService {
         }
         return this.playerProfiles[user]
     }
+*/
+
+    getUsername(){
+      return this.myUsername
+    }
+
+    setUsername(user:string){
+      this.myUsername = user;
+    }
+
+    getPlayerProfile(user:string){
+        let playerProfile = new PlayerProfile();
+        if (user == ""){
+          playerProfile = this.playerProfiles[this.myUsername];
+        }else{
+          playerProfile = this.playerProfiles[user];
+        }
+        if (playerProfile === null){
+            return new PlayerProfile();
+        }
+        return playerProfile
+    }
+
 
     refreshTimezoneString(){
         let timezoneOffset = (new Date().getTimezoneOffset());
