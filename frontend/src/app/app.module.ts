@@ -17,6 +17,8 @@ import { ImportGuard } from './services/import.guard';
 import { TennistatService } from './services/tennistat.service';
 import { ProfileService } from './services/profile.service';
 
+import { LoopObjectPipe } from './pipes/loopobject.pipe'
+
 // highcharts module
 //import { ChartModule } from 'angular2-highcharts';
 import { ChartsModule } from 'ng2-charts';
@@ -111,7 +113,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LandingComponent,
     PasswordresetComponent,
     ForgotpasswordComponent,
-    VerifyemailComponent
+    VerifyemailComponent,
+    LoopObjectPipe
   ],
   imports: [
     RouterModule.forRoot(routes),

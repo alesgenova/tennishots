@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class HomeComponent implements OnInit {
 
+  user: string;
   userProfile: any;
   playerProfile: any;
   recentActivity:any[];
@@ -26,14 +27,15 @@ export class HomeComponent implements OnInit {
   constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
   ngOnInit() {
-      this.playerProfileSubscription = this.profileService.myPlayerProfile$
-        .subscribe(profile => {
-          this.playerProfile = profile;
+      this.user = this.profileService.getUsername();
+      this.playerProfileSubscription = this.profileService.playerProfiles$
+        .subscribe(profiles => {
+          this.playerProfile = profiles[this.user];
+          this.userProfile = this.profileService.getProfile();
           //console.log("subscription updated");
           //console.log(this.playerProfile);
         });
       this.getRecentActivity();
-      this.userProfile = this.profileService.getProfile();
       //this.playerProfile = this.profileService.getPlayerProfile("");
   }
 

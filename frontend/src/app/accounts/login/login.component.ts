@@ -35,8 +35,10 @@ export class LoginComponent implements OnInit {
         .subscribe( res => {
                     if (typeof res.token != "undefined") {
                         localStorage.setItem('id_token', res.token);
-                        this.profileService.refreshProfile();
-                        this.profileService.checkLastChanges();
+                        localStorage.setItem('username', res.user.username);
+                        this.profileService.initialize();
+                        //this.profileService.refreshProfile();
+                        //this.profileService.checkLastChanges();
                         this.router.navigate(['home']);
                         //setTimeout(() => this.router.navigate(['home']), 1250);
                     }

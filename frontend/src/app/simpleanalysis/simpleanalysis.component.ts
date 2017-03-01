@@ -32,13 +32,14 @@ export class SimpleanalysisComponent implements OnInit {
     doPagination: boolean;
     nPeriods: number;
     periodsPerPage: number = 4;
-    currPage: number;
+    currPage: number = 1;
     filteredPeriods: Period[];
     periodsSubset: Period[];
     tagList: Label[] = [];
     selectedTags: number[] = [];
 
     playerProfilesSubscription: Subscription;
+    userChoicesSubscription: Subscription;
     playerProfiles: any;
 
   constructor(  private route: ActivatedRoute,
@@ -60,44 +61,46 @@ export class SimpleanalysisComponent implements OnInit {
               this.router.navigate(['summary']);
           }
       }
-      this.userChoices = {};
-      this.userChoices_keys = []; // I ain't implementing no fucking pipe to loop in the template. I miss python.
-      this.userChoices_keys.push(this.userProfile.user);
-      this.userChoices[this.userProfile.user] = {username:this.userProfile.user,
-                             first_name:"Myself",
-                             last_name:"",
-                             avatar:this.userProfile.avatar};
-      for (let friend of this.userProfile.friends){
-          this.userChoices_keys.push(friend.user);
-          this.userChoices[friend.user] = {username:friend.user,
-                                 first_name:friend.first_name,
-                                 last_name:friend.last_name,
-                                 avatar:friend.avatar};
-      };
+
+      // subscribe to changes in the player profiles
       this.playerProfilesSubscription = this.profileService.playerProfiles$
         .subscribe(profiles => {
           this.playerProfiles = profiles;
-          this.onUserSelectClick();
+          this.fromProfileToPagination();
+        });
+
+      // subscribe to changes in the user choices
+      this.userChoicesSubscription = this.profileService.userChoices$
+        .subscribe(choices => {
+          this.userChoices = choices;
+          console.log("userChoices");
+          console.log(this.userChoices);
         });
   }
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.playerProfilesSubscription.unsubscribe();
+    this.userChoicesSubscription.unsubscribe();
   }
 
-  onUserSelectClick() {
-      if (!(this.activeUser == this.previousUser)){
-          let activePlayer = this.playerProfiles[this.activeUser];
-          this.listOfPeriods = activePlayer.periods;
-          this.tagList = activePlayer.labels;
-          this.onPeriodChange(this.activePeriod);
-          this.previousUser = this.activeUser;
-          this.activePk = -1
-          if (this.activePeriod == 'all'){
-              this.onPeriodSelect(0);
-          }
-      }
+  onUserChange(user:string){
+    this.activeUser = user;
+    this.activePk = -1;
+    this.currPage = 1;
+    this.stats = new SonyResponse();
+    this.fromProfileToPagination();
+    //if (this.activePeriod == 'all'){
+    //    this.onPeriodSelect(0);
+    //}
+  }
+
+  fromProfileToPagination() {
+      let activePlayer = this.playerProfiles[this.activeUser];
+      this.listOfPeriods = activePlayer.periods;
+      this.tagList = activePlayer.labels;
+      this.onPeriodChange(this.activePeriod);
+      //this.previousUser = this.activeUser;
   }
 
   onPeriodChange(name:string){
@@ -110,9 +113,9 @@ export class SimpleanalysisComponent implements OnInit {
       }else{
           this.nPeriods = this.listOfPeriods[name].length;
           this.doPagination = (this.nPeriods > this.periodsPerPage);
-          this.currPage = 1;
+          //this.currPage = 1;
           if (this.doPagination){
-              this.periodsSubset = this.listOfPeriods[name].slice(0,this.periodsPerPage);
+              this.onPageChange();
           }else{
               this.periodsSubset = this.listOfPeriods[name]
           }
