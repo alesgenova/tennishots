@@ -21,6 +21,7 @@ import 'rxjs/add/operator/switchMap';
 export class SimpleanalysisComponent implements OnInit {
 
     userChoices: any;
+    myUsername: string;
     userChoices_keys:any[];
     stats = new SonyResponse();
     listOfPeriods = new UserPeriodsList();
@@ -48,14 +49,13 @@ export class SimpleanalysisComponent implements OnInit {
                 private tennistatService: TennistatService) { }
 
   ngOnInit() {
+      this.myUsername = this.profileService.getUsername();
       this.userProfile = this.profileService.getProfile();
       this.activeUser = this.route.snapshot.params['user'];
       if (this.activeUser == null){
-          this.activeUser = this.userProfile.user;
+          this.activeUser = this.myUsername;
       }
-      if (this.activeUser == this.userProfile.user){
-
-      }else{
+      if (this.activeUser != this.myUsername){
           if (this.userProfile.friends.some(x=>x.user==this.activeUser)){
           }else{
               this.router.navigate(['summary']);
@@ -73,8 +73,8 @@ export class SimpleanalysisComponent implements OnInit {
       this.userChoicesSubscription = this.profileService.userChoices$
         .subscribe(choices => {
           this.userChoices = choices;
-          console.log("userChoices");
-          console.log(this.userChoices);
+          //console.log("userChoices");
+          //console.log(this.userChoices);
         });
   }
 
@@ -88,6 +88,7 @@ export class SimpleanalysisComponent implements OnInit {
     this.activeUser = user;
     this.activePk = -1;
     this.currPage = 1;
+    this.selectedTags = [];
     this.stats = new SonyResponse();
     this.fromProfileToPagination();
     //if (this.activePeriod == 'all'){
