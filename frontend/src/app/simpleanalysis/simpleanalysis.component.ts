@@ -73,8 +73,8 @@ export class SimpleanalysisComponent implements OnInit {
       this.userChoicesSubscription = this.profileService.userChoices$
         .subscribe(choices => {
           this.userChoices = choices;
-          console.log("userChoices");
-          console.log(this.userChoices);
+          //console.log("userChoices");
+          //console.log(this.userChoices);
         });
   }
 

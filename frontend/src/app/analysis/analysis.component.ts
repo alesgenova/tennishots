@@ -10,6 +10,8 @@ import { Label } from '../objects/label';
 
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
+import {Subscription} from 'rxjs/Subscription';
+
 @Component({
   selector: 'analysis',
   templateUrl: './analysis.component.html',
@@ -40,20 +42,38 @@ export class AnalysisComponent implements OnInit {
 
   imperial_units: boolean = false;
 
+  playerProfilesSubscription: Subscription;
+  userChoicesSubscription: Subscription;
+  playerProfiles: any;
+
   constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
 
   ngOnInit() {
       this.userProfile = this.profileService.getProfile();
-      this.userChoices = [];
-      this.userChoices.push({username:this.userProfile.user,first_name:"Myself"});
-      for (let friend of this.userProfile.friends){
-          this.userChoices.push({username:friend.user,first_name:friend.first_name});
-      };
+
       this.imperial_units = (this.userProfile.units == 'M');
       this.filter1.username = this.userProfile.user;
       this.filter2.username = this.userProfile.user;
-      this.onUserSelectClick(1);
-      this.onUserSelectClick(2);
+
+      // subscribe to changes in the player profiles
+      this.playerProfilesSubscription = this.profileService.playerProfiles$
+        .subscribe(profiles => {
+          this.playerProfiles = profiles;
+          this.populatePeriods(1);
+          this.populatePeriods(2);
+          //this.fromProfileToPagination();
+        });
+
+      // subscribe to changes in the user choices
+      this.userChoicesSubscription = this.profileService.userChoices$
+        .subscribe(choices => {
+          this.userChoices = choices;
+          //console.log("userChoices");
+          //console.log(this.userChoices);
+        });
+
+//      this.onUserSelectClick(1);
+//      this.onUserSelectClick(2);
   }
 
   handleCompareChange() {
@@ -72,20 +92,35 @@ export class AnalysisComponent implements OnInit {
       }
     };
 
-  onUserSelectClick(num:number) {
-      this.showFilter = true;
-      if (num ==1){
-          //this.gotPeriods1 = false;
-          let activePlayer = this.profileService.getPlayerProfile(this.filter1.username);
-          this.listOfPeriods1 = activePlayer.periods;
-          this.tagList1 = activePlayer.labels;
-      }else if (num == 2){
-          //this.gotPeriods2 = false;
-          let activePlayer = this.profileService.getPlayerProfile(this.filter2.username);
-          this.listOfPeriods2 = activePlayer.periods;
-          this.tagList2 = activePlayer.labels;
-      }
-  }
+    onUserChange(user:string, num:number){
+        this.showFilter = true;
+        if (num == 1){
+            this.filter1 = new SonyFilter();
+            //this.gotPeriods1 = false;
+            this.filter1.username = user;
+        }else if (num == 2){
+            this.filter2 = new SonyFilter();
+            //this.gotPeriods2 = false;
+            this.filter2.username = user;
+        }
+        this.populatePeriods(num);
+    }
+
+    populatePeriods(num:number){
+        if (num ==1){
+            //this.gotPeriods1 = false;
+            let activePlayer = this.playerProfiles[this.filter1.username];
+            this.listOfPeriods1 = activePlayer.periods;
+            this.tagList1 = activePlayer.labels;
+            //this.gotPeriods1 = true;
+        }else if (num == 2){
+            //this.gotPeriods2 = false;
+            let activePlayer = this.playerProfiles[this.filter2.username];
+            this.listOfPeriods2 = activePlayer.periods;
+            this.tagList2 = activePlayer.labels;
+            //this.gotPeriods2 = true;
+        }
+    }
 
   onSubmitRequest(){
       this.stats1 = new SonyResponse();
