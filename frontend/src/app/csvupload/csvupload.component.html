@@ -1,24 +1,22 @@
-<div class="hard-purple-top">
-  <div class="my-top container semi-bg">
-    <h2>Import shots</h2>
+<div class="white-top down-shadow-purple">
+  <div class="my-top ">
+    <h2 class="text-muted">Import shots</h2>
   </div>
 </div>
 
-<div class="container white-bg">
-  <div class="content">
-    <div *ngIf="!uploaded">
-      <p class="lead">
-        Upload the CSV file you have exported from the sensor app. The shots database will be updated if new data is detected.
-      </p>
-      <p>
-        If you don't know hot to export your shot data from the sensor app to your computer, <a href="#">watch this quick tutorial</a>.
-      </p>
-      <p-fileUpload name="sonycsv" url="https://api.tennistat.xyz/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
-    </div>
-    <div *ngIf="uploaded">
-      <p class="lead">
-        We received your shots data, and we are processing it. Statistics for the new sessions will appear very soon!
-      </p>
-    </div>
+<div class="container white-bg content text-center">
+  <div *ngIf="!uploaded">
+    <p class="lead">
+      Upload the CSV file you have exported from the sensor app. The shots database will be updated if new data is detected.
+    </p>
+    <p>
+      If you don't know hot to export your shot data from the sensor app to your computer, <a href="#">watch this quick tutorial</a>.
+    </p>
+    <p-fileUpload name="sonycsv" url="https://api.tennistat.xyz/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
+  </div>
+  <div *ngIf="uploaded">
+    <p class="lead">
+      We received your shots data, and we are processing it. Statistics for the new sessions will appear very soon!
+    </p>
   </div>
 </div>
