@@ -15,7 +15,7 @@ import { UserProfile } from '../objects/registration';
           transform: 'translate3d(0, 0, 0)'
         })),
         state('out', style({
-          transform: 'translate3d(-100%, 0, 0)'
+          transform: 'translate3d(-105%, 0, 0)'
         })),
         transition('in => out', animate('400ms ease-in-out')),
         transition('out => in', animate('400ms ease-in-out'))
@@ -60,6 +60,10 @@ export class TopbarComponent implements OnInit {
 
   toggleSidebar(){
       this.menuState = this.menuState === 'out' ? 'in' : 'out';
+  }
+
+  closeSidebar(){
+      this.menuState = 'out';
   }
 
 
