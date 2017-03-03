@@ -20,8 +20,9 @@
       <ngb-tab  id="tab1">
         <template ngbTabTitle>
           <div class="text-center" [class.selection1]="compare">
-          Selection 1 <select (click)="onUserSelectClick(1)" class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter1.username">
-            <option *ngFor="let user of userChoices" [value]="user.username">{{user.first_name}}</option>
+          Selection 1
+          <select id="userpicker" [ngModel]="filter1.username" (ngModelChange)="onUserChange($event, 1)" class="form-control form-control-sm">
+            <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}}</option>
           </select>
           </div>
         </template>
@@ -38,8 +39,9 @@
       <ngb-tab *ngIf="compare" id="tab2">
         <template ngbTabTitle>
           <div class="text-center" [class.selection2]="compare">
-          Selection 2 <select (click)="onUserSelectClick(2)" class="form-control form-control-sm" id="userpicker" [(ngModel)]="filter2.username">
-            <option *ngFor="let user of userChoices" [value]="user.username">{{user.first_name}}</option>
+          Selection 2
+          <select id="userpicker" [ngModel]="filter2.username" (ngModelChange)="onUserChange($event, 2)" class="form-control form-control-sm">
+            <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}}</option>
           </select>
           </div>
         </template>
