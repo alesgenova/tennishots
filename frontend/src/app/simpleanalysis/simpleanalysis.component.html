@@ -18,14 +18,15 @@
       </div>
     </div>
   </div>
-  <br>
-  <p>
+</div>
+<div class="container white-bg content text-center">
+
     <button class="btn" (click)="onPeriodChange('session')" [class.btn-primary]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>
     <button class="btn" (click)="onPeriodChange('week')" [class.btn-primary]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>
     <button class="btn" (click)="onPeriodChange('month')" [class.btn-primary]="activePeriod=='month'" [class.btn-secondary]="activePeriod!='month'">Months</button>
     <button class="btn" (click)="onPeriodChange('year')" [class.btn-primary]="activePeriod=='year'" [class.btn-secondary]="activePeriod!='year'">Years</button>
     <button class="btn" (click)="onPeriodChange('all')" [class.btn-primary]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
-  </p>
+
 </div>
 <div *ngIf="activePeriod !='all'" class="container white-bg content text-center">
   <div class="row">
@@ -73,6 +74,6 @@
   </div>
 </div>
 <!-- Display -->
-<div class="container white-bg content text-center">
+<div *ngIf="stats.count > 0" class="container white-bg content text-center">
   <display [stats1]="stats" [compare]="false"></display>
 </div>
