@@ -40,17 +40,16 @@ export class ProgressComponent implements OnInit {
 
   ngOnInit() {
       this.userProfile = this.profileService.getProfile();
-      this.activeUser = this.route.snapshot.params['user'];
-      if (this.activeUser == null){
-          this.activeUser = this.userProfile.user;
+      this.activeUser = this.profileService.getUsername();
+      this.activePeriod = this.route.snapshot.params['period'];
+      if (this.activePeriod == null){
+          this.activePeriod = "session";
       }
-      if (this.activeUser == this.userProfile.user){
+      if (this.activePeriod == "session" || this.activePeriod == "week" || this.activePeriod == "month" || this.activePeriod == "year"){
 
       }else{
-          if (this.userProfile.friends.some(x=>x.user==this.activeUser)){
-          }else{
-              this.router.navigate(['progress']);
-          }
+          this.activePeriod = "session";
+          //this.router.navigate(['progress']);
       }
       // subscribe to changes in the user choices
       this.userChoicesSubscription = this.profileService.userChoices$

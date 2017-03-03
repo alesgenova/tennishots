@@ -39,6 +39,7 @@ export const routes: Routes = [
   { path: 'import',  component: CsvuploadComponent, canActivate: [AuthGuard] },
   { path: 'test',  component: TestComponent },
   { path: 'progress',  component: ProgressComponent, canActivate: [AuthGuard, ImportGuard] },
+  { path: 'progress/:period',  component: ProgressComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'video',  component: VideoComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'videocollection',  component: VideocollectionComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'landing',  component: LandingComponent, canActivate: [AuthGuard] },
