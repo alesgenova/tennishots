@@ -41,15 +41,27 @@ export class PeriodlistComponent implements OnInit {
   }
 
   paginate(){
-      this.nPeriods = this.listOfPeriods[this.periodName].length;
+      let periods = [];
+      // if videoOnly, only show those periods for which we actually have some videoshots
+      if (this.videoOnly){
+        for (let period of this.listOfPeriods[this.periodName]){
+          if (period.videoshot_count > 0){
+            periods.push(period);
+          }
+        }
+      }else{
+        periods = this.listOfPeriods[this.periodName];
+      }
+      this.nPeriods = periods.length;
       this.doPagination = (this.nPeriods > this.periodsPerPage);
       this.currPage = 1;
       if (this.doPagination){
-          this.periodsSubset = this.listOfPeriods[this.periodName].slice(0,this.periodsPerPage);
+          this.periodsSubset = periods.slice(0,this.periodsPerPage);
       }else{
-          this.periodsSubset = this.listOfPeriods[this.periodName]
+          this.periodsSubset = periods;
       }
   }
+
 
   onSelectAll(all:boolean){
       this.periodsPicker.name = this.periodName;

@@ -22,7 +22,6 @@ export class SimpleanalysisComponent implements OnInit {
 
     userChoices: any;
     myUsername: string;
-    userChoices_keys:any[];
     stats = new SonyResponse();
     listOfPeriods = new UserPeriodsList();
     activeUser: string;

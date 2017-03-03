@@ -9,6 +9,8 @@ import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '..
 import { Period, UserPeriodsList } from '../objects/period';
 import { Label } from '../objects/label';
 
+import {Subscription} from 'rxjs/Subscription';
+
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -19,7 +21,7 @@ import 'rxjs/add/operator/switchMap';
 export class VideocollectionComponent implements OnInit {
 
     userChoices: any;
-    userChoices_keys:any[];
+    myUsername: string;
     activeUser: string;
     previousUser: string = '';
     userProfile: any;
@@ -41,6 +43,10 @@ export class VideocollectionComponent implements OnInit {
     filterCount: number;
     videoCollectionForm: FormGroup;
 
+    playerProfilesSubscription: Subscription;
+    userChoicesSubscription: Subscription;
+    playerProfiles: any;
+
   constructor(  private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
@@ -50,62 +56,56 @@ export class VideocollectionComponent implements OnInit {
   ngOnInit() {
       this.timezoneString = this.profileService.getTimezoneString();
 
+      this.myUsername = this.profileService.getUsername();
       this.userProfile = this.profileService.getProfile();
       this.activeUser = this.route.snapshot.params['user'];
       if (this.activeUser == null){
-          this.activeUser = this.userProfile.user;
+          this.activeUser = this.myUsername;
       }
-      if (this.activeUser == this.userProfile.user){
-
-      }else{
+      if (this.activeUser != this.myUsername){
           if (this.userProfile.friends.some(x=>x.user==this.activeUser)){
           }else{
-              this.router.navigate(['videocollection']);
+              this.router.navigate(['summary']);
           }
       }
-      this.userChoices = {};
-      this.userChoices_keys = []; // I ain't implementing no fucking pipe to loop in the template. I miss python.
-      this.userChoices_keys.push(this.userProfile.user);
-      this.userChoices[this.userProfile.user] = {username:this.userProfile.user,
-                             first_name:"Myself",
-                             last_name:"",
-                             avatar:this.userProfile.avatar};
-      for (let friend of this.userProfile.friends){
-          this.userChoices_keys.push(friend.user);
-          this.userChoices[friend.user] = {username:friend.user,
-                                 first_name:friend.first_name,
-                                 last_name:friend.last_name,
-                                 avatar:friend.avatar};
-      };
-      this.onUserSelectClick();
-      let activePlayer = this.profileService.getPlayerProfile(this.userProfile.user);
-      this.listOfPeriods = activePlayer.periods;
-      this.tagList = activePlayer.labels;
-      this.filter.username = this.userProfile.user;
+
+      // subscribe to changes in the player profiles
+      this.playerProfilesSubscription = this.profileService.playerProfiles$
+        .subscribe(profiles => {
+          this.playerProfiles = profiles;
+          this.fromProfileToPagination();
+        });
+
+      // subscribe to changes in the user choices
+      this.userChoicesSubscription = this.profileService.userChoices$
+        .subscribe(choices => {
+          this.userChoices = choices;
+          //console.log("userChoices");
+          //console.log(this.userChoices);
+        });
+
+      this.filter.username = this.myUsername;
 
       this.createVideoCollectionForm();
   }
 
-  onUserSelectClick() {
-      if (!(this.activeUser == this.previousUser)){
-          this.videoList = [];
-          this.getUserVideoCollections(this.activeUser);
-          this.previousUser = this.activeUser;
-          if (this.doCreate){
-            if (this.activeUser != this.userProfile.user){
-                this.doCreate = false;
-            }
-          }
-
+  onUserChange(user:string) {
+      this.activeUser = user;
+      this.videoList = [];
+      this.fromProfileToPagination();
+      if (this.doCreate){
+        if (this.activeUser != this.myUsername){
+            this.doCreate = false;
+        }
       }
   }
 
-  getUserVideoCollections(user:string) {
-      this.tennistatService.get_videocollections(user)
-        .subscribe(data=>{
-            this.videoList = data;
-            this.onVideoPagination();
-        });
+  fromProfileToPagination() {
+      let activePlayer = this.playerProfiles[this.activeUser];
+      this.listOfPeriods = activePlayer.periods;
+      this.tagList = activePlayer.labels;
+      this.videoList = activePlayer.collections;
+      this.onVideoPagination();
   }
 
   onVideoPagination(){
@@ -166,11 +166,11 @@ export class VideocollectionComponent implements OnInit {
             .subscribe( res => {
                 this.activeVideo = res;
                 this.activeVideoPk = res.pk;
-                this.previousUser = '';
-                this.onUserSelectClick();
+                //this.profileService.checkLastChanges();
+                this.fromProfileToPagination();
                 this.doCreate = false;
                 this.filter = new SonyFilter();
-                this.filter.username = this.userProfile.user;
+                this.filter.username = this.myUsername;
             });
   }
 

@@ -1,126 +1,129 @@
-<div class="hard-top">
-  <div class="my-top container semi-bg">
-    <h2>Video recordings</h2>
+<div class="white-top down-shadow-blue">
+  <div class="my-top ">
+    <h2 class="text-muted">Video recordings</h2>
   </div>
 </div>
 
-<div class="container white-bg">
-  <div class="content text-center">
-    <div class="row">
-      <div class="col-7">
+<div class="container white-bg content text-center">
+  <div class="row">
+    <div class="col-12" style="display:flex;">
+      <div class="mr-auto">
         <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
-        <select (click)="onUserSelectClick()" id="userpicker" [(ngModel)]="activeUser" class="custom-select">
-              <option *ngFor="let key of userChoices_keys" [value]="userChoices[key].username">{{userChoices[key].first_name}} {{userChoices[key].last_name}}</option>
+        <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
+              <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
         </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
       </div>
-      <div class="col-5">
+      <div>
         <button [routerLink]="['','videocollection']" class="btn btn-secondary" role="button">Video collections</button>
       </div>
     </div>
-    <hr>
-    <div class="row">
-      <div class="col-12">
-        <p class="lead">
-          <span *ngFor="let tag of tagList">
-            <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
-              <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
-            </span>
+  </div>
+</div>
+<div class="container white-bg content text-center">
+  <div class="row">
+    <div class="col-12">
+      <p class="lead">
+        <span *ngFor="let tag of tagList">
+          <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
+            <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
           </span>
-        </p>
-      </div>
-      <div *ngIf="periodsSubset?.length == 0" class="col-12">
-        No matching sessions
-      </div>
-      <div *ngFor="let period of periodsSubset" class="col-6 col-sm-3">
-        <div class="card text-center" [class.card-inverse]="period.pk==activeSession?.pk" [class.card-primary]="period.pk==activeSession?.pk">
-          <div class="card-block card-block-session" role="button" (click)="onSessionSelect(period)">
-            <h6 class="card-title">{{period.timestamp|date}}</h6>
-            <strong>{{period.video_count}}</strong>&nbsp;<span class="small">video</span>
-          </div>
-          <div class="dropdown">
-            <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{period.labels.length}}&nbsp;tags
-            </span>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <p>
-                <a *ngFor="let tag of period.labels">
-                  <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
-                </a>
-              </p>
-              <div *ngIf="period.labels.length > 0" class="dropdown-divider"></div>
-              <a [routerLink]="['','tags']" role="button" class="dropdown-item">
-                <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;
-                <span>Edit tags</span>
+        </span>
+      </p>
+    </div>
+    <div *ngIf="periodsSubset?.length == 0" class="col-12">
+      No matching sessions
+    </div>
+    <div *ngFor="let period of periodsSubset" class="col-6 col-sm-3">
+      <div class="card text-center" [class.card-inverse]="period.pk==activeSession?.pk" [class.card-primary]="period.pk==activeSession?.pk">
+        <div class="card-block card-block-session" role="button" (click)="onSessionSelect(period)">
+          <h6 class="card-title">{{period.timestamp|date}}</h6>
+          <strong>{{period.video_count}}</strong>&nbsp;<span class="small">video</span>
+        </div>
+        <div class="dropdown">
+          <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{period.labels.length}}&nbsp;tags
+          </span>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <p>
+              <a *ngFor="let tag of period.labels">
+                <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
               </a>
-            </div>
+            </p>
+            <div *ngIf="period.labels.length > 0" class="dropdown-divider"></div>
+            <a [routerLink]="['','tags']" role="button" class="dropdown-item">
+              <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;
+              <span>Edit tags</span>
+            </a>
           </div>
         </div>
-        <br>
       </div>
-      <div *ngIf="doSessionPagination"  class="col-12">
-        <ngb-pagination [disabled]="!doSessionPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPageSession" (pageChange)="onSessionPageChange()" size="sm"></ngb-pagination>
-      </div>
+      <br>
     </div>
-    <hr>
-    <!-- Video list -->
-    <div class="row">
-      <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
-        <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
-            <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
-            <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
-            <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px" style="background-color:rgba(255,255,255,0);">
-          <div class="card-img-overlay">
-            <h6 class="card-title">
-              {{video.timestamp+timezoneString|date:'shortTime'}}
-            </h6>
-            <p *ngIf="video.status == 'U'" class="card-text"><span class="badge badge-danger">Upload</span></p>
-            <p *ngIf="video.status == 'P'" class="card-text"><span class="badge badge-info">Processing</span></p>
-            <p *ngIf="video.status == 'F'" class="card-text"><span class="badge badge-warning">Failed</span></p>
-            <p *ngIf="video.status == 'C'" class="card-text"><span class="badge badge-success">{{video.shot_count}} shots</span></p>
-          </div>
+    <div *ngIf="doSessionPagination"  class="col-12">
+      <ngb-pagination [disabled]="!doSessionPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPageSession" (pageChange)="onSessionPageChange()" size="sm"></ngb-pagination>
+    </div>
+  </div>
+<!-- Video list -->
+</div>
+<div class="container white-bg content text-center">
+  <div class="row">
+    <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
+      <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
+          <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
+          <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
+          <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px" style="background-color:rgba(255,255,255,0);">
+        <div class="card-img-overlay">
+          <h6 class="card-title">
+            {{video.timestamp+timezoneString|date:'shortTime'}}
+          </h6>
+          <p *ngIf="video.status == 'U'" class="card-text"><span class="badge badge-danger">Upload</span></p>
+          <p *ngIf="video.status == 'P'" class="card-text"><span class="badge badge-info">Processing</span></p>
+          <p *ngIf="video.status == 'F'" class="card-text"><span class="badge badge-warning">Failed</span></p>
+          <p *ngIf="video.status == 'C'" class="card-text"><span class="badge badge-success">{{video.shot_count}} shots</span></p>
         </div>
-        <br>
       </div>
-      <div *ngIf="doVideoPagination"  class="col-12">
-        <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="periodsPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
-      </div>
+      <br>
     </div>
-    <hr>
-    <!-- Upload video -->
-    <div *ngIf="activeVideo?.status=='U'">
-      <p-fileUpload name="videofile" [url]="uploadSourceUrl" (onSelect)="checkUploadFilename($event)" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload($event)" accept="video/*" maxFileSize="3.5*1000*1000*1000">
-        <template pTemplate="toolbar">
-            <div>Upload <strong>{{activeVideo.filename}}</strong> to Tennistat</div>
-        </template>
-        <template pTemplate="content">
-            <div><span style="color:red;">{{fileUploadError}}</span></div>
-        </template>
-      </p-fileUpload>
+    <div *ngIf="doVideoPagination"  class="col-12">
+      <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="periodsPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
     </div>
-    <!-- Processing Message -->
-    <div *ngIf="activeVideo?.status=='P'">
-      <p>
-        Your video recording is being processed, and will be ready soon(ish).
-      </p>
-      <p>
-        In the meantime, you can upload more videos.
-      </p>
-    </div>
-    <!-- Play Video -->
-    <p *ngIf="activeVideo?.status=='C'">
-      <video  width="100%" height='auto' controls>
-        <source [src]="activeVideo.processed_file" type="video/mp4">
-        Your browser does not support HTML5 video.
-      </video>
+  </div>
+</div>
+<div *ngIf="activeVideo" class="container white-bg content text-center">
+  <!-- Upload video -->
+  <div *ngIf="activeVideo?.status=='U'">
+    <p-fileUpload name="videofile" [url]="uploadSourceUrl" (onSelect)="checkUploadFilename($event)" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload($event)" accept="video/*" maxFileSize="3.5*1000*1000*1000">
+      <template pTemplate="toolbar">
+          <div>Upload <strong>{{activeVideo.filename}}</strong> to Tennistat</div>
+      </template>
+      <template pTemplate="content">
+          <div><span style="color:red;">{{fileUploadError}}</span></div>
+      </template>
+    </p-fileUpload>
+  </div>
+  <!-- Processing Message -->
+  <div *ngIf="activeVideo?.status=='P'">
+    <p>
+      Your video recording is being processed, and will be ready soon(ish).
     </p>
-    <!-- Failed Message -->
-    <div *ngIf="activeVideo?.status=='F'">
-      <p>
-        Well, this is embarassing! Something went wrong while processing your video. Click the button below to try again.
-      </p>
-      <p>
-        <button class="btn btn-sm btn-warning" role="button" (click)="onRetry(activeVideo.pk)">Retry</button>
-      </p>
-    </div>
+    <p>
+      In the meantime, you can upload more videos.
+    </p>
+  </div>
+  <!-- Play Video -->
+  <p *ngIf="activeVideo?.status=='C'">
+    <video  width="100%" height='auto' controls>
+      <source [src]="activeVideo.processed_file" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+  </p>
+  <!-- Failed Message -->
+  <div *ngIf="activeVideo?.status=='F'">
+    <p>
+      Well, this is embarassing! Something went wrong while processing your video. Click the button below to try again.
+    </p>
+    <p>
+      <button class="btn btn-sm btn-warning" role="button" (click)="onRetry(activeVideo.pk)">Retry</button>
+    </p>
   </div>
 </div>
