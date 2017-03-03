@@ -13,8 +13,8 @@ html {
 
 body {
   height: 101%;
-  background-color:#f0f0f0;
-  /*background-color:#f7f7f9;
+  /*background-color:#f0f0f0;
+  background-color:#f7f7f9;
   background-image: url("/assets/img/clay.jpg");*/
 }
 
@@ -40,6 +40,7 @@ body {
     border-color: #dedede;
     border-width: thin;
     border-radius: 4px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     /*text-align: center;*/
 }
 
@@ -97,7 +98,7 @@ body {
 }
 
 .blue-top{
-    background-color: #759fbc;
+    background-color: #003d5b;
 }
 
 .purple-top{
@@ -109,18 +110,31 @@ body {
 }
 
 .darkblue-top{
-    background-color: #566681;
+    background-color: #033860;
 }
 
 .white-top{
     background-color: #ffffff;
-    border-bottom-style: solid;
-    border-color: #dedede;
-    border-width: thin;
 }
 
-.lightorange-top{
-    background-color: #FFF3EF;
+.light-orange-top{
+    background-color: #ffb4a2;
+}
+
+.light-blue-top{
+    background-color: #62bfed;
+}
+
+.light-green-top{
+    background-color: #9ad2cb;
+}
+
+.light-purple-top{
+    background-color: #a09ebb;
+}
+
+.gray-top{
+  background-color:#f0f0f0;
 }
 
 .down-border{
@@ -143,6 +157,7 @@ body {
 .my-top{
     padding-top: 2rem;
     padding-bottom: 2rem;
+    margin-bottom: 1.5rem;
     /*background-image: url("/assets/img/clay.jpg");*/
     text-align: center;
     /*
@@ -152,10 +167,34 @@ body {
     */
 }
 
-.down-shadow{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+.my-top-placeholder{
+  padding-bottom: 4px;
+  margin-bottom: 1.5rem;
 }
 
+.down-shadow-orange{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 4px 0 rgba(255,133,84,0.5), 0 8px 8px 0 rgba(255,133,84,0.25);
+}
+
+.down-shadow-red{
+    box-shadow: 0 4px 4px 0 rgba(214,34,70,0.5), 0 8px 8px 0 rgba(214,34,70,0.25);
+}
+
+.down-shadow-green{
+    box-shadow: 0 4px 4px 0 rgba(33,160,160,0.5), 0 8px 8px 0 rgba(33,160,160,0.25);
+}
+
+.down-shadow-blue{
+    box-shadow: 0 4px 4px 0 rgba(0,61,91,0.5), 0 8px 8px 0 rgba(0,61,91,0.25);
+}
+
+.down-shadow-purple{
+    box-shadow: 0 4px 4px 0 rgba(160,158,187,0.5), 0 8px 8px 0 rgba(160,158,187,0.25);
+}
 .down-light-shadow{
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 4px 4px 0 rgba(0, 0, 0, 0.19);
+}
+.card{
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.09);
 }

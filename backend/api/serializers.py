@@ -161,13 +161,15 @@ class SessionSerializerPlusPlus(serializers.ModelSerializer):
                                           read_only=True)
     video_count = serializers.IntegerField(source='videos.count',
                                           read_only=True)
+    videoshot_count = serializers.IntegerField(source='get_videoshot_count',
+                                          read_only=True)
     labels = LabelSerializer(many=True, read_only=True)
     videos = VideoSourceSerializer(many=True, read_only=True)
     #player = FriendSerializer(source="user.userprofile", read_only=True)
     #count = 23
     class Meta:
         model = Session
-        fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'labels', 'videos')#, 'player')
+        fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'videoshot_count', 'labels', 'videos')#, 'player')
 
 class SessionSerializerPlus(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
