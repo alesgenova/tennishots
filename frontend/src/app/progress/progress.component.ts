@@ -9,6 +9,8 @@ import { Label } from '../objects/label';
 import { SONY_STROKES_CHOICES } from '../objects/strokes';
 import { PERIOD_CHOICES } from '../objects/period';
 
+import {Subscription} from 'rxjs/Subscription';
+
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -19,7 +21,7 @@ import 'rxjs/add/operator/switchMap';
 export class ProgressComponent implements OnInit {
 
     userChoices: any;
-    userChoices_keys:any[];
+    userChoicesSubscription: Subscription;
     activeUser: string;
     activePeriod: string = 'session';
     activeSwing: string = 'FH';
@@ -50,35 +52,37 @@ export class ProgressComponent implements OnInit {
               this.router.navigate(['progress']);
           }
       }
-      this.userChoices = {};
-      this.userChoices_keys = []; // I ain't implementing no fucking pipe to loop in the template. I miss python.
-      this.userChoices_keys.push(this.userProfile.user);
-      this.userChoices[this.userProfile.user] = {username:this.userProfile.user,
-                             first_name:"Myself",
-                             last_name:"",
-                             avatar:this.userProfile.avatar};
-      for (let friend of this.userProfile.friends){
-          this.userChoices_keys.push(friend.user);
-          this.userChoices[friend.user] = {username:friend.user,
-                                 first_name:friend.first_name,
-                                 last_name:friend.last_name,
-                                 avatar:friend.avatar};
-      };
-      this.onSelectClick();
+      // subscribe to changes in the user choices
+      this.userChoicesSubscription = this.profileService.userChoices$
+        .subscribe(choices => {
+          this.userChoices = choices;
+          //console.log("userChoices");
+          //console.log(this.userChoices);
+        });
+      this.get_progress_plots();
   }
 
-  onSelectClick() {
-      if (!(this.activeUser == this.previousUser) ||
-            !(this.activePeriod == this.previousPeriod) ||
-            !(this.activeSwing == this.previousSwing)){
-          this.get_progress_plots()
-          this.previousUser = this.activeUser;
-          this.previousPeriod = this.activePeriod;
-          this.previousSwing = this.activeSwing;
-      }
+  ngOnDestroy() {
+    this.userChoicesSubscription.unsubscribe();
+  }
+
+  onUserChange(user:string){
+      this.activeUser = user;
+      this.get_progress_plots();
+  }
+
+  onPeriodChange(period:string){
+      this.activePeriod = period;
+      this.get_progress_plots();
+  }
+
+  onSwingChange(swing:string){
+      this.activeSwing = swing;
+      this.get_progress_plots();
   }
 
   get_progress_plots(){
+      console.log("getting_plots");
       this.tennistatService.get_progress(this.activeUser, this.activePeriod, this.activeSwing)
             .subscribe( res => {
                 this.plots = []
