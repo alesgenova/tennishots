@@ -10,6 +10,8 @@ import { Period, UserPeriodsList } from '../objects/period';
 import { TennistatService } from  '../services/tennistat.service';
 import { ProfileService } from  '../services/profile.service';
 
+import {Subscription} from 'rxjs/Subscription';
+
 @Component({
   selector: 'app-labels',
   templateUrl: './labels.component.html',
@@ -17,7 +19,7 @@ import { ProfileService } from  '../services/profile.service';
 })
 export class LabelsComponent implements OnInit {
 
-  userProfile: any;
+  myUsername: string;
   tagList: Label[];
   sessionList: Period[];
   doPagination: boolean;
@@ -28,16 +30,33 @@ export class LabelsComponent implements OnInit {
   categoryButtonText = 'Category';
   newTag: FormGroup;
 
+  playerProfilesSubscription: Subscription;
+  playerProfiles: any;
+
   constructor(private tennistatService: TennistatService,
               private profileService: ProfileService,
               private fb: FormBuilder,
               private modalService: NgbModal) { }
 
   ngOnInit() {
-      this.userProfile = this.profileService.getProfile();
-      this.refreshTags();
-      this.getSessions();
+      this.myUsername = this.profileService.getUsername();
+      // subscribe to changes in the player profiles
+      this.playerProfilesSubscription = this.profileService.playerProfiles$
+        .subscribe(profiles => {
+          this.playerProfiles = profiles;
+          this.fromProfileToPagination();
+        });
       this.createTagForm();
+  }
+
+  fromProfileToPagination() {
+      let activePlayer = this.playerProfiles[this.myUsername];
+      this.sessionList = activePlayer.periods.session;
+      this.tagList = activePlayer.labels;
+      this.nPeriods = this.sessionList.length;
+      this.doPagination = (this.nPeriods > this.periodsPerPage);
+      this.onPageChange();
+      //this.previousUser = this.activeUser;
   }
 
   createTagForm(){
@@ -48,20 +67,10 @@ export class LabelsComponent implements OnInit {
   }
 
   refreshTags() {
-      this.tennistatService.get_tags(this.userProfile.user)
+      this.tennistatService.get_tags(this.myUsername)
             .subscribe( res => {
                 this.tagList = res;
             });
-  }
-
-  getSessions() {
-      this.tennistatService.get_periods(this.userProfile.user, "session")
-        .subscribe(data=>{
-            this.sessionList = data;
-            this.nPeriods = this.sessionList.length;
-            this.doPagination = (this.nPeriods > this.periodsPerPage);
-            this.periodsSubset = this.sessionList.slice(0,this.periodsPerPage);
-        });
   }
 
   onPageChange(){
@@ -73,7 +82,7 @@ export class LabelsComponent implements OnInit {
   }
 
   onCreateTag(){
-      this.tennistatService.create_tag(this.userProfile.user, this.newTag.value.name, this.newTag.value.category)
+      this.tennistatService.create_tag(this.myUsername, this.newTag.value.name, this.newTag.value.category)
             .subscribe( res =>{
                 this.createTagForm();
                 this.refreshTags();
@@ -139,7 +148,7 @@ export class LabelsComponent implements OnInit {
   onAssignTag(tagPk:number, sessionPk:number, action:string){
       this.tennistatService.assign_tag(tagPk, sessionPk, action)
             .subscribe( res =>{
-                this.getSessions();
+                this.profileService.checkLastChanges();
             });
   }
 
