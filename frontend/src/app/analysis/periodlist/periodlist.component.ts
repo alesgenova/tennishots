@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { PeriodsPicker } from '../../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../../objects/period';
 
@@ -22,8 +22,25 @@ export class PeriodlistComponent implements OnInit {
 
   constructor() { }
 
+  ngOnChanges(changes: SimpleChanges) {
+      if (changes['listOfPeriods'] != null){
+          this.paginate();
+      }
+    /*for (let propName in changes) {
+      let chng = changes[propName];
+      let cur  = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+      this.changeLog.push(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+    }*/
+  }
+
   ngOnInit() {
       this.incomingPeriodName = this.periodsPicker.name;
+      //console.log("periodlist oninit");
+      //this.paginate();
+  }
+
+  paginate(){
       this.nPeriods = this.listOfPeriods[this.periodName].length;
       this.doPagination = (this.nPeriods > this.periodsPerPage);
       this.currPage = 1;
@@ -32,7 +49,6 @@ export class PeriodlistComponent implements OnInit {
       }else{
           this.periodsSubset = this.listOfPeriods[this.periodName]
       }
-
   }
 
   onSelectAll(all:boolean){

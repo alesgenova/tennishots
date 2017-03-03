@@ -1,26 +1,24 @@
-<div class="grass-top">
-  <div class="my-top container semi-bg">
-    <h2>Progression analysis</h2>
+<div class="white-top down-shadow">
+  <div class="my-top container">
+    <h2 class="text-muted">Progression analysis</h2>
   </div>
 </div>
-
-<div class="container white-bg">
-  <div class="content text-center">
-    <div class="row">
-      <div class="col">
-        <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
-        <select (click)="onSelectClick()" id="userpicker" [(ngModel)]="activeUser" class="custom-select">
-              <option *ngFor="let key of userChoices_keys" [value]="userChoices[key].username">{{userChoices[key].first_name}} {{userChoices[key].last_name}}</option>
-        </select>
-        <select (click)="onSelectClick()" id="periodpicker" [(ngModel)]="activePeriod" class="custom-select">
-              <option *ngFor="let period of PERIOD_CHOICES" [value]="period.key">{{period.label}}</option>
-        </select>
-        <select (click)="onSelectClick()" id="periodpicker" [(ngModel)]="activeSwing" class="custom-select">
-              <option *ngFor="let stroke of SONY_STROKES_CHOICES" [value]="stroke.key">{{stroke.label}}</option>
-        </select>
-      </div>
+<div class="container white-bg content text-center">
+  <div class="row">
+    <div class="col">
+      <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
+      <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
+            <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
+      </select>
+      <select id="periodpicker" [ngModel]="activePeriod" (ngModelChange)="onPeriodChange($event)" class="custom-select">
+            <option *ngFor="let period of PERIOD_CHOICES" [value]="period.key">{{period.label}}</option>
+      </select>
+      <select id="periodpicker" [ngModel]="activeSwing" (ngModelChange)="onSwingChange($event)" class="custom-select">
+            <option *ngFor="let stroke of SONY_STROKES_CHOICES" [value]="stroke.key">{{stroke.label}}</option>
+      </select>
     </div>
-    <hr>
-    <boxplot [plots]="plots"></boxplot>
   </div>
+</div>
+<div class="container white-bg content text-center">
+  <boxplot [plots]="plots"></boxplot>
 </div>
