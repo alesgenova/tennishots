@@ -1,11 +1,42 @@
-<ul>
+<ul class="ul-main">
   <li>
-    <a class="text-muted" [routerLink]="['summary']">Analyze</a>
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
   </li>
+  <hr>
   <li>
-    <a class="text-muted" [routerLink]="['progress']">Progress</a>
+    Analyze:
   </li>
+  <ul class="ul-secondary">
+    <li>
+      <a class="text-muted" [routerLink]="['summary']">Summary</a>
+    </li>
+    <li>
+      <a class="text-muted" [routerLink]="['analyze']">Advanced</a>
+    </li>
+  </ul>
   <li>
-    <a class="text-muted" [routerLink]="['video']">Video</a>
+    Progress:
   </li>
+  <ul class="ul-secondary">
+    <li>
+      <a class="text-muted" [routerLink]="['progress','session']">Daily</a>
+    </li>
+    <li>
+      <a class="text-muted" [routerLink]="['progress','week']">Weekly</a>
+    </li>
+    <li>
+      <a class="text-muted" [routerLink]="['progress','month']">Month</a>
+    </li>
+  </ul>
+  <li>
+    Video:
+  </li>
+  <ul class="ul-secondary">
+    <li>
+      <a class="text-muted" [routerLink]="['video']">Recordings</a>
+    </li>
+    <li>
+      <a class="text-muted" [routerLink]="['videocollection']">Collections</a>
+    </li>
+  </ul>
 </ul>

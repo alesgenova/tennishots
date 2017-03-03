@@ -1,7 +1,7 @@
 <div class="white-top" style="z-index:999;">
   <div class="container">
     <nav class="nav">
-      <a *ngIf="loggedIn()" class="navbar-brand hidden-md-up" role="button" (click)="toggleSidebar()"><i *ngIf="menuState!='in'" class="fa fa-bars" aria-hidden="true"></i><i *ngIf="menuState=='in'" class="fa fa-arrow-left" aria-hidden="true"></i></a>
+      <a *ngIf="loggedIn()" class="navbar-brand hidden-md-up" role="button" (click)="toggleSidebar()"><i class="fa fa-bars" aria-hidden="true"></i><i *ngIf="false" class="fa fa-arrow-left" aria-hidden="true"></i></a>
       <a class="navbar-brand" [routerLink]="['']"><img src="{{navbarLogoUrl}}" height="35px" alt="TENNISTAT"></a>
       <ul *ngIf="loggedIn()" class="nav flex-row hidden-sm-down">
         <li class="nav-item" ngbDropdown #analyzeDrop="ngbDropdown"  (mouseenter)="$event.stopPropagation(); analyzeDrop.open();" (mouseleave)="$event.stopPropagation(); analyzeDrop.close();">
@@ -62,4 +62,4 @@
   </div>
 </div>
 
-<app-sidebar [@slideInOut]="menuState"></app-sidebar>
+<app-sidebar (click)="toggleSidebar()" (mouseleave)="closeSidebar()" [@slideInOut]="menuState"></app-sidebar>
