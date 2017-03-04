@@ -4,6 +4,7 @@ import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms
 
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
+import { NavigationService } from '../services/navigation.service';
 
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../objects/period';
@@ -51,9 +52,11 @@ export class VideocollectionComponent implements OnInit {
                 private router: Router,
                 private fb: FormBuilder,
                 private profileService: ProfileService,
-                private tennistatService: TennistatService ) { }
+                private tennistatService: TennistatService,
+                private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("video");
       this.timezoneString = this.profileService.getTimezoneString();
 
       this.myUsername = this.profileService.getUsername();

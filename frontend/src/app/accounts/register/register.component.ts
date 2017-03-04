@@ -4,6 +4,7 @@ import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms
 
 import { AuthService } from '../../services/auth.service';
 import { TennistatService } from '../../services/tennistat.service';
+import { NavigationService } from '../../services/navigation.service';
 import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../../objects/registration';
 
 @Component({
@@ -27,12 +28,13 @@ export class RegisterComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private tennistatService: TennistatService,
-              private router: Router) {
+              private router: Router,
+              private navigationService: NavigationService) {
       this.createRegistrationForm();
   }
 
   ngOnInit() {
-
+    this.navigationService.setActiveSection("services");
   }
 
   createRegistrationForm(){

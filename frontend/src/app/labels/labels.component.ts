@@ -9,6 +9,7 @@ import { Period, UserPeriodsList } from '../objects/period';
 
 import { TennistatService } from  '../services/tennistat.service';
 import { ProfileService } from  '../services/profile.service';
+import { NavigationService } from '../services/navigation.service';
 
 import {Subscription} from 'rxjs/Subscription';
 
@@ -36,9 +37,11 @@ export class LabelsComponent implements OnInit {
   constructor(private tennistatService: TennistatService,
               private profileService: ProfileService,
               private fb: FormBuilder,
-              private modalService: NgbModal) { }
+              //private modalService: NgbModal,
+              private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("services");
       this.myUsername = this.profileService.getUsername();
       // subscribe to changes in the player profiles
       this.playerProfilesSubscription = this.profileService.playerProfiles$

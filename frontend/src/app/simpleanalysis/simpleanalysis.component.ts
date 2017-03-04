@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
+import { NavigationService } from '../services/navigation.service';
 
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../objects/period';
@@ -45,9 +46,11 @@ export class SimpleanalysisComponent implements OnInit {
   constructor(  private route: ActivatedRoute,
                 private router: Router,
                 private profileService: ProfileService,
-                private tennistatService: TennistatService) { }
+                private tennistatService: TennistatService,
+                private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("analysis");
       this.myUsername = this.profileService.getUsername();
       this.userProfile = this.profileService.getProfile();
       this.activeUser = this.route.snapshot.params['user'];

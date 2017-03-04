@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
+import { NavigationService } from '../services/navigation.service';
 
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period } from '../objects/period';
@@ -51,9 +52,11 @@ export class VideoComponent implements OnInit {
   constructor(  private route: ActivatedRoute,
                 private router: Router,
                 private profileService: ProfileService,
-                private tennistatService: TennistatService) { }
+                private tennistatService: TennistatService,
+                private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("video");
       this.timezoneString = this.profileService.getTimezoneString();
 
       this.myUsername = this.profileService.getUsername();

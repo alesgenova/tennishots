@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
+import { NavigationService } from '../services/navigation.service';
 
 import { Period, UserPeriodsList } from '../objects/period';
 import { Label } from '../objects/label';
@@ -36,9 +37,11 @@ export class ProgressComponent implements OnInit {
   constructor(  private route: ActivatedRoute,
                 private router: Router,
                 private profileService: ProfileService,
-                private tennistatService: TennistatService) { }
+                private tennistatService: TennistatService,
+                private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("progress");
       this.userProfile = this.profileService.getProfile();
       this.activeUser = this.profileService.getUsername();
       this.activePeriod = this.route.snapshot.params['period'];

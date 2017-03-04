@@ -5,6 +5,7 @@ import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { TennistatService } from '../../services/tennistat.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -20,9 +21,11 @@ export class ForgotpasswordComponent implements OnInit {
   constructor(private fb: FormBuilder,
                 private router: Router,
                 private authService: AuthService,
-                private tennistatService: TennistatService) { }
+                private tennistatService: TennistatService,
+                private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("services");
       this.createEmailForm();
   }
 

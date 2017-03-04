@@ -5,6 +5,7 @@ import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms
 import { UserProfile } from '../../objects/registration';
 import { TennistatService } from  '../../services/tennistat.service';
 import { ProfileService } from  '../../services/profile.service';
+import { NavigationService } from '../../services/navigation.service';
 
 import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../../objects/registration';
 
@@ -27,13 +28,15 @@ export class ProfileComponent implements OnInit {
               //private authService: AuthService,
               private tennistatService: TennistatService,
               private profileService: ProfileService,
-              private router: Router) {}
+              private router: Router,
+              private navigationService: NavigationService) {}
 
   ngOnInit() {
       this.createProfileForm();
   }
 
   createProfileForm(){
+      this.navigationService.setActiveSection("services");
       let userProfile = this.profileService.getProfile();
       // Here we are using the FormBuilder to build out our form.
       this.profileForm = this.fb.group({

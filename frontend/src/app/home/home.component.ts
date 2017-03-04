@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
+import { NavigationService } from '../services/navigation.service';
 
 import { SonyFilter } from '../objects/sonyfilter';
 import { SonyResponse } from '../objects/sonyresponse';
@@ -24,9 +25,12 @@ export class HomeComponent implements OnInit {
   emptyResponse = new SonyResponse();
   playerProfileSubscription: Subscription;
 
-  constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
+  constructor(private tennistatService: TennistatService,
+              private profileService: ProfileService,
+              private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("home");
       this.user = this.profileService.getUsername();
       this.playerProfileSubscription = this.profileService.playerProfiles$
         .subscribe(profiles => {

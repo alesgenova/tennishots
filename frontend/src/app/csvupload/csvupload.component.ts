@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-csvupload',
@@ -9,9 +10,10 @@ export class CsvuploadComponent implements OnInit {
 
   uploaded: boolean = false;
 
-  constructor() { }
+  constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
+    this.navigationService.setActiveSection("services");
   }
 
   onBeforeSend(event) {
