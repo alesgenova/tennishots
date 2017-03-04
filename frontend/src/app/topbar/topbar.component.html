@@ -16,7 +16,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
             <button class="dropdown-item" [routerLink]="['progress','session']">Daily</button>
             <button class="dropdown-item" [routerLink]="['progress','week']">Weekly</button>
-            <button class="dropdown-item" [routerLink]="['progress','month']">Monthtly</button>
+            <button class="dropdown-item" [routerLink]="['progress','month']">Monthly</button>
           </div>
         </li>
         <li class="nav-item" ngbDropdown #videoDrop="ngbDropdown"  (mouseenter)="$event.stopPropagation(); videoDrop.open();" (mouseleave)="$event.stopPropagation(); videoDrop.close();">
@@ -61,5 +61,3 @@
     </nav>
   </div>
 </div>
-
-<app-sidebar (click)="toggleSidebar()" (mouseleave)="closeSidebar()" [@slideInOut]="menuState"></app-sidebar>

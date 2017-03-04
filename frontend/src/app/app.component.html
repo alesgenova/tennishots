@@ -1,7 +1,10 @@
 <div class="main-wrapper">
-  <topbar></topbar>
-  <div class="content-wrapper">
+  <topbar [menuState]="menuState"></topbar>
+  <div (tap)="closeSidebar()" class="content-wrapper">
     <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>
 </div>
+
+<div (swiperight)="openSidebar()" class="transparent-bar"></div>
+<app-sidebar *ngIf="loggedIn()" (swipeleft)="closeSidebar()" (click)="toggleSidebar()" [@slideInOut]="menuState[0]"></app-sidebar>
