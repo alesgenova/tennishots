@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { TennistatService } from '../../services/tennistat.service';
+import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-verifyemail',
   templateUrl: './verifyemail.component.html',
@@ -15,9 +16,11 @@ export class VerifyemailComponent implements OnInit {
   constructor(private route: ActivatedRoute,
                 private router: Router,
                 private authService: AuthService,
-                private tennistatService: TennistatService) { }
+                private tennistatService: TennistatService,
+                private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("services");
       this.key = this.route.snapshot.params['key'];
       if (this.key != ""){
           this.onVerifyEmail();

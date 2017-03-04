@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { TennistatService } from '../services/tennistat.service';
 import { ProfileService } from '../services/profile.service';
+import { NavigationService } from '../services/navigation.service';
 
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../objects/period';
@@ -46,9 +47,12 @@ export class AnalysisComponent implements OnInit {
   userChoicesSubscription: Subscription;
   playerProfiles: any;
 
-  constructor(private tennistatService: TennistatService, private profileService: ProfileService) { }
+  constructor(private tennistatService: TennistatService,
+              private profileService: ProfileService,
+              private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("analysis");
       this.userProfile = this.profileService.getProfile();
 
       this.imperial_units = (this.userProfile.units == 'M');

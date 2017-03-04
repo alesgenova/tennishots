@@ -1,29 +1,35 @@
-<div class="white-top" style="z-index:999;">
+<div class="white-top fixed-top" [ngClass]="topShadow">
   <div class="container">
     <nav class="nav">
-      <a *ngIf="loggedIn()" class="navbar-brand hidden-md-up" role="button" (click)="toggleSidebar()"><i class="fa fa-bars" aria-hidden="true"></i><i *ngIf="false" class="fa fa-arrow-left" aria-hidden="true"></i></a>
+      <!--<a *ngIf="loggedIn()" class="navbar-brand hidden-md-up" role="button" (click)="toggleSidebar()"><i class="fa fa-bars" aria-hidden="true"></i><i *ngIf="false" class="fa fa-arrow-left" aria-hidden="true"></i></a>-->
       <a class="navbar-brand" [routerLink]="['']"><img src="{{navbarLogoUrl}}" height="35px" alt="TENNISTAT"></a>
       <ul *ngIf="loggedIn()" class="nav flex-row hidden-sm-down">
-        <li class="nav-item" ngbDropdown #analyzeDrop="ngbDropdown"  (mouseenter)="$event.stopPropagation(); analyzeDrop.open();" (mouseleave)="$event.stopPropagation(); analyzeDrop.close();">
-          <a class="nav-link text-muted" id="dropdownMenu1" ngbDropdownToggle [routerLink]="['summary']">Analyze</a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <button class="dropdown-item" [routerLink]="['summary']">Summary</button>
-            <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
+        <li class="nav-item" [class.active-nav-item]="activeSection=='analysis'"   (mouseenter)="$event.stopPropagation(); analyzeDrop.open();" (mouseleave)="$event.stopPropagation(); analyzeDrop.close();">
+          <div  ngbDropdown #analyzeDrop="ngbDropdown">
+            <a class="nav-link text-muted" id="dropdownMenu1" ngbDropdownToggle [routerLink]="['summary']">Analyze</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <button class="dropdown-item" [routerLink]="['summary']">Summary</button>
+              <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
+            </div>
           </div>
         </li>
-        <li class="nav-item" ngbDropdown #progressDrop="ngbDropdown"  (mouseenter)="$event.stopPropagation(); progressDrop.open();" (mouseleave)="$event.stopPropagation(); progressDrop.close();">
-          <a class="nav-link text-muted" id="dropdownMenu3" ngbDropdownToggle [routerLink]="['progress']">Progress</a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-            <button class="dropdown-item" [routerLink]="['progress','session']">Daily</button>
-            <button class="dropdown-item" [routerLink]="['progress','week']">Weekly</button>
-            <button class="dropdown-item" [routerLink]="['progress','month']">Monthly</button>
+        <li class="nav-item" [class.active-nav-item]="activeSection=='progress'" (mouseenter)="$event.stopPropagation(); progressDrop.open();" (mouseleave)="$event.stopPropagation(); progressDrop.close();">
+          <div ngbDropdown #progressDrop="ngbDropdown">
+            <a class="nav-link text-muted" id="dropdownMenu3" ngbDropdownToggle [routerLink]="['progress']">Progress</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+              <button class="dropdown-item" [routerLink]="['progress','session']">Daily</button>
+              <button class="dropdown-item" [routerLink]="['progress','week']">Weekly</button>
+              <button class="dropdown-item" [routerLink]="['progress','month']">Monthly</button>
+            </div>
           </div>
         </li>
-        <li class="nav-item" ngbDropdown #videoDrop="ngbDropdown"  (mouseenter)="$event.stopPropagation(); videoDrop.open();" (mouseleave)="$event.stopPropagation(); videoDrop.close();">
-          <a class="nav-link text-muted" id="dropdownMenu2" ngbDropdownToggle [routerLink]="['video']">Video</a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item" [routerLink]="['video']">Recordings</button>
-            <button class="dropdown-item" [routerLink]="['videocollection']">Collections</button>
+        <li class="nav-item" [class.active-nav-item]="activeSection=='video'" (mouseenter)="$event.stopPropagation(); videoDrop.open();" (mouseleave)="$event.stopPropagation(); videoDrop.close();">
+          <div ngbDropdown #videoDrop="ngbDropdown">
+            <a class="nav-link text-muted" id="dropdownMenu2" ngbDropdownToggle [routerLink]="['video']">Video</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <button class="dropdown-item" [routerLink]="['video']">Recordings</button>
+              <button class="dropdown-item" [routerLink]="['videocollection']">Collections</button>
+            </div>
           </div>
         </li>
       </ul>
@@ -60,4 +66,43 @@
       </ul>
     </nav>
   </div>
+</div>
+
+<div class="my-top fixed-top" [ngClass]="colorTop">
+</div>
+
+
+<div *ngIf="loggedIn()" class="hidden-md-up mobile-footer" [ngClass]="bottomShadow">
+  <nav class="nav">
+    <ul  class="nav ml-auto mr-auto">
+      <li class="nav-item" [class.active-nav-item]="activeSection=='analysis'">
+        <div ngbDropdown [up]="true">
+          <a class="nav-link" role="button" id="dropdownMenu1" ngbDropdownToggle>Analyze</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <button class="dropdown-item" [routerLink]="['summary']">Summary</button>
+            <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" [class.active-nav-item]="activeSection=='progress'">
+        <div ngbDropdown [up]="true">
+          <a class="nav-link" role="button" id="dropdownMenu3" ngbDropdownToggle>Progress</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+            <button class="dropdown-item" [routerLink]="['progress','session']">Daily</button>
+            <button class="dropdown-item" [routerLink]="['progress','week']">Weekly</button>
+            <button class="dropdown-item" [routerLink]="['progress','month']">Monthly</button>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" [class.active-nav-item]="activeSection=='video'">
+        <div ngbDropdown [up]="true">
+          <a class="nav-link" role="button" id="dropdownMenu2" ngbDropdownToggle>Video</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item" [routerLink]="['video']">Recordings</button>
+            <button class="dropdown-item" [routerLink]="['videocollection']">Collections</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
 </div>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
+import { NavigationService } from '../../services/navigation.service';
+
 import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
 @Component({
@@ -17,9 +19,11 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private profileService:ProfileService,
-              private router: Router) {}
+              private router: Router,
+              private navigationService: NavigationService) {}
 
   ngOnInit() {
+      this.navigationService.setActiveSection("services");
       this.createLoginForm();
   }
 

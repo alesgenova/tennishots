@@ -9,3 +9,12 @@
   min-width: 10px;
   z-index: 9998
 }
+
+.mobile-footer{
+  z-index: 9998;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}

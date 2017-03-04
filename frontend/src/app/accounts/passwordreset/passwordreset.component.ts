@@ -5,6 +5,7 @@ import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { TennistatService } from '../../services/tennistat.service';
+import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-passwordreset',
   templateUrl: './passwordreset.component.html',
@@ -20,9 +21,11 @@ export class PasswordresetComponent implements OnInit {
                 private fb: FormBuilder,
                 private router: Router,
                 private authService: AuthService,
-                private tennistatService: TennistatService) { }
+                private tennistatService: TennistatService,
+                private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("services");
       this.uid = this.route.snapshot.params['uid'];
       this.token = this.route.snapshot.params['token'];
       this.createResetForm();

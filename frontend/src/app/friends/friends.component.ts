@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Friend, FriendRequest } from '../objects/registration';
 import { TennistatService } from  '../services/tennistat.service';
 import { ProfileService } from  '../services/profile.service';
+import { NavigationService } from '../services/navigation.service';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,9 +23,11 @@ export class FriendsComponent implements OnInit {
 
   constructor(private tennistatService: TennistatService,
               private profileService: ProfileService,
-              private router: Router) { }
+              private router: Router,
+              private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("services");
       this.userProfile = this.profileService.getProfile();
       this.refreshFriends();
       this.refreshRequests();
