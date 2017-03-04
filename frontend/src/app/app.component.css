@@ -1,0 +1,11 @@
+.transparent-bar{
+  background-color: rgba(255, 0, 0, 0);
+  position: fixed;
+  right: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 1rem;
+  min-width: 10px;
+  z-index: 9998
+}
