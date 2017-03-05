@@ -29,7 +29,8 @@ export class ProgressComponent implements OnInit {
     previousUser: string = '';
     previousPeriod: string = '';
     previousSwing: string = '';
-    userProfile: any;
+    //userProfile: any;
+    //userProfileSubscription: Subscription;
     plots: any[];
     SONY_STROKES_CHOICES = SONY_STROKES_CHOICES;
     PERIOD_CHOICES = PERIOD_CHOICES;
@@ -42,7 +43,7 @@ export class ProgressComponent implements OnInit {
 
   ngOnInit() {
       this.navigationService.setActiveSection("progress");
-      this.userProfile = this.profileService.getProfile();
+      //this.userProfile = this.profileService.getProfile();
       this.activeUser = this.profileService.getUsername();
       this.activePeriod = this.route.snapshot.params['period'];
       if (this.activePeriod == null){
@@ -84,7 +85,6 @@ export class ProgressComponent implements OnInit {
   }
 
   get_progress_plots(){
-      console.log("getting_plots");
       this.tennistatService.get_progress(this.activeUser, this.activePeriod, this.activeSwing)
             .subscribe( res => {
                 this.plots = []

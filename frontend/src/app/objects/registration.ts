@@ -14,6 +14,7 @@ export class Friend{
     "last_name": "";
     "user": "";
     "email": ""
+    "avatar"?: string = "";
 }
 
 export class FriendRequest{

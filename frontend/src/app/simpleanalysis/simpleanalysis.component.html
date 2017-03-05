@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-12" style="display:flex;">
         <div class="mr-auto">
-          <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser]?.avatar" class="rounded" height="37px" >
+          <img [src]="userChoices[activeUser]?.avatar" class="rounded" height="37px" >
           <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
                 <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
           </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->

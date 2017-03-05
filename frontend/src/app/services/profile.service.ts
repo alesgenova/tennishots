@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TennistatService } from './tennistat.service';
 import { AuthService } from './auth.service';
 import { PlayerProfile } from '../objects/playerprofile';
+import { UserProfile } from '../objects/registration';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
@@ -10,12 +11,15 @@ export class ProfileService {
 
     private myUsername: string = "";
     private loggedIn:boolean;
-    private userChoices:any = null;
-    private userProfile:any = null;
+    private userChoices:any = new Object();
+    private userProfile:UserProfile = new UserProfile();
     private customerProfile:any = null;
     //private playerProfile:any = null;
     private timezoneString: string = '';
     private playerProfiles: any = new Object();
+
+    private userProfileSubject = new BehaviorSubject<UserProfile>(new UserProfile());
+    userProfile$ = this.userProfileSubject.asObservable();
 
     private playerProfilesSubject = new BehaviorSubject<any>({});
     playerProfiles$ = this.playerProfilesSubject.asObservable();
@@ -24,6 +28,10 @@ export class ProfileService {
     userChoices$ = this.userChoicesSubject.asObservable();
 
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
+
+    updatedUserProfile(){
+      this.userProfileSubject.next(this.userProfile);
+    }
 
     updatedPlayerProfiles() {
       this.playerProfilesSubject.next(this.playerProfiles);
@@ -39,7 +47,8 @@ export class ProfileService {
                   .subscribe(res => {
                       this.userProfile = res;
                       localStorage.setItem('userProfile', JSON.stringify(res));
-                      this.refreshUserChoices()
+                      this.refreshUserChoices();
+                      this.updatedUserProfile();
                   });
         }
     }
@@ -61,13 +70,14 @@ export class ProfileService {
       this.updatedUserChoices();
     }
 
+/*
     getProfile() {
         if (this.userProfile === null){
             this.userProfile = JSON.parse(localStorage.getItem('userProfile'));
         }
         return this.userProfile
     }
-
+*/
     initialize(){
       if (this.authService.loggedIn()){
         this.myUsername = localStorage.getItem('username');
@@ -78,12 +88,21 @@ export class ProfileService {
             this.playerProfiles[friend.user] = JSON.parse(localStorage.getItem(friend.user+'_playerProfile'));
           }
           this.refreshUserChoices();
-        }
+      }else{
+          this.userProfile = new UserProfile();
+      }
         this.checkLastChanges();
         this.updatedPlayerProfiles();
+        this.updatedUserProfile();
         //console.log("on initialize")
         //console.log(this.playerProfiles)
       }
+    }
+
+    cleanup(){
+        this.playerProfiles = new Object();
+        this.userProfile = new UserProfile();
+        this.userChoices = new Object();
     }
 
 
@@ -159,6 +178,7 @@ export class ProfileService {
       this.myUsername = user;
     }
 
+/*
     getPlayerProfile(user:string){
         let playerProfile = new PlayerProfile();
         if (user == ""){
@@ -171,7 +191,7 @@ export class ProfileService {
         }
         return playerProfile
     }
-
+*/
 
     refreshTimezoneString(){
         let timezoneOffset = (new Date().getTimezoneOffset());

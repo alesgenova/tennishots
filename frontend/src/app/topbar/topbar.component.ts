@@ -21,9 +21,10 @@ export class TopbarComponent implements OnInit {
   //loggedIn: boolean = false;
   username: string;
   activeSection: string;
-  Profile = new UserProfile();
+  userProfile = new UserProfile();
   navbarLogoUrl = "assets/img/logo_nav_small.png"
   navigationSubscription: Subscription;
+  userProfileSubscription: Subscription;
   topShadow: string = 'down-shadow';
   bottomShadow: string = 'up-shadow';
   colorTop: string = '';
@@ -36,8 +37,12 @@ export class TopbarComponent implements OnInit {
   ngOnInit() {
       if (this.loggedIn()){
           this.username = localStorage.getItem('username');
-          this.Profile = this.getProfile();
       }
+      this.userProfileSubscription = this.profileService.userProfile$
+        .subscribe(profile => {
+            this.userProfile = profile;
+        });
+
       this.navigationSubscription = this.navigationService.activeSection$
         .subscribe(section => {
           this.activeSection = section;
@@ -47,6 +52,7 @@ export class TopbarComponent implements OnInit {
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
+    this.userProfileSubscription.unsubscribe();
     this.navigationSubscription.unsubscribe();
   }
 
@@ -57,14 +63,9 @@ export class TopbarComponent implements OnInit {
 
   logOut(){
       this.authService.logout();
-      this.Profile = null;
+      this.userProfile = new UserProfile();
+      this.profileService.cleanup();
       this.router.navigate([''])
-  }
-
-  getProfile(){
-      //console.log("got Profile")
-      this.Profile = this.profileService.getProfile();
-      return this.Profile
   }
 
   toggleSidebar(){

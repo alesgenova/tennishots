@@ -2,7 +2,7 @@
 
 </div>
 
-<div class="container text-center">
+<div class="container">
   <div class="white-bg content">
     <h4 class="text-center">Friend Requests</h4>
     <table  class="table">
@@ -14,7 +14,7 @@
         </tr>
         <tr *ngFor="let request of friendRequests">
           <td width="50px">
-            <img [src]="'https://api.tennistat.xyz'+request.from_avatar" class="rounded" height="50px" >
+            <img [src]="request.from_avatar" class="rounded" height="50px" >
           </td>
           <td>
             {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
@@ -29,13 +29,13 @@
     </table>
   </div>
 
-  <div class="white-bg content text-center">
+  <div class="white-bg content">
     <h4 *ngIf="friends.length > 0" class="text-center">Friends</h4>
     <table *ngIf="friends.length > 0" class="table">
       <tbody>
         <tr *ngFor="let friend of friends" role="button" (click)="onFriendClick(friend.user)">
           <td width="50px">
-            <img [src]="'https://api.tennistat.xyz'+friend.avatar" class="rounded" height="50px" >
+            <img [src]="friend.avatar" class="rounded" height="50px" >
           </td>
           <td>
             {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
@@ -49,7 +49,7 @@
     </table>
   </div>
 
-  <div class="white-bg content text-center">
+  <div class="white-bg content">
     <h4 class="text-center">Add Friends</h4>
     <table class="table">
       <tbody>
@@ -60,7 +60,7 @@
         <tr>
         <tr *ngFor="let user of users">
           <td width="50px">
-            <img [src]="'https://api.tennistat.xyz'+user.avatar" class="rounded" height="50px" >
+            <img [src]="user.avatar" class="rounded" height="50px" >
           </td>
           <td>
               {{user.first_name}} {{user.last_name}} <span class="text-muted small">({{user.user}})</span><br>

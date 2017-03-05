@@ -7,6 +7,8 @@ import { TennistatService } from  '../../services/tennistat.service';
 import { ProfileService } from  '../../services/profile.service';
 import { NavigationService } from '../../services/navigation.service';
 
+import {Subscription} from 'rxjs/Subscription';
+
 import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../../objects/registration';
 
 @Component({
@@ -23,6 +25,7 @@ export class ProfileComponent implements OnInit {
   unitChoices = UNIT_CHOICES;
   backhandChoices = BACKHAND_CHOICES;
   privacyChoices = PRIVACY_CHOICES;
+  userProfileSubscription: Subscription;
 
   constructor(private fb: FormBuilder,
               //private authService: AuthService,
@@ -32,12 +35,14 @@ export class ProfileComponent implements OnInit {
               private navigationService: NavigationService) {}
 
   ngOnInit() {
-      this.createProfileForm();
+      this.navigationService.setActiveSection("services");
+      this.userProfileSubscription = this.profileService.userProfile$
+        .subscribe(profile => {
+            this.createProfileForm(profile);
+        });
   }
 
-  createProfileForm(){
-      this.navigationService.setActiveSection("services");
-      let userProfile = this.profileService.getProfile();
+  createProfileForm(userProfile:UserProfile){
       // Here we are using the FormBuilder to build out our form.
       this.profileForm = this.fb.group({
             first_name: [userProfile.first_name,Validators.required],
@@ -52,7 +57,7 @@ export class ProfileComponent implements OnInit {
   onSubmit(){
       this.tennistatService.update_profile(this.profileForm.value)
             .subscribe( res => {
-                this.profileService.refreshProfile();
+                //this.profileService.refreshProfile();
                 this.router.navigate(['']);
             } );
   }
@@ -62,7 +67,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onUpload(event){
-      this.profileService.refreshProfile();
+      //this.profileService.refreshProfile();
   }
 
 }

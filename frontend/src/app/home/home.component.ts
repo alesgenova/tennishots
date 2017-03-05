@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   sessionsExpand: boolean[] = [];
   emptyResponse = new SonyResponse();
   playerProfileSubscription: Subscription;
+  userProfileSubscription: Subscription;
 
   constructor(private tennistatService: TennistatService,
               private profileService: ProfileService,
@@ -32,10 +33,15 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
       this.navigationService.setActiveSection("home");
       this.user = this.profileService.getUsername();
+
+      this.userProfileSubscription = this.profileService.userProfile$
+        .subscribe(profile => {
+            this.userProfile = profile;
+        });
+
       this.playerProfileSubscription = this.profileService.playerProfiles$
         .subscribe(profiles => {
           this.playerProfile = profiles[this.user];
-          this.userProfile = this.profileService.getProfile();
           //console.log("subscription updated");
           //console.log(this.playerProfile);
         });
@@ -46,10 +52,7 @@ export class HomeComponent implements OnInit {
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.playerProfileSubscription.unsubscribe();
-  }
-
-  getProfile(){
-    return this.userProfile;
+    this.userProfileSubscription.unsubscribe();
   }
 
   getRecentActivity(){
