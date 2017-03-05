@@ -1,26 +1,27 @@
-<div class="my-top2 green-top">
+<div class="my-top2">
   <p class="lead text-center white-text">Progression</p>
 </div>
 
-<div class="container white-bg content text-center">
-  <div class="row">
-    <div class="col-12" style="display:flex;">
-      <div class="mr-auto">
-        <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
-        <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
-              <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
-        </select>
+<div class="container text-center">
+  <div class="floating text-center">
+    <div class="row">
+      <div class="col-12" style="display:flex;">
+        <div class="mr-auto">
+          <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
+          <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
+                <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
+          </select>
 
-        <select id="periodpicker" [ngModel]="activePeriod" (ngModelChange)="onPeriodChange($event)" class="custom-select">
-              <option *ngFor="let period of PERIOD_CHOICES" [value]="period.key">{{period.label}}</option>
-        </select>
-        <select id="periodpicker" [ngModel]="activeSwing" (ngModelChange)="onSwingChange($event)" class="custom-select">
-              <option *ngFor="let stroke of SONY_STROKES_CHOICES" [value]="stroke.key">{{stroke.label}}</option>
-        </select>
+          <select id="periodpicker" [ngModel]="activePeriod" (ngModelChange)="onPeriodChange($event)" class="custom-select">
+                <option *ngFor="let period of PERIOD_CHOICES" [value]="period.key">{{period.label}}</option>
+          </select>
+          <select id="periodpicker" [ngModel]="activeSwing" (ngModelChange)="onSwingChange($event)" class="custom-select">
+                <option *ngFor="let stroke of SONY_STROKES_CHOICES" [value]="stroke.key">{{stroke.label}}</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="container">
+
   <boxplot [plots]="plots"></boxplot>
 </div>

@@ -2,78 +2,81 @@
   <p class="lead text-center white-text">Advanced analysis</p>
 </div>
 
-<div class="container white-bg content text-center">
-  <div class="row">
-    <div class="col-12" style="display:flex;">
-      <div class="ml-auto mr-auto">
-      </div>
-      <div class="ml-auto">
-        <button [routerLink]="['/summary']" class="btn btn-secondary active">Advanced mode</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container white-bg content text-center">
-  <ngb-tabset (tabChange)="beforeTabChange($event)" justify="left" #t="ngbTabset">
-    <ngb-tab  id="tab1">
-      <template ngbTabTitle>
-        <div class="text-center" [class.selection1]="compare">
-        Selection 1
-        <select id="userpicker" [ngModel]="filter1.username" (ngModelChange)="onUserChange($event, 1)" class="form-control form-control-sm">
-          <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}}</option>
-        </select>
+<div class="container">
+  <div class="floating text-center">
+    <div class="row">
+      <div class="col-12" style="display:flex;">
+        <div class="ml-auto mr-auto">
         </div>
-      </template>
-      <template ngbTabContent>
-        <div *ngIf="!showFilter">
-          <br>
-          <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
+        <div class="ml-auto">
+          <button [routerLink]="['/summary']" class="btn btn-secondary active">Advanced mode</button>
         </div>
-        <div *ngIf="gotPeriods1 && showFilter" class="down-light-shadow" style="padding-left:10px;padding-right:10px;" [class.filter1]="compare">
-          <sony-filter [filter]="filter1" [listOfPeriods]="listOfPeriods1" [tagList]="tagList1"></sony-filter>
-        </div>
-      </template>
-    </ngb-tab>
-    <ngb-tab *ngIf="compare" id="tab2">
-      <template ngbTabTitle>
-        <div class="text-center" [class.selection2]="compare">
-        Selection 2
-        <select id="userpicker" [ngModel]="filter2.username" (ngModelChange)="onUserChange($event, 2)" class="form-control form-control-sm">
-          <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}}</option>
-        </select>
-        </div>
-      </template>
-      <template ngbTabContent>
-        <div *ngIf="!showFilter">
-          <br>
-          <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
-        </div>
-        <div *ngIf="gotPeriods2 && showFilter" class="filter2">
-          <sony-filter [filter]="filter2" [listOfPeriods]="listOfPeriods2" [tagList]="tagList2"></sony-filter>
-        </div>
-      </template>
-    </ngb-tab>
-    <ngb-tab id="tabS" >
-      <template ngbTabTitle><button type="button" class="btn btn-primary btn-sm" [class.btn-danger]="compare" (click)="handleCompareChange()"><i class="fa" [class.fa-plus]="!compare" [class.fa-minus]="compare" aria-hidden="true"></i></button></template>
-    </ngb-tab>
-  </ngb-tabset>
-  <button *ngIf="showFilter" type="button" class="btn btn-danger btn-sm btn-block" (click)="onSubmitRequest()">Submit</button>
-  <br>
-  <div *ngIf="stats1.count > 0 || stats2.count > 0" class="row">
-    <div class="col-12">
-      <div class="alert alert-danger text-center">
-        <b><strong>{{stats1.count}}</strong></b> shots matched Selection #1
-      </div>
-    </div>
-    <div *ngIf="compare" class="col-12">
-      <div class="alert alert-info text-center">
-        <b><strong>{{stats2.count}}</strong></b> shots matched Selection #2
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="stats1.count > 0 || stats2.count > 0" class="container white-bg content text-center">
-  <display *ngIf="stats1 && stats2" [stats1]="stats1" [stats2]="stats2" [compare]="compare"></display>
+
+  <div class="white-bg content text-center">
+    <ngb-tabset (tabChange)="beforeTabChange($event)" justify="left" #t="ngbTabset">
+      <ngb-tab  id="tab1">
+        <template ngbTabTitle>
+          <div class="text-center" [class.selection1]="compare">
+          Selection 1
+          <select id="userpicker" [ngModel]="filter1.username" (ngModelChange)="onUserChange($event, 1)" class="form-control form-control-sm">
+            <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}}</option>
+          </select>
+          </div>
+        </template>
+        <template ngbTabContent>
+          <div *ngIf="!showFilter">
+            <br>
+            <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
+          </div>
+          <div *ngIf="gotPeriods1 && showFilter" class="down-light-shadow" style="padding-left:10px;padding-right:10px;" [class.filter1]="compare">
+            <sony-filter [filter]="filter1" [listOfPeriods]="listOfPeriods1" [tagList]="tagList1"></sony-filter>
+          </div>
+        </template>
+      </ngb-tab>
+      <ngb-tab *ngIf="compare" id="tab2">
+        <template ngbTabTitle>
+          <div class="text-center" [class.selection2]="compare">
+          Selection 2
+          <select id="userpicker" [ngModel]="filter2.username" (ngModelChange)="onUserChange($event, 2)" class="form-control form-control-sm">
+            <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}}</option>
+          </select>
+          </div>
+        </template>
+        <template ngbTabContent>
+          <div *ngIf="!showFilter">
+            <br>
+            <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="showFilter=!showFilter">Show Selection Filters</button>
+          </div>
+          <div *ngIf="gotPeriods2 && showFilter" class="filter2">
+            <sony-filter [filter]="filter2" [listOfPeriods]="listOfPeriods2" [tagList]="tagList2"></sony-filter>
+          </div>
+        </template>
+      </ngb-tab>
+      <ngb-tab id="tabS" >
+        <template ngbTabTitle><button type="button" class="btn btn-primary btn-sm" [class.btn-danger]="compare" (click)="handleCompareChange()"><i class="fa" [class.fa-plus]="!compare" [class.fa-minus]="compare" aria-hidden="true"></i></button></template>
+      </ngb-tab>
+    </ngb-tabset>
+    <button *ngIf="showFilter" type="button" class="btn btn-danger btn-sm btn-block" (click)="onSubmitRequest()">Submit</button>
+    <br>
+    <div *ngIf="stats1.count > 0 || stats2.count > 0" class="row">
+      <div class="col-12">
+        <div class="alert alert-danger text-center">
+          <b><strong>{{stats1.count}}</strong></b> shots matched Selection #1
+        </div>
+      </div>
+      <div *ngIf="compare" class="col-12">
+        <div class="alert alert-info text-center">
+          <b><strong>{{stats2.count}}</strong></b> shots matched Selection #2
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="stats1.count > 0 || stats2.count > 0" class="white-bg content text-center">
+    <display *ngIf="stats1 && stats2" [stats1]="stats1" [stats2]="stats2" [compare]="compare"></display>
+  </div>
 </div>
 <!--
 <p>

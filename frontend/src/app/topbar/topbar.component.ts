@@ -45,6 +45,11 @@ export class TopbarComponent implements OnInit {
         });
   }
 
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.navigationSubscription.unsubscribe();
+  }
+
   loggedIn(){
       //console.log("loggedIn check")
       return this.authService.loggedIn()
@@ -67,31 +72,44 @@ export class TopbarComponent implements OnInit {
   }
 
   setShadows(){
+      if (this.activeSection == ""){
+          this.bottomShadow = 'up-shadow';
+          this.colorTop = "";
+      }else{
+          this.bottomShadow = 'up-shadow-orange';
+          this.colorTop = "orange-top";
+      }
+    /*
     if (this.activeSection == "home"){
         //this.topShadow = 'down-shadow-orange';
         this.bottomShadow = 'up-shadow-orange';
-        this.colorTop = "orange-top";
+        this.colorTop = "red-top";
     }else if(this.activeSection == "analysis"){
         //this.topShadow = 'down-shadow-red';
         this.bottomShadow = 'up-shadow-red';
+        this.colorTop = "red-top";
         this.colorTop = "red-top";
     }else if(this.activeSection == "progress"){
         //this.topShadow = 'down-shadow-green';
         this.bottomShadow = 'up-shadow-green';
         this.colorTop = "green-top";
+        this.colorTop = "red-top";
     }else if(this.activeSection == "video"){
         //this.topShadow = 'down-shadow-blue';
         this.bottomShadow = 'up-shadow-blue';
         this.colorTop = "blue-top";
+        this.colorTop = "orange-top";
     }else if(this.activeSection == "services"){
         //this.topShadow = 'down-shadow-purple';
         this.bottomShadow = 'up-shadow-purple';
         this.colorTop = "purple-top";
+        this.colorTop = "red-top";
     }else{
         this.topShadow = 'down-shadow';
         this.bottomShadow = 'up-shadow';
         this.colorTop = "";
     }
+    */
   }
 
 }

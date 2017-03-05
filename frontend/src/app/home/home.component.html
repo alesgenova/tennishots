@@ -1,101 +1,102 @@
 <!--<div class="white-top down-shadow-orange my-top-placeholder fixed-top">
 </div>-->
 <div class="my-top2">
-  
+
 </div>
 
-<div class="container white-bg content">
-  <div class="row">
-    <div class="col-12" style="display:flex;">
-      <div class="ml-auto" style="width:100px;">
-        <img [src]="'https://api.tennistat.xyz'+getProfile()?.avatar" height="100px" class="rounded" alt="Profile Pic">
+<div class="container">
+  <div class="white-bg content">
+    <div class="row">
+      <div class="col-12" style="display:flex;">
+        <div class="ml-auto" style="width:100px;">
+          <img [src]="'https://api.tennistat.xyz'+getProfile()?.avatar" height="100px" class="rounded" alt="Profile Pic">
+        </div>
+        <div class="pl-3 mr-auto">
+          <h5 class="card-title"><strong>{{getProfile()?.first_name}} {{getProfile()?.last_name}}</strong></h5>
+          <p>
+            <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/profile']">Profile</a>
+            <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/tags']">Tags</a>
+            <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/friends']">Friends</a>
+            <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/import']">Import Shots</a>
+            <a role="button" class="btn btn-sm btn-secondary">Due</a>
+          </p>
+        </div>
       </div>
-      <div class="pl-3 mr-auto">
-        <h5 class="card-title"><strong>{{getProfile()?.first_name}} {{getProfile()?.last_name}}</strong></h5>
+    </div>
+    <hr>
+    <div class="row text-center">
+      <div class="col-4 col-lg-2" role="button" [routerLink]="['/summary']">
+        <h5><strong>{{playerProfile?.periods.session.length}}</strong></h5>
         <p>
-          <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/profile']">Profile</a>
-          <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/tags']">Tags</a>
-          <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/friends']">Friends</a>
-          <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/import']">Import Shots</a>
-          <a role="button" class="btn btn-sm btn-secondary">Due</a>
+          sessions
+        </p>
+      </div>
+      <div class="col-4 col-lg-2" role="button" [routerLink]="['/summary']">
+        <h5><strong>{{playerProfile?.shot_count}}</strong></h5>
+        <p>
+          total shots
+        </p>
+      </div>
+      <div class="col-4 col-lg-2" role="button" [routerLink]="['/video']">
+        <h5><strong>{{playerProfile?.videoshot_count}}</strong></h5>
+        <p>
+          video shots
+        </p>
+      </div>
+      <div class="col-4 col-lg-2" role="button" [routerLink]="['/video']">
+        <h5><strong>{{playerProfile?.recording_count}}</strong></h5>
+        <p>
+          video recordings
+        </p>
+      </div>
+      <div class="col-4 col-lg-2" role="button" [routerLink]="['/videocollection']">
+        <h5><strong>{{playerProfile?.collection_count}}</strong></h5>
+        <p>
+          video collections
+        </p>
+      </div>
+      <div class="col-4 col-lg-2" role="button" [routerLink]="['/friends']">
+        <h5><strong>{{userProfile?.friends.length}}</strong></h5>
+        <p>
+          friends
         </p>
       </div>
     </div>
   </div>
-  <hr>
-  <div class="row text-center">
-    <div class="col-4 col-lg-2" role="button" [routerLink]="['/summary']">
-      <h5><strong>{{playerProfile?.periods.session.length}}</strong></h5>
-      <p>
-        sessions
-      </p>
-    </div>
-    <div class="col-4 col-lg-2" role="button" [routerLink]="['/summary']">
-      <h5><strong>{{playerProfile?.shot_count}}</strong></h5>
-      <p>
-        total shots
-      </p>
-    </div>
-    <div class="col-4 col-lg-2" role="button" [routerLink]="['/video']">
-      <h5><strong>{{playerProfile?.videoshot_count}}</strong></h5>
-      <p>
-        video shots
-      </p>
-    </div>
-    <div class="col-4 col-lg-2" role="button" [routerLink]="['/video']">
-      <h5><strong>{{playerProfile?.recording_count}}</strong></h5>
-      <p>
-        video recordings
-      </p>
-    </div>
-    <div class="col-4 col-lg-2" role="button" [routerLink]="['/videocollection']">
-      <h5><strong>{{playerProfile?.collection_count}}</strong></h5>
-      <p>
-        video collections
-      </p>
-    </div>
-    <div class="col-4 col-lg-2" role="button" [routerLink]="['/friends']">
-      <h5><strong>{{userProfile?.friends.length}}</strong></h5>
-      <p>
-        friends
-      </p>
-    </div>
-  </div>
-</div>
   <!-- The recent activity -->
-<div class="container white-bg content">
-  <h4 class="text-center">Recent Activity</h4>
-  <hr>
-  <div *ngFor="let session of recentActivity; let i=index" class="row">
-    <div class="col-12 recent-col" role="button" (click)="onSessionExpand(i)">
-      <div style="width:75px;">
-        <img [src]="session.player.avatar" class="rounded" height="50px" >
+  <div class="white-bg content">
+    <h4 class="text-center">Recent Activity</h4>
+    <hr>
+    <div *ngFor="let session of recentActivity; let i=index" class="row">
+      <div class="col-12 recent-col" role="button" (click)="onSessionExpand(i)">
+        <div style="width:75px;">
+          <img [src]="session.player.avatar" class="rounded" height="50px" >
+        </div>
+        <div class="mr-auto">
+          {{session.player.first_name}} <span class="text-muted small">({{session.player.user}})</span> played on {{session.timestamp|date:'MMM d'}} <br>
+           <span class="text-muted small">
+             {{session.shot_count}} shots <span *ngIf="session.video_count > 0">and {{session.video_count}} video</span> in this session.
+             <span *ngFor="let tag of session.labels" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
+           </span>
+        </div>
+        <!--
+        <div style="width:150px;">
+          <p>
+          <span *ngFor="let tag of session.labels" class="small" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
+        </p>
+          <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
+        </div>
+        -->
       </div>
-      <div class="mr-auto">
-        {{session.player.first_name}} <span class="text-muted small">({{session.player.user}})</span> played on {{session.timestamp|date:'MMM d'}} <br>
-         <span class="text-muted small">
-           {{session.shot_count}} shots <span *ngIf="session.video_count > 0">and {{session.video_count}} video</span> in this session.
-           <span *ngFor="let tag of session.labels" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
-         </span>
+      <div class="col-12">
+        <hr>
       </div>
-      <!--
-      <div style="width:150px;">
-        <p>
-        <span *ngFor="let tag of session.labels" class="small" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
-      </p>
-        <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
+      <!-- The Session Stats -->
+      <div class="col-12" *ngIf="sessionsExpand[i]">
+        <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
+        <hr>
       </div>
-      -->
-    </div>
-    <div class="col-12">
-      <hr>
-    </div>
-    <!-- The Session Stats -->
-    <div class="col-12" *ngIf="sessionsExpand[i]">
-      <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
-      <hr>
     </div>
   </div>
 </div>
-
 <!--<display [stats1]="getSessionStats(ales, 109)" [stats2]="emptyResponse" [compare]="false"></display>-->

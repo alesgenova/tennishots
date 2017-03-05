@@ -38,11 +38,11 @@
         <li class="nav-item"><a class="nav-link text-muted" [routerLink]="['register']">Register</a></li>
       </ul>
       <ul *ngIf="loggedIn()" class="nav flex-row ml-auto">
-        <li class="nav-item dropdown">
-          <a role="button" href="#" id="dropdownAvatar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img [src]="'https://api.tennistat.xyz'+getProfile()?.avatar" class="rounded-circle" height="35px">
+        <li class="nav-item">
+          <a role="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+            <img style="margin-top:4px;" [src]="'https://api.tennistat.xyz'+getProfile()?.avatar" class="rounded-circle" height="35px">
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownAvatar">
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu4">
             <a class="dropdown-item" [routerLink]="['profile']">
                 <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;{{getProfile()?.user}}
             </a>
@@ -73,36 +73,28 @@
 
 
 <div *ngIf="loggedIn()" class="hidden-md-up mobile-footer" [ngClass]="bottomShadow">
-  <nav class="nav">
-    <ul  class="nav ml-auto mr-auto">
-      <li class="nav-item" [class.active-nav-item]="activeSection=='analysis'">
-        <div ngbDropdown [up]="true">
-          <a class="nav-link" role="button" id="dropdownMenu1" ngbDropdownToggle>Analyze</a>
+    <ul  class="nav nav-justified" style="height:3rem;">
+      <li class="nav-item dropup" [class.active-nav-item]="activeSection=='analysis'">
+          <a class="nav-link" role="button" id="dropdownMenu1" data-toggle="dropdown">Analyze</a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <button class="dropdown-item" [routerLink]="['summary']">Summary</button>
             <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
           </div>
-        </div>
       </li>
-      <li class="nav-item" [class.active-nav-item]="activeSection=='progress'">
-        <div ngbDropdown [up]="true">
-          <a class="nav-link" role="button" id="dropdownMenu3" ngbDropdownToggle>Progress</a>
+      <li class="nav-item dropup" [class.active-nav-item]="activeSection=='progress'">
+          <a class="nav-link" role="button" id="dropdownMenu3" data-toggle="dropdown">Progress</a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
             <button class="dropdown-item" [routerLink]="['progress','session']">Daily</button>
             <button class="dropdown-item" [routerLink]="['progress','week']">Weekly</button>
             <button class="dropdown-item" [routerLink]="['progress','month']">Monthly</button>
           </div>
-        </div>
       </li>
-      <li class="nav-item" [class.active-nav-item]="activeSection=='video'">
-        <div ngbDropdown [up]="true">
-          <a class="nav-link" role="button" id="dropdownMenu2" ngbDropdownToggle>Video</a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <li class="nav-item dropup" [class.active-nav-item]="activeSection=='video'">
+          <a class="nav-link" role="button" id="dropdownMenu2" data-toggle="dropdown">Video</a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
             <button class="dropdown-item" [routerLink]="['video']">Recordings</button>
             <button class="dropdown-item" [routerLink]="['videocollection']">Collections</button>
           </div>
-        </div>
       </li>
     </ul>
-  </nav>
 </div>
