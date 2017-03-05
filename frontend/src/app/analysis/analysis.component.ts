@@ -6,6 +6,7 @@ import { NavigationService } from '../services/navigation.service';
 
 import { SonyFilter, SOFilters, PeriodsPicker, DateRange, NumberRange } from '../objects/sonyfilter';
 import { Period, UserPeriodsList } from '../objects/period';
+import { UserProfile } from '../objects/registration';
 import { SonyResponse } from '../objects/sonyresponse';
 import { Label } from '../objects/label';
 
@@ -20,7 +21,8 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class AnalysisComponent implements OnInit {
 
-  userProfile: any;
+  myUsername: string;
+  userProfile: UserProfile;
   userChoices: any[];
   showFilter: boolean = true;
   filter1: SonyFilter = new SonyFilter();
@@ -45,6 +47,7 @@ export class AnalysisComponent implements OnInit {
 
   playerProfilesSubscription: Subscription;
   userChoicesSubscription: Subscription;
+  userProfileSubscription: Subscription;
   playerProfiles: any;
 
   constructor(private tennistatService: TennistatService,
@@ -53,11 +56,15 @@ export class AnalysisComponent implements OnInit {
 
   ngOnInit() {
       this.navigationService.setActiveSection("analysis");
-      this.userProfile = this.profileService.getProfile();
+      this.myUsername = this.profileService.getUsername();
+      this.filter1.username = this.myUsername;
+      this.filter2.username = this.myUsername;
 
-      this.imperial_units = (this.userProfile.units == 'M');
-      this.filter1.username = this.userProfile.user;
-      this.filter2.username = this.userProfile.user;
+      this.userProfileSubscription = this.profileService.userProfile$
+        .subscribe(profile => {
+            this.userProfile = profile;
+            this.imperial_units = (this.userProfile.units == 'M');
+        });
 
       // subscribe to changes in the player profiles
       this.playerProfilesSubscription = this.profileService.playerProfiles$
@@ -78,6 +85,13 @@ export class AnalysisComponent implements OnInit {
 
 //      this.onUserSelectClick(1);
 //      this.onUserSelectClick(2);
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.playerProfilesSubscription.unsubscribe();
+    this.userChoicesSubscription.unsubscribe();
+    this.userProfileSubscription.unsubscribe();
   }
 
   handleCompareChange() {

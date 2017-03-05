@@ -52,6 +52,11 @@ export class LabelsComponent implements OnInit {
       this.createTagForm();
   }
 
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.playerProfilesSubscription.unsubscribe();
+  }
+
   fromProfileToPagination() {
       let activePlayer = this.playerProfiles[this.myUsername];
       this.sessionList = activePlayer.periods.session;

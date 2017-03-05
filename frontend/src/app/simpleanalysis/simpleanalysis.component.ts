@@ -26,6 +26,7 @@ export class SimpleanalysisComponent implements OnInit {
     stats = new SonyResponse();
     listOfPeriods = new UserPeriodsList();
     activeUser: string;
+    requestedUser: string;
     activePk: number = -1;
     activePeriod: string = 'session';
     previousUser: string = '';
@@ -42,6 +43,7 @@ export class SimpleanalysisComponent implements OnInit {
     playerProfilesSubscription: Subscription;
     userChoicesSubscription: Subscription;
     playerProfiles: any;
+    userProfileSubscription: Subscription;
 
   constructor(  private route: ActivatedRoute,
                 private router: Router,
@@ -52,17 +54,22 @@ export class SimpleanalysisComponent implements OnInit {
   ngOnInit() {
       this.navigationService.setActiveSection("analysis");
       this.myUsername = this.profileService.getUsername();
-      this.userProfile = this.profileService.getProfile();
-      this.activeUser = this.route.snapshot.params['user'];
-      if (this.activeUser == null){
-          this.activeUser = this.myUsername;
-      }
-      if (this.activeUser != this.myUsername){
-          if (this.userProfile.friends.some(x=>x.user==this.activeUser)){
-          }else{
-              this.router.navigate(['summary']);
-          }
-      }
+      this.requestedUser = this.route.snapshot.params['user'];
+
+      this.userProfileSubscription = this.profileService.userProfile$
+        .subscribe(profile => {
+            this.userProfile = profile;
+            if (this.requestedUser == null){
+                this.activeUser = this.myUsername;
+            }
+            if (this.requestedUser != this.myUsername){
+                if (this.userProfile.friends.some(x=>x.user==this.requestedUser)){
+                    this.activeUser = this.requestedUser;
+                }else{
+                    this.activeUser = this.myUsername;
+                }
+            }
+        });
 
       // subscribe to changes in the player profiles
       this.playerProfilesSubscription = this.profileService.playerProfiles$
@@ -84,6 +91,7 @@ export class SimpleanalysisComponent implements OnInit {
     // prevent memory leak when component is destroyed
     this.playerProfilesSubscription.unsubscribe();
     this.userChoicesSubscription.unsubscribe();
+    this.userProfileSubscription.unsubscribe();
   }
 
   onUserChange(user:string){

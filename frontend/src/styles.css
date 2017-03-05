@@ -118,7 +118,7 @@ body {
 .orange-top{
     /*background-color: rgba(255,133,84,1);*/
     background-image: url("/assets/img/clay-lg2-small.png");
-    background-size: auto auto;
+    background-size: 100% auto;
 }
 
 .darkblue-top{
@@ -167,7 +167,7 @@ body {
 }
 
 .my-top{
-    height:16.5rem;
+    height:15.5rem;
     z-index:-10;
     /*
     margin-bottom: 2rem;

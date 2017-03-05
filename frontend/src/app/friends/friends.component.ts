@@ -5,6 +5,8 @@ import { TennistatService } from  '../services/tennistat.service';
 import { ProfileService } from  '../services/profile.service';
 import { NavigationService } from '../services/navigation.service';
 
+import {Subscription} from 'rxjs/Subscription';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,6 +17,7 @@ import { Router } from '@angular/router';
 export class FriendsComponent implements OnInit {
 
   userProfile: any;
+  userProfileSubscription: Subscription;
   friends: Friend[] = [];
   friendRequests: FriendRequest[] = [];
   users: Friend[] = [];
@@ -28,18 +31,12 @@ export class FriendsComponent implements OnInit {
 
   ngOnInit() {
       this.navigationService.setActiveSection("services");
-      this.userProfile = this.profileService.getProfile();
-      this.refreshFriends();
+      this.userProfileSubscription = this.profileService.userProfile$
+        .subscribe(profile => {
+            this.userProfile = profile;
+            this.friends = this.userProfile.friends;
+        });
       this.refreshRequests();
-  }
-
-  refreshFriends() {
-      this.tennistatService.get_friends()
-            .subscribe( res => {
-                this.userProfile.friends = res;
-                localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
-                this.friends = res;
-            });
   }
 
   refreshRequests() {
@@ -67,7 +64,7 @@ export class FriendsComponent implements OnInit {
             .subscribe( res => {
                 //this.friends = [];
                 //this.friendRequests = [];
-                this.refreshFriends();
+                this.profileService.checkLastChanges();
                 this.refreshRequests();
             });
   }

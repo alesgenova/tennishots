@@ -40,11 +40,11 @@
       <ul *ngIf="loggedIn()" class="nav flex-row ml-auto">
         <li class="nav-item">
           <a role="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-            <img style="margin-top:4px;" [src]="'https://api.tennistat.xyz'+getProfile()?.avatar" class="rounded-circle" height="35px">
+            <img style="margin-top:4px;" [src]="userProfile?.avatar" class="rounded-circle" height="35px">
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu4">
             <a class="dropdown-item" [routerLink]="['profile']">
-                <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;{{getProfile()?.user}}
+                <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;{{userProfile?.user}}
             </a>
             <a class="dropdown-item" [routerLink]="['friends']">
                 <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Friends
@@ -70,7 +70,6 @@
 
 <div class="my-top fixed-top" [ngClass]="colorTop">
 </div>
-
 
 <div *ngIf="loggedIn()" class="hidden-md-up mobile-footer" [ngClass]="bottomShadow">
     <ul  class="nav nav-justified" style="height:3rem;">

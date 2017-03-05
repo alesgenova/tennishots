@@ -22,10 +22,12 @@ export class VideoComponent implements OnInit {
 
     userChoices: any;
     myUsername: string;
+    requestedUser: string;
     activeUser: string;
     activeSession = new Period();
     previousUser: string = '';
     userProfile: any;
+    userProfileSubscription: Subscription;
     doSessionPagination: boolean;
     nPeriods: number;
     periodsPerPage: number = 4;
@@ -59,18 +61,24 @@ export class VideoComponent implements OnInit {
       this.navigationService.setActiveSection("video");
       this.timezoneString = this.profileService.getTimezoneString();
 
+
       this.myUsername = this.profileService.getUsername();
-      this.userProfile = this.profileService.getProfile();
-      this.activeUser = this.route.snapshot.params['user'];
-      if (this.activeUser == null){
-          this.activeUser = this.myUsername;
-      }
-      if (this.activeUser != this.myUsername){
-          if (this.userProfile.friends.some(x=>x.user==this.activeUser)){
-          }else{
-              this.router.navigate(['video']);
-          }
-      }
+      this.requestedUser = this.route.snapshot.params['user'];
+
+      this.userProfileSubscription = this.profileService.userProfile$
+        .subscribe(profile => {
+            this.userProfile = profile;
+            if (this.requestedUser == null){
+                this.activeUser = this.myUsername;
+            }
+            if (this.requestedUser != this.myUsername){
+                if (this.userProfile.friends.some(x=>x.user==this.requestedUser)){
+                    this.activeUser = this.requestedUser;
+                }else{
+                    this.activeUser = this.myUsername;
+                }
+            }
+        });
 
       // subscribe to changes in the player profiles
       this.playerProfilesSubscription = this.profileService.playerProfiles$
@@ -86,6 +94,13 @@ export class VideoComponent implements OnInit {
           //console.log("userChoices");
           //console.log(this.userChoices);
         });
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.playerProfilesSubscription.unsubscribe();
+    this.userChoicesSubscription.unsubscribe();
+    this.userProfileSubscription.unsubscribe();
   }
 
   onUserChange(user:string){
