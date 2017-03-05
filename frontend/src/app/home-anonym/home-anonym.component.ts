@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-home-anonym',
@@ -9,9 +10,10 @@ export class HomeAnonymComponent implements OnInit {
 
   tennistatLogoUrl = "assets/img/logo.svg";
 
-  constructor() { }
+  constructor(private navigationService: NavigationService) { }
 
   ngOnInit() {
+      this.navigationService.setActiveSection("");
   }
 
 }

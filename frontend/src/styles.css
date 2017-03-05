@@ -36,12 +36,20 @@ body {
     margin-top: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     border-style: solid;
     border-color: #dedede;
     border-width: thin;
     border-radius: 4px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    /*text-align: center;*/
+    /*text-align: center;
+
+    */
+}
+
+.floating{
+    margin-top: 1rem;
 }
 
 .white-text{
@@ -92,18 +100,19 @@ body {
 .green-top{
     background-color: #98D9C2;
     background-color: rgba(33,160,160,1);
+    background-color: #59d1ad
 }
 
 .red-top{
-    background-color: #D62246;
+    background-color: #f4675a;
 }
 
 .blue-top{
-    background-color: #003d5b;
+    background-color: #1d81a3;
 }
 
 .purple-top{
-    background-color: #A09EBB;
+    background-color: #797ed8;
 }
 
 .orange-top{
@@ -156,7 +165,7 @@ body {
 }
 
 .my-top{
-    height:15rem;
+    height:11.5rem;
     z-index:-10;
     /*
     margin-bottom: 2rem;
@@ -166,10 +175,10 @@ body {
 }
 
 .my-top2{
+    margin-bottom: -9.25rem;
     height:12rem;
-    padding-top: 1rem;
+    padding-top: 1.25rem;
     margin-top:-1.5rem;
-    margin-bottom: -9.5rem;
     /*background-image: url("/assets/img/clay.jpg");*/
     text-align: center;
     /*

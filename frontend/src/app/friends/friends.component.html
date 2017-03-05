@@ -1,34 +1,35 @@
 <div class="my-top2">
-  
+
 </div>
 
-<div class="container white-bg content text-center">
-  <h4 class="text-center">Friend Requests</h4>
-  <table  class="table">
-    <tbody>
-      <tr>
-        <td *ngIf="friendRequests.length < 1" class="text-center text-muted">
-          You're all caught up, there are no pending friend requests.
-        </td>
-      </tr>
-      <tr *ngFor="let request of friendRequests">
-        <td width="50px">
-          <img [src]="'https://api.tennistat.xyz'+request.from_avatar" class="rounded" height="50px" >
-        </td>
-        <td>
-          {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
-           <span class="text-muted small">{{request.from_email}}</span>
-        </td>
-        <td class=text-right>
-          <button (click)="respondRequest(request.from_user,'accept')" class="btn btn-primary btn-sm">Accept</button>
-          <button (click)="respondRequest(request.from_user,'refuse')" class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<div class="container text-center">
+  <div class="white-bg content">
+    <h4 class="text-center">Friend Requests</h4>
+    <table  class="table">
+      <tbody>
+        <tr>
+          <td *ngIf="friendRequests.length < 1" class="text-center text-muted">
+            You're all caught up, there are no pending friend requests.
+          </td>
+        </tr>
+        <tr *ngFor="let request of friendRequests">
+          <td width="50px">
+            <img [src]="'https://api.tennistat.xyz'+request.from_avatar" class="rounded" height="50px" >
+          </td>
+          <td>
+            {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
+             <span class="text-muted small">{{request.from_email}}</span>
+          </td>
+          <td class=text-right>
+            <button (click)="respondRequest(request.from_user,'accept')" class="btn btn-primary btn-sm">Accept</button>
+            <button (click)="respondRequest(request.from_user,'refuse')" class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<div class="container white-bg content text-center">
+  <div class="white-bg content text-center">
     <h4 *ngIf="friends.length > 0" class="text-center">Friends</h4>
     <table *ngIf="friends.length > 0" class="table">
       <tbody>
@@ -48,7 +49,7 @@
     </table>
   </div>
 
-<div class="container white-bg content text-center">
+  <div class="white-bg content text-center">
     <h4 class="text-center">Add Friends</h4>
     <table class="table">
       <tbody>
@@ -71,4 +72,5 @@
         </tr>
       </tbody>
     </table>
+  </div>
 </div>

@@ -1,124 +1,126 @@
-<div class="my-top2 blue-top">
+<div class="my-top2">
   <p class="lead text-center white-text">Video collections</p>
 </div>
 
-<div class="container white-bg content text-center">
-  <div class="row">
-    <div class="col-12" style="display:flex;">
-      <div class="mr-auto">
-        <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
-        <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
-              <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
-        </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
-      </div>
-      <div>
-        <button [routerLink]="['','video']" class="btn btn-secondary" role="button">Video recordings</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div *ngIf="!doCreate" class="container white-bg content text-center">
-  <p>
-    <button class="btn btn-sm btn-danger btn-block" (click)="onCreateSwitch()" role="button">Create new video collection</button>
-  </p>
-  <div class="row">
-    <div *ngIf="videoSubset?.length == 0" class="col-12">
-      <p>
-        You haven't created any video collection yet. Create your first now, it's fun!
-      </p>
-    </div>
-    <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
-      <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
-          <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
-          <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
-          <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px" style="background-color:rgba(255,255,255,0);">
-        <div class="card-img-overlay">
-          <h6 class="card-title">
-            {{video.title}}
-          </h6>
-          <p *ngIf="video.status == 'U'" class="card-text"><span class="badge badge-danger">Upload</span></p>
-          <p *ngIf="video.status == 'P'" class="card-text"><span class="badge badge-info">Processing</span></p>
-          <p *ngIf="video.status == 'F'" class="card-text"><span class="badge badge-warning">Failed</span></p>
-          <p *ngIf="video.status == 'C'" class="card-text"><span class="badge badge-success">{{video.shot_count}} shots</span></p>
+<div class="container text-center">
+  <div class="floating">
+    <div class="row">
+      <div class="col-12" style="display:flex;">
+        <div class="mr-auto">
+          <img [src]="'https://api.tennistat.xyz'+userChoices[activeUser].avatar" class="rounded" height="37px" >
+          <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
+                <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
+          </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
+        </div>
+        <div>
+          <button [routerLink]="['','video']" class="btn btn-secondary" role="button">Video recordings</button>
         </div>
       </div>
-      <br>
     </div>
-    <div *ngIf="doVideoPagination"  class="col-12">
-      <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="videosPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
-    </div>
-  </div>
-</div>
-<!-- Processing Message -->
-<div *ngIf="!doCreate && activeVideo?.status=='P'" class="container white-bg content text-center">
-  <p>
-    Your video collection is being processed, and will be ready soon(ish).
-  </p>
-</div>
-<!-- Play Video -->
-<div *ngIf="!doCreate && activeVideo?.status=='C'" class="container white-bg content text-center">
-  <p>
-    <video  width="100%" height='auto' controls>
-      <source [src]="activeVideo.processed_file" type="video/mp4">
-      Your browser does not support HTML5 video.
-    </video>
-  </p>
-</div>
-<!-- Failed Message -->
-<div *ngIf="!doCreate && activeVideo?.status=='F'" class="container white-bg content text-center">
-  <p>
-    Well, this is embarassing! Something went wrong while processing your video. Click the button below to try again.
-  </p>
-  <p>
-    <button class="btn btn-sm btn-warning" role="button" (click)="onRetry(activeVideo.pk)">Retry</button>
-  </p>
-</div>
 
-<!-- Filter part for creation of new collection -->
-<div *ngIf="doCreate" class="container white-bg content text-center">
-  <p>
-    <button class="btn btn-sm btn-primary btn-block" (click)="doCreate=!doCreate" role="button">View your video collections</button>
-  </p>
-  <p>
-    Apply filters to choose your best shots and create the perfect video collection.
-  </p>
-  <p>
-    <sony-filter [filter]="filter" [listOfPeriods]="listOfPeriods" [tagList]="tagList" [expanded]="true" [videoOnly]="true"></sony-filter>
-  </p>
-  <p>
-    <button class="btn btn-sm btn-danger btn-block" role="button" (click)="onFilter()">Filter</button>
-  </p>
-</div>
-<div *ngIf="doCreate && filterCount == 0" class="container white-bg content text-center">
-  <div class="alert alert-danger text-center">
-    <b><strong>0</strong></b> video shots matched your filter criteria.<br>
-    Try applying less restrictive filters.
-  </div>
-</div>
-<div *ngIf="doCreate && filterCount > 100" class="container white-bg content text-center">
-  <div class="alert alert-danger text-center">
-    <b><strong>{{filterCount}}</strong></b> video shots matched your filter criteria.<br>
-    Due to limited resources, the maximum number of shots for each video collection is <strong>100</strong>.<br>
-    Please apply more restrictive filters.
-  </div>
-</div>
-<div *ngIf="doCreate && filterCount > 0 && filterCount < 101" class="container white-bg content text-center">
-  <div class="row">
-    <div class="col-12">
-      <div class="alert alert-info text-center">
-        <b><strong>{{filterCount}}</strong></b> video shots matched your filter criteria.
+  <div *ngIf="!doCreate" class="white-bg content text-center">
+    <p>
+      <button class="btn btn-sm btn-danger btn-block" (click)="onCreateSwitch()" role="button">Create new video collection</button>
+    </p>
+    <div class="row">
+      <div *ngIf="videoSubset?.length == 0" class="col-12">
+        <p>
+          You haven't created any video collection yet. Create your first now, it's fun!
+        </p>
+      </div>
+      <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
+        <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
+            <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
+            <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
+            <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px" style="background-color:rgba(255,255,255,0);">
+          <div class="card-img-overlay">
+            <h6 class="card-title">
+              {{video.title}}
+            </h6>
+            <p *ngIf="video.status == 'U'" class="card-text"><span class="badge badge-danger">Upload</span></p>
+            <p *ngIf="video.status == 'P'" class="card-text"><span class="badge badge-info">Processing</span></p>
+            <p *ngIf="video.status == 'F'" class="card-text"><span class="badge badge-warning">Failed</span></p>
+            <p *ngIf="video.status == 'C'" class="card-text"><span class="badge badge-success">{{video.shot_count}} shots</span></p>
+          </div>
+        </div>
+        <br>
+      </div>
+      <div *ngIf="doVideoPagination"  class="col-12">
+        <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="videosPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
       </div>
     </div>
-    <div class="col-12">
-      <form [formGroup]="videoCollectionForm" novalidate (ngSubmit)="onCreateVideo()">
-        <div class="form-group">
-          <input class="form-control" type="text" placeholder="Title" id="title" formControlName="title">
+  </div>
+  <!-- Processing Message -->
+  <div *ngIf="!doCreate && activeVideo?.status=='P'" class="white-bg content text-center">
+    <p>
+      Your video collection is being processed, and will be ready soon(ish).
+    </p>
+  </div>
+  <!-- Play Video -->
+  <div *ngIf="!doCreate && activeVideo?.status=='C'" class="white-bg content text-center">
+    <p>
+      <video  width="100%" height='auto' controls>
+        <source [src]="activeVideo.processed_file" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+    </p>
+  </div>
+  <!-- Failed Message -->
+  <div *ngIf="!doCreate && activeVideo?.status=='F'" class="white-bg content text-center">
+    <p>
+      Well, this is embarassing! Something went wrong while processing your video. Click the button below to try again.
+    </p>
+    <p>
+      <button class="btn btn-sm btn-warning" role="button" (click)="onRetry(activeVideo.pk)">Retry</button>
+    </p>
+  </div>
+
+  <!-- Filter part for creation of new collection -->
+  <div *ngIf="doCreate" class="white-bg content text-center">
+    <p>
+      <button class="btn btn-sm btn-primary btn-block" (click)="doCreate=!doCreate" role="button">View your video collections</button>
+    </p>
+    <p>
+      Apply filters to choose your best shots and create the perfect video collection.
+    </p>
+    <p>
+      <sony-filter [filter]="filter" [listOfPeriods]="listOfPeriods" [tagList]="tagList" [expanded]="true" [videoOnly]="true"></sony-filter>
+    </p>
+    <p>
+      <button class="btn btn-sm btn-danger btn-block" role="button" (click)="onFilter()">Filter</button>
+    </p>
+  </div>
+  <div *ngIf="doCreate && filterCount == 0" class="white-bg content text-center">
+    <div class="alert alert-danger text-center">
+      <b><strong>0</strong></b> video shots matched your filter criteria.<br>
+      Try applying less restrictive filters.
+    </div>
+  </div>
+  <div *ngIf="doCreate && filterCount > 100" class="white-bg content text-center">
+    <div class="alert alert-danger text-center">
+      <b><strong>{{filterCount}}</strong></b> video shots matched your filter criteria.<br>
+      Due to limited resources, the maximum number of shots for each video collection is <strong>100</strong>.<br>
+      Please apply more restrictive filters.
+    </div>
+  </div>
+  <div *ngIf="doCreate && filterCount > 0 && filterCount < 101" class="white-bg content text-center">
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-info text-center">
+          <b><strong>{{filterCount}}</strong></b> video shots matched your filter criteria.
         </div>
-        <div class="form-group">
-          <textarea class="form-control" placeholder="Description" id="description" formControlName="description"></textarea>
-        </div>
-        <input class="btn btn-primary btn-block" [disabled]="!videoCollectionForm.valid" type="submit" value="Create" />
-      </form>
+      </div>
+      <div class="col-12">
+        <form [formGroup]="videoCollectionForm" novalidate (ngSubmit)="onCreateVideo()">
+          <div class="form-group">
+            <input class="form-control" type="text" placeholder="Title" id="title" formControlName="title">
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" placeholder="Description" id="description" formControlName="description"></textarea>
+          </div>
+          <input class="btn btn-primary btn-block" [disabled]="!videoCollectionForm.valid" type="submit" value="Create" />
+        </form>
+      </div>
     </div>
   </div>
 </div>
