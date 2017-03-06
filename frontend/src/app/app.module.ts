@@ -73,6 +73,7 @@ import { PasswordresetComponent } from './accounts/passwordreset/passwordreset.c
 import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpassword.component';
 import { VerifyemailComponent } from './accounts/verifyemail/verifyemail.component';
 import { SidebarComponent } from './topbar/sidebar/sidebar.component';
+import { SummaryComponent } from './summary/summary.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -117,7 +118,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ForgotpasswordComponent,
     VerifyemailComponent,
     LoopObjectPipe,
-    SidebarComponent
+    SidebarComponent,
+    SummaryComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

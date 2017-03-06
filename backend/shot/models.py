@@ -49,6 +49,7 @@ class Week(Period):
 
 class Day(Period):
     user = models.ForeignKey(User, related_name='days', on_delete=models.CASCADE, null=False)
+    yy = models.ForeignKey(Year, on_delete=models.CASCADE)
     mm = models.ForeignKey(Month, on_delete=models.CASCADE)
     ww = models.ForeignKey(Week, on_delete=models.CASCADE)
 
@@ -84,8 +85,11 @@ class SessionLabel(models.Model):
 
 class Session(Period):
     user = models.ForeignKey(User, related_name='sessions', on_delete=models.CASCADE, null=False)
-    dd = models.ForeignKey(Day, on_delete=models.CASCADE)
-    labels = models.ManyToManyField(SessionLabel)
+    yy = models.ForeignKey(Year, related_name='sessions', on_delete=models.CASCADE)
+    mm = models.ForeignKey(Month, related_name='sessions', on_delete=models.CASCADE)
+    ww = models.ForeignKey(Week, related_name='sessions', on_delete=models.CASCADE)
+    dd = models.ForeignKey(Day, related_name='sessions', on_delete=models.CASCADE)
+    labels = models.ManyToManyField(SessionLabel, related_name='sessions')
 
     def __str__(self):
         return '{}/{}/{}/{}'.format(self.timestamp.year, self.timestamp.month, self.timestamp.day, self.timestamp.hour)

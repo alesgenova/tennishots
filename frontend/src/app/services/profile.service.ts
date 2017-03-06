@@ -17,6 +17,7 @@ export class ProfileService {
     //private playerProfile:any = null;
     private timezoneString: string = '';
     private playerProfiles: any = new Object();
+    private playerSummaries: any = new Object();
 
     private userProfileSubject = new BehaviorSubject<UserProfile>(new UserProfile());
     userProfile$ = this.userProfileSubject.asObservable();
@@ -27,6 +28,9 @@ export class ProfileService {
     private userChoicesSubject = new BehaviorSubject<any>({});
     userChoices$ = this.userChoicesSubject.asObservable();
 
+    private playerSummariesSubject = new BehaviorSubject<any>({});
+    playerSummaries$ = this.playerSummariesSubject.asObservable();
+
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
 
     updatedUserProfile(){
@@ -35,6 +39,10 @@ export class ProfileService {
 
     updatedPlayerProfiles() {
       this.playerProfilesSubject.next(this.playerProfiles);
+    }
+
+    updatedPlayerSummaries() {
+      this.playerSummariesSubject.next(this.playerSummaries);
     }
 
     updatedUserChoices() {
@@ -51,6 +59,24 @@ export class ProfileService {
                       this.updatedUserProfile();
                   });
         }
+    }
+
+    refreshPlayerProfile(user:string){
+        this.tennistatService.get_player_profile(user)
+            .subscribe( res => {
+              this.playerProfiles[user] = res;
+              localStorage.setItem(user+'_playerProfile', JSON.stringify(res));
+              this.updatedPlayerProfiles();
+            });
+    }
+
+    refreshPlayerSummary(user:string){
+        this.tennistatService.get_player_summary(user)
+            .subscribe( res => {
+              this.playerSummaries[user] = res;
+              localStorage.setItem(user+'_playerSummary', JSON.stringify(res));
+              this.updatedPlayerSummaries();
+            });
     }
 
     refreshUserChoices(){
@@ -84,8 +110,10 @@ export class ProfileService {
         this.userProfile = JSON.parse(localStorage.getItem('userProfile'));
         if (this.userProfile !== null){
           this.playerProfiles[this.myUsername] = JSON.parse(localStorage.getItem(this.myUsername+'_playerProfile'));
+          this.playerSummaries[this.myUsername] = JSON.parse(localStorage.getItem(this.myUsername+'_playerSummary'));
           for (let friend of this.userProfile.friends){
             this.playerProfiles[friend.user] = JSON.parse(localStorage.getItem(friend.user+'_playerProfile'));
+            this.playerSummaries[friend.user] = JSON.parse(localStorage.getItem(friend.user+'_playerSummary'));
           }
           this.refreshUserChoices();
       }else{
@@ -93,6 +121,7 @@ export class ProfileService {
       }
         this.checkLastChanges();
         this.updatedPlayerProfiles();
+        this.updatedPlayerSummaries();
         this.updatedUserProfile();
         //console.log("on initialize")
         //console.log(this.playerProfiles)
@@ -101,6 +130,7 @@ export class ProfileService {
 
     cleanup(){
         this.playerProfiles = new Object();
+        this.playerSummaries = new Object();
         this.userProfile = new UserProfile();
         this.userChoices = new Object();
     }
@@ -123,15 +153,8 @@ export class ProfileService {
                       }
                     }
                     if (flag != 1){
-                      this.tennistatService.get_player_profile(entry.user)
-                          .subscribe( res2 => {
-                            this.playerProfiles[entry.user] = res2;
-                            localStorage.setItem(entry.user+'_playerProfile', JSON.stringify(res2));
-                            this.updatedPlayerProfiles();
-                            //if (entry.user == this.myUsername){
-                            //  this.updatedMyPlayerProfile();
-                            //}
-                          });
+                      this.refreshPlayerProfile(entry.user);
+                      this.refreshPlayerSummary(entry.user);
                       if (entry.user == this.myUsername){
                         this.refreshProfile();
                       }

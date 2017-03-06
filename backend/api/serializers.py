@@ -150,10 +150,11 @@ class CreateVideoCollectionSerializer(serializers.Serializer):
 class LabelSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
     slug = serializers.SlugField(required=False, read_only=True)
+    session_count = serializers.IntegerField(source="sessions.count",required=False, read_only=True)
 
     class Meta:
         model = SessionLabel
-        fields = ('pk', 'name', 'slug', 'category')
+        fields = ('pk', 'name', 'slug', 'category', 'session_count')
 
 class SessionSerializerPlusPlus(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
@@ -201,7 +202,7 @@ class SessionSerializer(serializers.ModelSerializer):
 class DaySerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
     #timestamp = serializers.DateField(source='timestamp.year', read_only=True)
-    sessions = SessionSerializer(source='session_set', many=True, read_only=True)
+    sessions = SessionSerializer(source='sessions', many=True, read_only=True)
     timestamp = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
     class Meta:
         model = Day
@@ -209,6 +210,8 @@ class DaySerializer(serializers.ModelSerializer):
 
 class WeekSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
+    session_count = serializers.IntegerField(source='sessions.count',
+                                          read_only=True)
     shot_count = serializers.IntegerField(source='shots.count',
                                           read_only=True)
     video_count = serializers.IntegerField(source='videos.count',
@@ -219,7 +222,7 @@ class WeekSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Week
-        fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'videoshot_count')
+        fields = ('pk', 'timestamp', 'session_count', 'shot_count', 'video_count', 'videoshot_count')
 
 class MonthSerializer(serializers.ModelSerializer):
     pk = serializers.IntegerField(read_only=True)
@@ -248,6 +251,24 @@ class YearSerializer(serializers.ModelSerializer):
     class Meta:
         model = Year
         fields = ('pk', 'timestamp', 'shot_count', 'video_count', 'videoshot_count')
+
+class SwingSerializer(serializers.Serializer):
+    count_week = serializers.IntegerField()
+    count_overall = serializers.IntegerField()
+    fastest_week = serializers.IntegerField(required=False)
+    fastest_overall = serializers.IntegerField(required=False)
+    above_week = serializers.IntegerField(required=False)
+    above_overall = serializers.IntegerField(required=False)
+
+class SummarySerializer(serializers.Serializer):
+    FH = SwingSerializer()
+    BH = SwingSerializer()
+    FS = SwingSerializer()
+    BS = SwingSerializer()
+    FV = SwingSerializer()
+    BV = SwingSerializer()
+    SE = SwingSerializer()
+    SM = SwingSerializer()
 
 class UserPeriodsListSerializer(serializers.Serializer):
     session = SessionSerializerPlusPlus(many=True)

@@ -19,6 +19,7 @@ import { ProgressComponent } from './progress/progress.component';
 import { VideoComponent } from './video/video.component';
 import { VideocollectionComponent } from './videocollection/videocollection.component';
 import { LandingComponent } from './landing/landing.component';
+import { SummaryComponent } from './summary/summary.component';
 
 import { AuthGuard } from './services/auth.guard';
 import { ImportGuard } from './services/import.guard';
@@ -30,6 +31,7 @@ export const routes: Routes = [
   { path: 'login',  component: LoginComponent },
   { path: 'logout',  component: LogoutComponent, canActivate: [AuthGuard] },
   { path: 'register',  component: RegisterComponent },
+  { path: 'dashboard',  component: SummaryComponent, canActivate: [AuthGuard, ImportGuard]},
   { path: 'summary',  component: SimpleanalysisComponent, canActivate: [AuthGuard, ImportGuard]},
   { path: 'summary/:user',  component: SimpleanalysisComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'analyze',  component: AnalysisComponent, canActivate: [AuthGuard, ImportGuard] },

@@ -12,7 +12,10 @@
       <p>
         If you don't know hot to export your shot data from the sensor app to your computer, <a href="#">watch this quick tutorial</a>.
       </p>
+      <!--
       <p-fileUpload name="sonycsv" url="https://api.tennistat.xyz/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
+      -->
+      <p-fileUpload name="sonycsv" url="http://localhost:8000/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
     </div>
     <div *ngIf="uploaded">
       <p class="lead">
