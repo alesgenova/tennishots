@@ -32,13 +32,13 @@ def sony_csv_to_db(csvfile, user_id):
             yy = Year.objects.get_or_create(timestamp=y, user=user)[0]
             mm = Month.objects.get_or_create(timestamp=m, yy=yy, user=user)[0]
             ww = Week.objects.get_or_create(timestamp=w, user=user)[0]
-            dd = Day.objects.get_or_create(timestamp=d, mm=mm, ww=ww, user=user)[0]
-            ss = Session.objects.get_or_create(timestamp=h, dd=dd, user=user)[0]
+            dd = Day.objects.get_or_create(timestamp=d, yy=yy, mm=mm, ww=ww, user=user)[0]
+            ss = Session.objects.get_or_create(timestamp=h, yy=yy, mm=mm, ww=ww, dd=dd, user=user)[0]
         else:
             # we might have more than one session per day.
             delta_t = (t - prev_timestamp).total_seconds()
             if delta_t > 7200:
-                ss = Session.objects.get_or_create(timestamp=h, day=dd, user=user)
+                ss = Session.objects.get_or_create(timestamp=h, yy=yy, mm=mm, ww=ww, day=dd, user=user)
 
         prev_date = curr_date
         prev_timestamp = t

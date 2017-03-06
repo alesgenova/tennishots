@@ -4,11 +4,14 @@
       <!--<a *ngIf="loggedIn()" class="navbar-brand hidden-md-up" role="button" (click)="toggleSidebar()"><i class="fa fa-bars" aria-hidden="true"></i><i *ngIf="false" class="fa fa-arrow-left" aria-hidden="true"></i></a>-->
       <a class="navbar-brand" [routerLink]="['']"><img src="{{navbarLogoUrl}}" height="35px" alt="TENNISTAT"></a>
       <ul *ngIf="loggedIn()" class="nav flex-row hidden-sm-down">
+        <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
+          <a class="nav-link text-muted" [routerLink]="['dashboard']">Summary</a>
+        </li>
         <li class="nav-item" [class.active-nav-item]="activeSection=='analysis'"   (mouseenter)="$event.stopPropagation(); analyzeDrop.open();" (mouseleave)="$event.stopPropagation(); analyzeDrop.close();">
           <div  ngbDropdown #analyzeDrop="ngbDropdown">
-            <a class="nav-link text-muted" id="dropdownMenu1" ngbDropdownToggle [routerLink]="['summary']">Analyze</a>
+            <a class="nav-link text-muted" id="dropdownMenu1" ngbDropdownToggle [routerLink]="['summary']">Analysis</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              <button class="dropdown-item" [routerLink]="['summary']">Summary</button>
+              <button class="dropdown-item" [routerLink]="['summary']">Basic</button>
               <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
             </div>
           </div>
@@ -73,10 +76,13 @@
 
 <div *ngIf="loggedIn()" class="hidden-md-up mobile-footer" [ngClass]="bottomShadow">
     <ul  class="nav nav-justified" style="height:3rem;">
+      <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
+        <a class="nav-link" role="button" [routerLink]="['dashboard']">Summary</a>
+      </li>
       <li class="nav-item dropup" [class.active-nav-item]="activeSection=='analysis'">
-          <a class="nav-link" role="button" id="dropdownMenu1" data-toggle="dropdown">Analyze</a>
+          <a class="nav-link" role="button" id="dropdownMenu1" data-toggle="dropdown">Analysis</a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <button class="dropdown-item" [routerLink]="['summary']">Summary</button>
+            <button class="dropdown-item" [routerLink]="['summary']">Basic</button>
             <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
           </div>
       </li>

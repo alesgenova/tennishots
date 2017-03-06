@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit {
   onSubmit(){
       this.tennistatService.update_profile(this.profileForm.value)
             .subscribe( res => {
-                //this.profileService.refreshProfile();
+                this.profileService.refreshProfile();
                 this.router.navigate(['']);
             } );
   }

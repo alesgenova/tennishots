@@ -38,13 +38,49 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              SonyProgressSerializer, VideoSourceSerializer,
                              VideoUploadSerializer, VideoRetrySerializer,
                              VideoCollectionSerializer, CreateVideoCollectionSerializer,
-                             LastChangeSerializer,
+                             LastChangeSerializer, SummarySerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from api.permissions import is_owner_or_friend, is_owner
 
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 from sony.boxplot import box_plot
+
+
+class SummaryView(generics.GenericAPIView):
+    """
+    List all friends profiles, or create own user profile.
+    """
+    serializer_class = SummarySerializer
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner_or_friend(self.request, username)
+        summary = {}
+        summary['user'] = username
+        last_week = requested_user.weeks.latest(field_name='timestamp')
+        for swing in ['FH', 'BH', 'FS', 'BS', 'FV', 'BV','SE','SM']:
+            summary[swing] = {}
+            shots = requested_user.shots.filter(data__swing_type=swing)
+            week_shots = last_week.shots.filter(data__swing_type=swing)
+            summary[swing]['count_overall'] = shots.count()
+            summary[swing]['count_week'] = week_shots.count()
+        for swing, threshold in zip(['FH', 'BH', 'SE'],[105,105,145]):
+            summary[swing]['fastest_overall'] = -1
+            summary[swing]['fastest_week'] = -1
+            summary[swing]['above_overall'] = -1
+            summary[swing]['above_week'] = -1
+            shots = requested_user.shots.filter(data__swing_type=swing)
+            week_shots = last_week.shots.filter(data__swing_type=swing)
+            if (shots.count() > 0):
+                summary[swing]['fastest_overall'] = max(shots.values_list('data__swing_speed', flat=True))
+                summary[swing]['above_overall'] = shots.filter(data__swing_speed__gte=threshold).count()
+                if (week_shots.count() > 0):
+                    summary[swing]['fastest_week'] = max(week_shots.values_list('data__swing_speed', flat=True))
+                    summary[swing]['above_week'] = week_shots.filter(data__swing_speed__gte=threshold).count()
+
+        serializer = SummarySerializer(summary)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class LastChanges(generics.GenericAPIView):
     """
