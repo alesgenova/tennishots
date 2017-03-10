@@ -721,7 +721,7 @@ class PeriodStrokeDetail(APIView):
 
 def _handle_csvfile_upload(f,user):
     import os
-    from tennistat.settings import MEDIA_ROOT
+    from tennishots.settings import MEDIA_ROOT
     filename = f.name
     destination_dir = os.path.join(MEDIA_ROOT,'user_'+str(user.pk),'csv_files')
     destination_file = os.path.join(destination_dir,f.name)
@@ -739,7 +739,7 @@ def _handle_csvfile_upload(f,user):
 
 def _handle_videosource_upload(f, user, videosource):
     import os
-    from tennistat.settings import MEDIA_ROOT
+    from tennishots.settings import MEDIA_ROOT
     filename = f.name
     if filename == videosource.filename:
         destination_dir = os.path.join(MEDIA_ROOT,'user_'+str(user.pk),'video_sources','original')
@@ -851,7 +851,7 @@ def _create_customer_profile(user):
 def _handle_avatar_upload(f, userprofile):
     import os
     from PIL import Image, ImageOps
-    from tennistat.settings import MEDIA_ROOT
+    from tennishots.settings import MEDIA_ROOT
     filename = f.name
     print(filename)
     #destination_name = 'user_'+str(userprofile.user.pk)+'/avatar/avatar.png'

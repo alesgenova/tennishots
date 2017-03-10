@@ -4,7 +4,7 @@ from shot.models import Shot
 from video.models import VideoShot
 import numpy as np
 import os
-from tennistat.settings import MEDIA_ROOT
+from tennishots.settings import MEDIA_ROOT
 from video.tasks import make_shots_video_multi
 #from payment.models import CustomerProfile
 

@@ -17,8 +17,16 @@
   </div>
 
   <div class="row">
-    <div class="col-6 col-md-4">
-      <div class="white-bg content text-center dashboard-card">
+    <div class="col-12 col-md-8">
+      <div class="white-bg content text-center">
+        <canvas baseChart height="150"
+                  [datasets]="chartData.datasets"
+                  [labels]="chartData.labels"
+                  [options]="chartOptions"
+                  [colors]="chartColors"
+                  [legend]="chartLegend"
+                  [chartType]="chartType">
+          </canvas>
       </div>
     </div>
     <div class="col-6 col-md-4">
@@ -29,8 +37,14 @@
       <div class="white-bg content text-center dashboard-card">
       </div>
     </div>
-    <div class="col-6 col-md-4">
-      <div class="white-bg content text-center dashboard-card">
+    <div class="col-12 col-md-8">
+      <div class="white-bg content text-center">
+        <canvas baseChart height="300"
+            [data]="overallPieData"
+            [labels]="pieLabels"
+            [chartType]="'doughnut'"
+            [options]="pieOptions">
+        </canvas>
       </div>
     </div>
     <div class="col-6 col-md-4">
@@ -43,4 +57,7 @@
     </div>
   </div>
 
+{{overallPieData|json}}
+
+{{playerSummaries|json}}
 </div>
