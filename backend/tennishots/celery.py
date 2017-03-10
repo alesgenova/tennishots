@@ -3,9 +3,9 @@ import os
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tennistat.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tennishots.settings')
 
-app = Celery('tennistat')
+app = Celery('tennishots')
 #             broker='amqp://localhost//',
 #             backend='amqp://localhost//',
 #             include=['shot.tasks', 'video.tasks'])

@@ -1,4 +1,4 @@
-"""tennistat URL Configuration
+"""tennishots URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 
 from django.contrib import admin
-from tennistat import settings
+from tennishots import settings
 
 urlpatterns = [
     url(r'^', include('django.contrib.auth.urls')),

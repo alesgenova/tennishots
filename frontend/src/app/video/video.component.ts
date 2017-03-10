@@ -269,7 +269,7 @@ export class VideoComponent implements OnInit {
       this.uploadSourceUrl = "";
       let uploadFile = event.files[0];
       if (uploadFile.name == this.activeVideo.filename){
-          this.uploadSourceUrl = 'https://api.tennistat.xyz/api/sourceupload/'+this.activeVideo.pk+'/';
+          this.uploadSourceUrl = 'https://api.tennishots.com/api/sourceupload/'+this.activeVideo.pk+'/';
           console.log("Same!")
       }else{
           console.log("Different!")

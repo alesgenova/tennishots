@@ -13,7 +13,7 @@ CELERY_BIN="/home/tennistat/webapps/tennistat2/venv/bin/celery"
 
 # App instance to use
 # comment out this line if you don't use an app
-CELERY_APP="tennistat"
+CELERY_APP="tennishots"
 # or fully qualified:
 #CELERY_APP="proj.tasks:app"
 

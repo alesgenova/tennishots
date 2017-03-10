@@ -2,12 +2,12 @@
   <div class="container">
     <nav class="nav">
       <!--<a *ngIf="loggedIn()" class="navbar-brand hidden-md-up" role="button" (click)="toggleSidebar()"><i class="fa fa-bars" aria-hidden="true"></i><i *ngIf="false" class="fa fa-arrow-left" aria-hidden="true"></i></a>-->
-      <a class="navbar-brand" [routerLink]="['']"><img src="{{navbarLogoUrl}}" height="35px" alt="TENNISTAT"></a>
+      <a class="navbar-brand" [routerLink]="['']"><img src="{{navbarLogoUrl}}" height="22px" alt="TENNISTAT"></a>
       <ul *ngIf="loggedIn()" class="nav flex-row hidden-sm-down">
         <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
           <a class="nav-link text-muted" [routerLink]="['dashboard']">Summary</a>
         </li>
-        <li class="nav-item" [class.active-nav-item]="activeSection=='analysis'"   (mouseenter)="$event.stopPropagation(); analyzeDrop.open();" (mouseleave)="$event.stopPropagation(); analyzeDrop.close();">
+        <li class="nav-item" [class.active-nav-item]="activeSection=='analysis'"   (mouseenter)="$event.stopPropagation(); analyzeDrop.open(); progressDrop.close(); videoDrop.close();">
           <div  ngbDropdown #analyzeDrop="ngbDropdown">
             <a class="nav-link text-muted" id="dropdownMenu1" ngbDropdownToggle [routerLink]="['summary']">Analysis</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -16,7 +16,7 @@
             </div>
           </div>
         </li>
-        <li class="nav-item" [class.active-nav-item]="activeSection=='progress'" (mouseenter)="$event.stopPropagation(); progressDrop.open();" (mouseleave)="$event.stopPropagation(); progressDrop.close();">
+        <li class="nav-item" [class.active-nav-item]="activeSection=='progress'" (mouseenter)="$event.stopPropagation(); progressDrop.open(); analyzeDrop.close(); videoDrop.close();">
           <div ngbDropdown #progressDrop="ngbDropdown">
             <a class="nav-link text-muted" id="dropdownMenu3" ngbDropdownToggle [routerLink]="['progress']">Progress</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
@@ -26,7 +26,7 @@
             </div>
           </div>
         </li>
-        <li class="nav-item" [class.active-nav-item]="activeSection=='video'" (mouseenter)="$event.stopPropagation(); videoDrop.open();" (mouseleave)="$event.stopPropagation(); videoDrop.close();">
+        <li class="nav-item" [class.active-nav-item]="activeSection=='video'" (mouseenter)="$event.stopPropagation(); videoDrop.open(); analyzeDrop.close(); progressDrop.close();">
           <div ngbDropdown #videoDrop="ngbDropdown">
             <a class="nav-link text-muted" id="dropdownMenu2" ngbDropdownToggle [routerLink]="['video']">Video</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
