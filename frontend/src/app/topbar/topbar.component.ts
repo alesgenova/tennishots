@@ -22,7 +22,7 @@ export class TopbarComponent implements OnInit {
   username: string;
   activeSection: string;
   userProfile = new UserProfile();
-  navbarLogoUrl = "assets/img/tennishots_logo_nav5.svg"
+  navbarLogoUrl = "assets/img/tennishots_logo_nav6.svg"
   navigationSubscription: Subscription;
   userProfileSubscription: Subscription;
   topShadow: string = 'down-shadow';

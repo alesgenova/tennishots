@@ -12,9 +12,21 @@
 
 .mobile-footer{
   z-index: 9998;
-  background-color: #fff;
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
 }
+
+.mobile-header{
+}
+
+.nav ul li a {
+color:#fff;}
+.nav ul li a:hover {
+color:#efefef;}
+
+.mobile-header ul li a {
+color:#fff;}
+.mobile-header ul li a:hover {
+color:#efefef;}

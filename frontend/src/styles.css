@@ -13,7 +13,14 @@ html {
 
 body {
   height: 101%;
-  /*background-color:#f0f0f0;
+
+  background-image: linear-gradient(left, rgb(217, 83, 79) 100%, rgb(255,0,0) 0%);
+  background-repeat: no-repeat;
+  background-size: 100% 9.5rem;
+  background-position: top;
+  /*background-attachment: fixed;
+
+  background-color:#f0f0f0;
   background-color:#f7f7f9;
   background-image: url("/assets/img/clay.jpg");*/
 }
@@ -48,6 +55,20 @@ body {
     */
 }
 
+.content2{
+    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-style: solid;
+    border-color: #dedede;
+    border-width: thin;
+    border-radius: 1px;
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+
+    */
+}
+
 .floating{
     margin-top: 1rem;
 }
@@ -61,7 +82,7 @@ body {
 }
 
 .semi-bg{
-    background-color: rgba(255, 255, 255, 0.90);
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 .semisemi-bg{
@@ -104,7 +125,7 @@ body {
 }
 
 .red-top{
-    background-color: #f4675a;
+    background-color: rgb(217, 83, 79);
 }
 
 .blue-top{
@@ -116,9 +137,9 @@ body {
 }
 
 .orange-top{
-    /*background-color: rgba(255,133,84,1);*/
+    background-color: rgba(255,84,0,1);
     background-image: url("/assets/img/clay-lg2-small.png");
-    background-size: 100% auto;
+    /*background-size: 100% auto;*/
 }
 
 .darkblue-top{
@@ -146,7 +167,8 @@ body {
 }
 
 .gray-top{
-  background-color:#f0f0f0;
+  background-color:#efefef;
+  background-color:#EFEDED;
 }
 
 .down-border{
@@ -167,13 +189,23 @@ body {
 }
 
 .my-top{
-    height:15.5rem;
+    height:11.5rem;
     z-index:-10;
+    margin-bottom: -2.5rem;
+    padding-top:1rem;
     /*
     margin-bottom: 2rem;
     padding: 2rem 15px;
     background-color:#f7f7f9;
     */
+}
+
+.title-bar{
+  height:2.9rem;
+}
+
+.navigation-bar{
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.19);
 }
 
 .my-top2{
@@ -192,7 +224,7 @@ body {
 
 .my-top-placeholder{
   /*margin-bottom: 1.5rem;*/
-  margin-top: 4rem;
+  height: 3rem;
 }
 
 .my-bottom-placeholder{
@@ -204,16 +236,18 @@ body {
 }
 
 .active-nav-item{
-  background-color: #eee;
-  /*background-color: rgba(255,84,0,0.2);*/
+  /*background-color: #eee;*/
+  background-color: rgba(255,255,255,0.15);
 }
 
 .down-shadow{
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 8px 8px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 4px 0 rgba(217, 83, 79, 0.5), 0 8px 8px 0 rgba(217, 83, 79, 0.25);
 }
 
 .up-shadow{
     box-shadow: 0 -4px 4px 0 rgba(0, 0, 0, 0.2), 0 -8px 8px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 -4px 4px 0 rgba(217, 83, 79, 0.5), 0 -8px 8px 0 rgba(217, 83, 79, 0.25);
 }
 
 .down-shadow-orange{
@@ -222,6 +256,7 @@ body {
 
 .up-shadow-orange{
     box-shadow: 0 -4px 4px 0 rgba(255,133,84,0.5), 0 -8px 8px 0 rgba(255,133,84,0.25);
+    box-shadow: 0 -4px 4px 0 rgba(217, 83, 79, 0.5), 0 -8px 8px 0 rgba(217, 83, 79, 0.25);
 }
 
 .down-shadow-red{
