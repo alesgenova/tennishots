@@ -41,8 +41,8 @@
       <button class="btn btn-sm btn-block" (click)="onPeriodChange('all')" [class.btn-primary]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
     </div>
   </div>
-  <br>
   <div *ngIf="activePeriod=='session'" class="text-center">
+    <br>
     <p  class="lead">
       <span *ngFor="let tag of tagList">
         <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
