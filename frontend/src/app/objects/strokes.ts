@@ -34,12 +34,12 @@ export const SONY_STROKES = {
 }
 
 export const SONY_STROKES_CHOICES = [
-    {key:"FH", label:"Forehand"},
-    {key:"BH", label:"Backhand"},
-    {key:"FS", label:"Forehand Slice"},
-    {key:"BS", label:"Backhand Slice"},
-    {key:"FV", label:"Forehand Volley"},
-    {key:"BV", label:"Backhand Volley"},
-    {key:"SE", label:"Serve"},
-    {key:"SM", label:"Smash"}
+    {key:"FH", label:"Forehand", bgColor:"#FFCC80"},
+    {key:"BH", label:"Backhand", bgColor:"#80DEEA"},
+    {key:"FS", label:"Forehand Slice", bgColor:"#FFAB91"},
+    {key:"BS", label:"Backhand Slice", bgColor:"#90CAF9"},
+    {key:"FV", label:"Forehand Volley", bgColor:"#B39DDB"},
+    {key:"BV", label:"Backhand Volley", bgColor:"#9FA8DA"},
+    {key:"SE", label:"Serve", bgColor:"#A5D6A7"},
+    {key:"SM", label:"Smash", bgColor:"#80CBC4"}
 ]

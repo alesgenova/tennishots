@@ -1,71 +1,68 @@
-<div class="my-top2">
+<div class="floating white-text">
+  <h4 class="text-center">Create new tags</h4>
+</div>
+<div class="container content2 white-bg">
+  <p class="lead text-center">
+    <span *ngFor="let tag of tagList">
+      <span [ngClass]="['badge', getTagClass(tag.category)]">{{tag.name}}&nbsp;&nbsp;
+        <i role="button" (click)="onDeleteTag(tag.pk)" class="fa fa-times" aria-hidden="true"></i>
+      </span>
+    </span>
+  </p>
+  <form [formGroup]="newTag" novalidate (ngSubmit)="onCreateTag()">
+    <div class="input-group input-group-sm">
+      <div class="input-group-btn">
+        <button [innerHTML]="categoryButtonText" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" role="button" (click)="onCategorySelect(0)" placement="right" ngbTooltip="Clay,&nbsp;Hard&nbsp;Court,&nbsp;..."><span class="badge badge-primary">Surface</span></a>
+          <a class="dropdown-item" role="button" (click)="onCategorySelect(1)" placement="right" ngbTooltip="Roger,&nbsp;Ana,&nbsp;..."><span class="badge badge-success">Opponent</span></a>
+          <a class="dropdown-item" role="button" (click)="onCategorySelect(2)" placement="right" ngbTooltip="Singles,&nbsp;Doubles,&nbsp;..."><span class="badge badge-info">Game type</span></a>
+          <a class="dropdown-item" role="button" (click)="onCategorySelect(3)" placement="right" ngbTooltip="Practice,&nbsp;Match,&nbsp;..."><span class="badge badge-warning">Competition</span></a>
+          <a class="dropdown-item" role="button" (click)="onCategorySelect(4)" placement="right" ngbTooltip="Outdoor,&nbsp;Windy,&nbsp;..."><span class="badge badge-danger">Condition</span></a>
+          <a class="dropdown-item" role="button" (click)="onCategorySelect(5)" placement="right" ngbTooltip="Anything&nbsp;else"><span class="badge badge-default">Other</span></a>
+        </div>
+      </div>
+      <input formControlName="name" type="text" class="form-control" placeholder="Tag name">
+      <span class="input-group-btn">
+        <input class="btn btn-primary" [disabled]="!newTag.valid" type="submit" value="Create" />
+      </span>
+    </div>
+  </form>
 </div>
 
-<div class="container text-center">
-  <div class="white-bg content">
-    <h4 class="text-center">Create new tags</h4>
-    <hr>
-    <p class="lead">
-      <span *ngFor="let tag of tagList">
-        <span [ngClass]="['badge', getTagClass(tag.category)]">{{tag.name}}&nbsp;&nbsp;
-          <i role="button" (click)="onDeleteTag(tag.pk)" class="fa fa-times" aria-hidden="true"></i>
-        </span>
-      </span>
-    </p>
-    <form [formGroup]="newTag" novalidate (ngSubmit)="onCreateTag()">
-      <div class="input-group input-group-sm">
-        <div class="input-group-btn">
-          <button [innerHTML]="categoryButtonText" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          </button>
+<div class="floating text-muted">
+  <h4 class="text-center">Tag your sessions</h4>
+</div>
+<div class="container content2 white-bg">
+  <div class="row">
+    <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-lg-3">
+      <div class="card text-center">
+        <div class="card-block">
+          <h6 class="card-title">{{period.timestamp|date}}</h6>
+          <strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span>
+        </div>
+        <div class="dropdown">
+          <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{period.labels.length}} tags</span>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" role="button" (click)="onCategorySelect(0)" placement="right" ngbTooltip="Clay,&nbsp;Hard&nbsp;Court,&nbsp;..."><span class="badge badge-primary">Surface</span></a>
-            <a class="dropdown-item" role="button" (click)="onCategorySelect(1)" placement="right" ngbTooltip="Roger,&nbsp;Ana,&nbsp;..."><span class="badge badge-success">Opponent</span></a>
-            <a class="dropdown-item" role="button" (click)="onCategorySelect(2)" placement="right" ngbTooltip="Singles,&nbsp;Doubles,&nbsp;..."><span class="badge badge-info">Game type</span></a>
-            <a class="dropdown-item" role="button" (click)="onCategorySelect(3)" placement="right" ngbTooltip="Practice,&nbsp;Match,&nbsp;..."><span class="badge badge-warning">Competition</span></a>
-            <a class="dropdown-item" role="button" (click)="onCategorySelect(4)" placement="right" ngbTooltip="Outdoor,&nbsp;Windy,&nbsp;..."><span class="badge badge-danger">Condition</span></a>
-            <a class="dropdown-item" role="button" (click)="onCategorySelect(5)" placement="right" ngbTooltip="Anything&nbsp;else"><span class="badge badge-default">Other</span></a>
-          </div>
-        </div>
-        <input formControlName="name" type="text" class="form-control" placeholder="Tag name">
-        <span class="input-group-btn">
-          <input class="btn btn-primary" [disabled]="!newTag.valid" type="submit" value="Create" />
-        </span>
-      </div>
-    </form>
-  </div>
-
-  <div class="white-bg content text-center">
-    <h4 class="text-center">Tag your sessions</h4>
-    <hr>
-    <div class="row">
-      <div *ngFor="let period of periodsSubset" class="col-6 col-sm-4 col-lg-3">
-        <div class="card text-center">
-          <div class="card-block">
-            <h6 class="card-title">{{period.timestamp|date}}</h6>
-            <strong>{{period.shot_count}}</strong>&nbsp;<span class="small">shots</span>
-          </div>
-          <div class="dropdown">
-            <span class="badge badge-default dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{period.labels.length}} tags</span>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a *ngFor="let tag of period.labels" role="button" (click)="onAssignTag(tag.pk, period.pk, 'remove')" class="dropdown-item">
-                <span>
-                  <i class="fa fa-minus-square" aria-hidden="true"></i>&nbsp;
-                  <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
-                </span>
-              </a>
-              <div *ngIf="period.labels.length > 0" class="dropdown-divider"></div>
-              <a *ngFor="let tag of getMissingTags(period.labels)" role="button" (click)="onAssignTag(tag.pk, period.pk, 'add')" class="dropdown-item">
-                <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;
+            <a *ngFor="let tag of period.labels" role="button" (click)="onAssignTag(tag.pk, period.pk, 'remove')" class="dropdown-item">
+              <span>
+                <i class="fa fa-minus-square" aria-hidden="true"></i>&nbsp;
                 <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
-              </a>
-            </div>
+              </span>
+            </a>
+            <div *ngIf="period.labels.length > 0" class="dropdown-divider"></div>
+            <a *ngFor="let tag of getMissingTags(period.labels)" role="button" (click)="onAssignTag(tag.pk, period.pk, 'add')" class="dropdown-item">
+              <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;
+              <span [innerHTML]="getFormattedTag(tag.name, tag.category)"></span>
+            </a>
           </div>
         </div>
-        <br>
       </div>
-      <div *ngIf="doPagination"  class="col-12">
-        <ngb-pagination [disabled]="!doPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPage" (pageChange)="onPageChange()" size="sm"></ngb-pagination>
-      </div>
+      <br>
+    </div>
+    <div *ngIf="doPagination"  class="col-12">
+      <ngb-pagination [disabled]="!doPagination" [collectionSize]="nPeriods" [pageSize]="periodsPerPage" [(page)]="currPage" (pageChange)="onPageChange()" size="sm"></ngb-pagination>
     </div>
   </div>
 </div>

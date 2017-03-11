@@ -1,5 +1,8 @@
 <!--<div class="white-top down-shadow-orange my-top-placeholder fixed-top">
 </div>-->
+<div class="floating white-text">
+  <h4 class="text-center">{{userProfile?.first_name}} {{userProfile?.last_name}}</h4>
+</div>
 <div class="container content2 white-bg">
     <div class="row">
       <div class="col-12" style="display:flex;">
@@ -7,7 +10,6 @@
           <img [src]="userProfile?.avatar" height="100px" class="rounded" alt="Profile Pic">
         </div>
         <div class="pl-3 mr-auto">
-          <h4>{{userProfile?.first_name}} {{userProfile?.last_name}}</h4>
           <p>
             <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/profile']">Profile</a>
             <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/tags']">Tags</a>
@@ -59,9 +61,10 @@
     </div>
 </div>
   <!-- The recent activity -->
+<div class="floating text-muted">
+  <h4 class="text-center">Recent activity</h4>
+</div>
 <div class="container content2 white-bg">
-    <h4 class="text-center">Recent Activity</h4>
-    <hr>
     <div *ngFor="let session of recentActivity; let i=index" class="row">
       <div class="col-12 recent-col" role="button" (click)="onSessionExpand(i)">
         <div style="width:75px;">

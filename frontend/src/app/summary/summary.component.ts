@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs/Subscription';
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
+    mi2km = 1.60934;
     userChoices: any;
     myUsername: string;
     activeUser: string;
@@ -29,12 +30,20 @@ export class SummaryComponent implements OnInit {
     chartData: any;
     SONY_STROKES_CHOICES = SONY_STROKES_CHOICES;
 
-    overallPieData: number[];
-    pieLabels: string[];
+    count_week: number = 0;
+    count_overall: number = 0;
+
+
+    overallPieData: any;
+    weekPieData: any;
+    opponentPieData: any;
+    gamePieData: any;
+    competitionPieData: any;
+    surfacePieData: any;
 
     public pieOptions:any = {
-      circumference: Math.PI,
-      rotation:Math.PI,
+      /*circumference: Math.PI,
+      rotation:Math.PI,*/
       responsive: true
     }
 
@@ -171,12 +180,139 @@ export class SummaryComponent implements OnInit {
       yAxisID: "y-axis-1",
       data: weekSessionCount
     });
-    this.overallPieData= [];
-    this.pieLabels = [];
+    this.count_overall = 0;
+    this.overallPieData = new Object();
+    this.overallPieData['labels'] = [];
+    this.overallPieData['datasets'] = [];
+    this.overallPieData['datasets'].push(new Object());
+    this.overallPieData['datasets'][0]['data'] = [];
+    this.overallPieData['datasets'][0]['backgroundColor'] = [];
+    this.overallPieData['datasets'][0]['hoverBackgroundColor'] = [];
     for (let stroke of this.SONY_STROKES_CHOICES){
-      this.pieLabels.push(stroke.label);
-      this.overallPieData.push(this.playerSummaries[this.activeUser][stroke.key].count_overall);
+      this.count_overall += this.playerSummaries[this.activeUser][stroke.key].count_overall;
+      this.overallPieData['labels'].push(stroke.label)
+      this.overallPieData['datasets'][0]['data'].push(this.playerSummaries[this.activeUser][stroke.key].count_overall);
+      this.overallPieData['datasets'][0]['backgroundColor'].push(stroke.bgColor);
+      this.overallPieData['datasets'][0]['hoverBackgroundColor'].push(stroke.bgColor);
+    }
+    this.count_week = 0;
+    this.weekPieData = new Object();
+    this.weekPieData['labels'] = [];
+    this.weekPieData['datasets'] = [];
+    this.weekPieData['datasets'].push(new Object());
+    this.weekPieData['datasets'][0]['data'] = [];
+    this.weekPieData['datasets'][0]['backgroundColor'] = [];
+    this.weekPieData['datasets'][0]['hoverBackgroundColor'] = [];
+    for (let stroke of this.SONY_STROKES_CHOICES){
+      this.count_week += this.playerSummaries[this.activeUser][stroke.key].count_week;
+      this.weekPieData['labels'].push(stroke.label)
+      this.weekPieData['datasets'][0]['data'].push(this.playerSummaries[this.activeUser][stroke.key].count_week);
+      this.weekPieData['datasets'][0]['backgroundColor'].push(stroke.bgColor);
+      this.weekPieData['datasets'][0]['hoverBackgroundColor'].push(stroke.bgColor);
+    }
+    // Opponent tag piechart
+    this.opponentPieData = new Object();
+    this.opponentPieData['labels'] = [];
+    this.opponentPieData['datasets'] = [];
+    this.opponentPieData['datasets'].push(new Object());
+    this.opponentPieData['datasets'][0]['data'] = [];
+    for (let label of playerProfile.labels){
+      if (label.category == 1 && label.session_count > 0){
+        this.opponentPieData['labels'].push(label.name);
+        this.opponentPieData['datasets'][0]['data'].push(label.session_count);
+      }
+    }
+
+    // Game tag piechart
+    this.gamePieData = new Object();
+    this.gamePieData['labels'] = [];
+    this.gamePieData['datasets'] = [];
+    this.gamePieData['datasets'].push(new Object());
+    this.gamePieData['datasets'][0]['data'] = [];
+    for (let label of playerProfile.labels){
+      if (label.category == 2 && label.session_count > 0){
+        this.gamePieData['labels'].push(label.name);
+        this.gamePieData['datasets'][0]['data'].push(label.session_count);
+      }
+    }
+
+    // Competitive tag piechart
+    this.competitionPieData = new Object();
+    this.competitionPieData['labels'] = [];
+    this.competitionPieData['datasets'] = [];
+    this.competitionPieData['datasets'].push(new Object());
+    this.competitionPieData['datasets'][0]['data'] = [];
+    for (let label of playerProfile.labels){
+      if (label.category == 3 && label.session_count > 0){
+        this.competitionPieData['labels'].push(label.name);
+        this.competitionPieData['datasets'][0]['data'].push(label.session_count);
+      }
+    }
+
+    // Surface tag piechart
+    this.surfacePieData = new Object();
+    this.surfacePieData['labels'] = [];
+    this.surfacePieData['datasets'] = [];
+    this.surfacePieData['datasets'].push(new Object());
+    this.surfacePieData['datasets'][0]['data'] = [];
+    for (let label of playerProfile.labels){
+      if (label.category == 0 && label.session_count > 0){
+        this.surfacePieData['labels'].push(label.name);
+        this.surfacePieData['datasets'][0]['data'].push(label.session_count);
+      }
     }
   }
+
+  getFastest(stroke:string, period:string){
+    let imperial_units = (this.userProfile.units == "M");
+    let fastest = 0;
+    if (period == 'week'){
+      fastest = this.playerSummaries[this.activeUser][stroke].fastest_week;
+    }else if (period == 'overall'){
+      fastest = this.playerSummaries[this.activeUser][stroke].fastest_overall;
+    }
+    if (fastest == -1){
+      return "N/A"
+    }
+    if (imperial_units){
+      return Math.round(fastest/this.mi2km) + " mi/h"
+    }else{
+      return fastest + " km/h"
+    }
+  }
+
+  getAbove(stroke:string, period:string){
+    let count = 0;
+    let total = 0;
+    if (period == 'week'){
+      count = this.playerSummaries[this.activeUser][stroke].above_week;
+      total = this.playerSummaries[this.activeUser][stroke].count_week;
+    }else if (period == 'overall'){
+      count = this.playerSummaries[this.activeUser][stroke].above_overall;
+      total = this.playerSummaries[this.activeUser][stroke].count_overall;
+    }
+    if (count == -1){
+      return "N/A"
+    }
+    return count+" shots <br> (" + Math.round(count/total*100) + "%)"
+  }
+
+  getAboveLabel(stroke:string){
+    let imperial_units = (this.userProfile.units == "M");
+    let threshold = 0;
+    if (stroke == 'FH'){
+      threshold = 105;
+    }else if (stroke == 'BH'){
+      threshold = 105;
+    }else if (stroke == 'SE'){
+      threshold = 145;
+    }
+    if (imperial_units){
+      return Math.round(threshold/this.mi2km) + " mi/h"
+    }else{
+      return threshold + " km/h"
+    }
+  }
+
 
 }
