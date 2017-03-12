@@ -65,35 +65,35 @@
   <h4 class="text-center">Recent activity</h4>
 </div>
 <div class="container content2 white-bg">
-    <div *ngFor="let session of recentActivity; let i=index" class="row">
-      <div class="col-12 recent-col" role="button" (click)="onSessionExpand(i)">
-        <div style="width:75px;">
-          <img [src]="session.player.avatar" class="rounded" height="50px" >
-        </div>
-        <div class="mr-auto">
-          {{session.player.first_name}} <span class="text-muted small">({{session.player.user}})</span> played on {{session.timestamp|date:'MMM d'}} <br>
-           <span class="text-muted small">
-             {{session.shot_count}} shots <span *ngIf="session.video_count > 0">and {{session.video_count}} video</span> in this session.
-             <span *ngFor="let tag of session.labels" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
-           </span>
-        </div>
-        <!--
-        <div style="width:150px;">
-          <p>
-          <span *ngFor="let tag of session.labels" class="small" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
-        </p>
-          <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
-        </div>
-        -->
-      </div>
-      <div class="col-12">
-        <hr>
-      </div>
-      <!-- The Session Stats -->
-      <div class="col-12" *ngIf="sessionsExpand[i]">
-        <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
-        <hr>
-      </div>
+  <div *ngFor="let session of recentActivity; let i=index" class="row">
+    <div *ngIf="i > 0" class="col-12">
+      <hr>
     </div>
+    <div class="col-12 recent-col" role="button" (click)="onSessionExpand(i)">
+      <div style="width:75px;">
+        <img [src]="session.player.avatar" class="rounded" height="50px" >
+      </div>
+      <div class="mr-auto">
+        {{session.player.first_name}} <span class="text-muted small">({{session.player.user}})</span> played on {{session.timestamp|date:'MMM d'}} <br>
+         <span class="text-muted small">
+           {{session.shot_count}} shots <span *ngIf="session.video_count > 0">and {{session.video_count}} video</span> in this session.
+           <span *ngFor="let tag of session.labels" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
+         </span>
+      </div>
+      <!--
+      <div style="width:150px;">
+        <p>
+        <span *ngFor="let tag of session.labels" class="small" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
+      </p>
+        <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
+      </div>
+      -->
+    </div>
+    <!-- The Session Stats -->
+    <div class="col-12" *ngIf="sessionsExpand[i]">
+      <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
+      <hr>
+    </div>
+  </div>
 </div>
 <!--<display [stats1]="getSessionStats(ales, 109)" [stats2]="emptyResponse" [compare]="false"></display>-->
