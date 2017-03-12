@@ -4,6 +4,7 @@ import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms
 
 import { AuthService } from '../../services/auth.service';
 import { TennistatService } from '../../services/tennistat.service';
+import { ProfileService } from '../../services/profile.service';
 import { NavigationService } from '../../services/navigation.service';
 import { ARM_CHOICES, BACKHAND_CHOICES, UNIT_CHOICES, PRIVACY_CHOICES } from '../../objects/registration';
 
@@ -28,6 +29,7 @@ export class RegisterComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private tennistatService: TennistatService,
+              private profileService:ProfileService,
               private router: Router,
               private navigationService: NavigationService) {
       this.createRegistrationForm();
@@ -73,7 +75,6 @@ export class RegisterComponent implements OnInit {
       }
       this.authService.register(this.registrationForm.value.user)
             .subscribe( res => {
-                                console.log(res);
                                 if (typeof res.token != "undefined") {
                                     localStorage.setItem('username', res.user.username);
                                     localStorage.setItem('id_token', res.token);
@@ -81,9 +82,10 @@ export class RegisterComponent implements OnInit {
                                     //console.log("Registration Success");
                                     this.tennistatService.create_profile(this.registrationForm.value.profile)
                                           .subscribe( res => { localStorage.setItem('userProfile', JSON.stringify(res));
+                                                               this.profileService.initialize();
+                                                               this.router.navigate(['/landing']);
                                                               });
                                     //console.log("Userprofile Success");
-                                    this.router.navigate(['landing']);
                                 }
                                },
                         err => {

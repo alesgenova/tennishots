@@ -2,114 +2,116 @@
   <h4>Register</h4>
 </div>
 
-<div class="container content2 white-bg">
-  <div class="row">
-    <div class="col-lg-8 offset-lg-2">
-      <form [formGroup]="registrationForm" novalidate (ngSubmit)="onSubmit()">
-        <div formGroupName="profile">
-          <div class="form-group row">
-            <label for="first_name" class="col-3 col-form-label">First Name:&nbsp;*</label>
-            <div class="col-9">
-              <input class="form-control" type="text" id="first_name" formControlName="first_name">
+<div class="container">
+  <div class=" content2 white-bg">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <form [formGroup]="registrationForm" novalidate (ngSubmit)="onSubmit()">
+          <div formGroupName="profile">
+            <div class="form-group row">
+              <label for="first_name" class="col-3 col-form-label">First Name:&nbsp;*</label>
+              <div class="col-9">
+                <input class="form-control" type="text" id="first_name" formControlName="first_name">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="last_name" class="col-3 col-form-label">Last Name:&nbsp;</label>
+              <div class="col-9">
+                <input class="form-control" type="text" id="last_name" formControlName="last_name">
+              </div>
+              <div class="form-control-feedback"></div>
+            </div>
+          </div>
+          <div formGroupName="user">
+            <div class="form-group row">
+              <label for="email" class="col-3 col-form-label">E-mail:&nbsp;*</label>
+              <div class="col-9">
+                <input class="form-control" type="email" id="email" formControlName="email">
+                <div class="form-control-feedback"><span class="text-danger">{{emailError}}</span></div>
+              </div>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group row">
+              <label for="username" class="col-3 col-form-label">Username:&nbsp;*</label>
+              <div class="col-9">
+                <input class="required form-control" type="text" maxlength=20 id="username" formControlName="username">
+                <div class="form-control-feedback"><span class="text-danger">{{usernameError}}</span></div>
+              </div>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group row">
+              <label for="password1" class="col-3 col-form-label">Password:&nbsp;*</label>
+              <div class="col-9">
+                <input class="required form-control" type="password" id="password1" formControlName="password1">
+              </div>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group row">
+              <label for="password2" class="col-3 col-form-label">Confirm Password:&nbsp;*</label>
+              <div class="col-9">
+                <input class="required form-control" type="password" id="password2" formControlName="password2">
+                <div class="form-control-feedback"><span class="text-danger">{{passwordError}}</span></div>
+              </div>
+            </div>
+          </div>
+          <div formGroupName="profile">
+            <div class="row">
+              <div class="col-9 offset-3">
+                <p class="text-right text-muted">*&nbsp; Required fields</p>
+              </div>
+            </div>
+            <!--
+            <div class="form-group row">
+              <label for={{ form.avatar.id_for_label }} class="col-3 col-form-label">Picture:</label>
+              <div class="col-9">
+                <input type="file" id={{ form.avatar.id_for_label }} name={{form.avatar.name}} >
+              </div>
+              <div class="form-control-feedback">{{ form.avatar.errors }}</div>
+            </div>-->
+            <div class="form-group row">
+              <label for="arm" class="col-3 col-form-label">Dominant Arm:</label>
+              <div class="col-9">
+                <select id="arm" class="form-control" formControlName="arm">
+                  <option *ngFor="let option of armChoices" [value]="option.value">{{option.label}}</option>
+                </select>
+              </div>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group row">
+              <label for="units" class="col-3 col-form-label">Speed Units:</label>
+              <div class="col-9">
+                <select id="units" class="form-control" formControlName="units">
+                  <option *ngFor="let option of unitChoices" [value]="option.value">{{option.label}}</option>
+                </select>
+              </div>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group row">
+              <label for="backhand" class="col-3 col-form-label">Backhand Style:</label>
+              <div class="col-9">
+                <select id="backhand" class="form-control" formControlName="backhand">
+                  <option *ngFor="let option of backhandChoices" [value]="option.value">{{option.label}}</option>
+                </select>
+              </div>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group row">
+              <label for="privacy" class="col-3 col-form-label">Privacy Option:</label>
+              <div class="col-9">
+                <select id="privacy" class="form-control" formControlName="privacy">
+                  <option *ngFor="let option of privacyChoices" [value]="option.value">{{option.label}}</option>
+                </select>
+              </div>
+              <div class="form-control-feedback"></div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="last_name" class="col-3 col-form-label">Last Name:&nbsp;</label>
-            <div class="col-9">
-              <input class="form-control" type="text" id="last_name" formControlName="last_name">
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-        </div>
-        <div formGroupName="user">
-          <div class="form-group row">
-            <label for="email" class="col-3 col-form-label">E-mail:&nbsp;*</label>
-            <div class="col-9">
-              <input class="form-control" type="email" id="email" formControlName="email">
-              <div class="form-control-feedback"><span class="text-danger">{{emailError}}</span></div>
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-          <div class="form-group row">
-            <label for="username" class="col-3 col-form-label">Username:&nbsp;*</label>
-            <div class="col-9">
-              <input class="required form-control" type="text" maxlength=20 id="username" formControlName="username">
-              <div class="form-control-feedback"><span class="text-danger">{{usernameError}}</span></div>
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-          <div class="form-group row">
-            <label for="password1" class="col-3 col-form-label">Password:&nbsp;*</label>
-            <div class="col-9">
-              <input class="required form-control" type="password" id="password1" formControlName="password1">
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-          <div class="form-group row">
-            <label for="password2" class="col-3 col-form-label">Confirm Password:&nbsp;*</label>
-            <div class="col-9">
-              <input class="required form-control" type="password" id="password2" formControlName="password2">
-              <div class="form-control-feedback"><span class="text-danger">{{passwordError}}</span></div>
-            </div>
-          </div>
-        </div>
-        <div formGroupName="profile">
-          <div class="row">
             <div class="col-9 offset-3">
-              <p class="text-right text-muted">*&nbsp; Required fields</p>
+              <input class="btn btn-primary btn-block" [disabled]="!registrationForm.valid" type="submit" value="Register" />
             </div>
           </div>
-          <!--
-          <div class="form-group row">
-            <label for={{ form.avatar.id_for_label }} class="col-3 col-form-label">Picture:</label>
-            <div class="col-9">
-              <input type="file" id={{ form.avatar.id_for_label }} name={{form.avatar.name}} >
-            </div>
-            <div class="form-control-feedback">{{ form.avatar.errors }}</div>
-          </div>-->
-          <div class="form-group row">
-            <label for="arm" class="col-3 col-form-label">Dominant Arm:</label>
-            <div class="col-9">
-              <select id="arm" class="form-control" formControlName="arm">
-                <option *ngFor="let option of armChoices" [value]="option.value">{{option.label}}</option>
-              </select>
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-          <div class="form-group row">
-            <label for="units" class="col-3 col-form-label">Speed Units:</label>
-            <div class="col-9">
-              <select id="units" class="form-control" formControlName="units">
-                <option *ngFor="let option of unitChoices" [value]="option.value">{{option.label}}</option>
-              </select>
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-          <div class="form-group row">
-            <label for="backhand" class="col-3 col-form-label">Backhand Style:</label>
-            <div class="col-9">
-              <select id="backhand" class="form-control" formControlName="backhand">
-                <option *ngFor="let option of backhandChoices" [value]="option.value">{{option.label}}</option>
-              </select>
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-          <div class="form-group row">
-            <label for="privacy" class="col-3 col-form-label">Privacy Option:</label>
-            <div class="col-9">
-              <select id="privacy" class="form-control" formControlName="privacy">
-                <option *ngFor="let option of privacyChoices" [value]="option.value">{{option.label}}</option>
-              </select>
-            </div>
-            <div class="form-control-feedback"></div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-9 offset-3">
-            <input class="btn btn-primary btn-block" [disabled]="!registrationForm.valid" type="submit" value="Register" />
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>

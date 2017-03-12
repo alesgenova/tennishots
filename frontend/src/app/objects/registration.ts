@@ -1,4 +1,5 @@
 export class UserProfile{
+    "user": string = "";
     "first_name": string = "";
     "last_name": string = "";
     "arm": string = "";

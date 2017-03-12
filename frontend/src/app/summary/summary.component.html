@@ -13,7 +13,6 @@
 
 <div *ngIf="!emptyPlayer" class="container">
   <div class="row">
-  <div class="row">
 
     <div class="col-12">
       <div class="white-bg content2 text-center dashboard-card">
@@ -263,12 +262,13 @@
     </div>
 
   </div>
-  </div>
 
 </div>
 
-<div *ngIf="emptyPlayer" class="container white-bg content2 text-center">
-  <p class="text-muted">
-    The selected player hasn't imported any data into Tennishots yet, so there is nothing to show here.
-  </p>
+<div *ngIf="emptyPlayer" class="container">
+  <div class="white-bg content2 text-center">
+    <p class="text-muted">
+      The selected player hasn't imported any data into Tennishots yet, so there is nothing to show here.
+    </p>
+  </div>
 </div>

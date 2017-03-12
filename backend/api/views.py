@@ -58,7 +58,10 @@ class SummaryView(generics.GenericAPIView):
         permission = is_owner_or_friend(self.request, username)
         summary = {}
         summary['user'] = username
-        last_week = requested_user.weeks.latest(field_name='timestamp')
+        if requested_user.shots.count() == 0:
+            last_week = requested_user
+        else:
+            last_week = requested_user.weeks.latest(field_name='timestamp')
         for swing in ['FH', 'BH', 'FS', 'BS', 'FV', 'BV','SE','SM']:
             summary[swing] = {}
             shots = requested_user.shots.filter(data__swing_type=swing)

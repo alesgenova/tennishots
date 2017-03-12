@@ -35,12 +35,13 @@ export class TopbarComponent implements OnInit {
               private navigationService: NavigationService) { }
 
   ngOnInit() {
-      if (this.loggedIn()){
-          this.username = localStorage.getItem('username');
-      }
+      //if (this.loggedIn()){
+      //    this.username = localStorage.getItem('username');
+      //}
       this.userProfileSubscription = this.profileService.userProfile$
         .subscribe(profile => {
             this.userProfile = profile;
+            this.username = profile.user;
         });
 
       this.navigationSubscription = this.navigationService.activeSection$

@@ -56,13 +56,19 @@ body {
 }
 
 .content2{
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
     margin-top: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    border-style: solid;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+
+    /*border-style: solid;
     border-color: #dedede;
     border-width: thin;
-    border-radius: 3px;
+    border-radius: 3px;*/
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1), 0 0 8px 0 rgba(0, 0, 0, 0.09);
     /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
 
@@ -78,7 +84,7 @@ body {
 }
 
 .floating{
-    height:3.5rem;
+    min-height: 3.5rem;
     padding-top: 1rem;
     margin-bottom: -0.5rem;
 }
