@@ -3,7 +3,7 @@
   <div class="content-wrapper">
     <div class="my-top-placeholder"></div>
     <div class="my-top-placeholder hidden-md-up"></div>
-    <router-outlet></router-outlet>
+    <router-outlet (deactivate)="onDeactivate()"></router-outlet>
   </div>
   <app-footer></app-footer>
   <div class="my-bottom-placeholder hidden-md-up"></div>

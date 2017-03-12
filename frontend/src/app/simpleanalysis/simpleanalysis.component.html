@@ -26,19 +26,19 @@
       Show
     </div>
     <div class="col-2">
-      <button class="btn btn-sm btn-block" (click)="onPeriodChange('session')" [class.btn-primary]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>
+      <button class="btn btn-sm btn-block" (click)="onPeriodChange('session')" [class.btn-danger]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>
     </div>
     <div class="col-2">
-      <button class="btn btn-sm btn-block" (click)="onPeriodChange('week')" [class.btn-primary]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>
+      <button class="btn btn-sm btn-block" (click)="onPeriodChange('week')" [class.btn-danger]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>
     </div>
     <div class="col-2">
-      <button class="btn btn-sm btn-block" (click)="onPeriodChange('month')" [class.btn-primary]="activePeriod=='month'" [class.btn-secondary]="activePeriod!='month'">Months</button>
+      <button class="btn btn-sm btn-block" (click)="onPeriodChange('month')" [class.btn-danger]="activePeriod=='month'" [class.btn-secondary]="activePeriod!='month'">Months</button>
     </div>
     <div class="col-2">
-      <button class="btn btn-sm btn-block" (click)="onPeriodChange('year')" [class.btn-primary]="activePeriod=='year'" [class.btn-secondary]="activePeriod!='year'">Years</button>
+      <button class="btn btn-sm btn-block" (click)="onPeriodChange('year')" [class.btn-danger]="activePeriod=='year'" [class.btn-secondary]="activePeriod!='year'">Years</button>
     </div>
     <div class="col-2">
-      <button class="btn btn-sm btn-block" (click)="onPeriodChange('all')" [class.btn-primary]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
+      <button class="btn btn-sm btn-block" (click)="onPeriodChange('all')" [class.btn-danger]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
     </div>
   </div>
   <div *ngIf="activePeriod=='session'" class="text-center">

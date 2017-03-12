@@ -12,7 +12,16 @@ export class ImportGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     // has the user already imported some shots?
-    if (1<2){return true}
+    let check =  this.profileService.checkShotCount();
+
+    if (check){
+      return true
+    }else{
+      this.router.navigate(['/landing']);
+      return false
+    }
+
+    //if (1<2){return true}
     /*
 
     let playerProfile = this.profileService.getPlayerProfile("");

@@ -43,16 +43,8 @@ export class AppComponent implements OnInit {
       return this.authService.loggedIn()
   }
 
-  toggleSidebar(){
-      this.menuState[0] = this.menuState[0] === 'out' ? 'in' : 'out';
-  }
-
-  closeSidebar(){
-      this.menuState[0] = 'out';
-  }
-
-  openSidebar(){
-      this.menuState[0] = 'in';
+  onDeactivate() {
+    document.body.scrollTop = 0;
   }
 
 }

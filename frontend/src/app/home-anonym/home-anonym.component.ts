@@ -8,7 +8,7 @@ import { NavigationService } from '../services/navigation.service';
 })
 export class HomeAnonymComponent implements OnInit {
 
-  tennistatLogoUrl = "assets/img/tennishots_logo.svg";
+  tennishotsLogoUrl = "assets/img/tennishots_logo_inverse2.svg";
 
   constructor(private navigationService: NavigationService) { }
 

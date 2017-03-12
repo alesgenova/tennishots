@@ -15,7 +15,7 @@ export class LandingComponent implements OnInit {
 
   ngOnInit() {
     this.navigationService.setActiveSection("services");
-    this.profileService.checkLastChanges();
+    //this.profileService.checkLastChanges();
   }
 
 }

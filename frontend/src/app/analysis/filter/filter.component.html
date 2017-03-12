@@ -11,7 +11,7 @@
     <button *ngIf="!expanded" type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="advancedFilter" (click)="advancedFilter=!advancedFilter">More Filters</button>
     <button *ngIf="expanded" type="button" class="btn btn-secondary btn-sm btn-block" [class.active]="periodSelector[6]" (click)="handlePeriodChange('strokes')" [innerHTML]="isFilterModified('strokes')"></button>
   </div>
-  <div class="period-container col-9">
+  <div class="period-container col-9 text-center">
     <periodlist *ngIf="periodSelector[0] && listOfPeriods.session.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'session'" [periodsPicker]="filter.filters.periods" [videoOnly]="videoOnly"></periodlist>
     <periodlist *ngIf="periodSelector[1] && listOfPeriods.week.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'week'" [periodsPicker]="filter.filters.periods" [videoOnly]="videoOnly"></periodlist>
     <periodlist *ngIf="periodSelector[2] &&listOfPeriods.month.length > 0" [listOfPeriods]="listOfPeriods" [periodName]="'month'" [periodsPicker]="filter.filters.periods" [videoOnly]="videoOnly"></periodlist>

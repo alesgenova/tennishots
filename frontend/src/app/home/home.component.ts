@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
@@ -26,7 +27,8 @@ export class HomeComponent implements OnInit {
   playerProfileSubscription: Subscription;
   userProfileSubscription: Subscription;
 
-  constructor(private tennistatService: TennistatService,
+  constructor(private router: Router,
+              private tennistatService: TennistatService,
               private profileService: ProfileService,
               private navigationService: NavigationService) { }
 
@@ -42,8 +44,9 @@ export class HomeComponent implements OnInit {
       this.playerProfileSubscription = this.profileService.playerProfiles$
         .subscribe(profiles => {
           this.playerProfile = profiles[this.user];
-          //console.log("subscription updated");
-          //console.log(this.playerProfile);
+          if (this.playerProfile.shot_count == 0){
+            this.router.navigate(['/landing']);
+          }
         });
       this.getRecentActivity();
       //this.playerProfile = this.profileService.getPlayerProfile("");

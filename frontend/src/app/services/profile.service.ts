@@ -79,6 +79,20 @@ export class ProfileService {
             });
     }
 
+    checkShotCount(){
+      let playerProfile = this.playerProfiles[this.myUsername];
+      if (typeof playerProfile == "undefined"){
+        return true
+      }else{
+        let count = playerProfile.shot_count;
+        if (count == 0){
+          return false
+        }else{
+          return true
+        }
+      }
+    }
+
     refreshUserChoices(){
       this.userChoices = {};
       this.userChoices[this.myUsername] = {username:this.myUsername,
@@ -116,10 +130,13 @@ export class ProfileService {
             this.playerSummaries[friend.user] = JSON.parse(localStorage.getItem(friend.user+'_playerSummary'));
           }
           this.refreshUserChoices();
-      }else{
-          this.userProfile = new UserProfile();
-      }
-        this.checkLastChanges();
+        }else{
+            this.userProfile = new UserProfile();
+            this.playerProfiles[this.myUsername] = new PlayerProfile();
+        }
+        // checkLastCanges is already done all the time (including on initialization) in authGuard,
+        // so we can save an expensive request.
+        //this.checkLastChanges();
         this.updatedPlayerProfiles();
         this.updatedPlayerSummaries();
         this.updatedUserProfile();
