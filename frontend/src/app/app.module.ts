@@ -42,9 +42,6 @@ import {FileUploadModule} from 'primeng/primeng';
 // ng-bootstrap
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-// Spinner
-import { SpinnerModule } from 'angular2-spinner';
-
 //import { NouisliderComponent } from 'ng2-nouislider';
 //import { NouisliderModule } from 'ng2-nouislider';
 //font-awesome
@@ -139,8 +136,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ChartsModule,
     //font-awesome
     Angular2FontawesomeModule,
-    FileUploadModule,
-    SpinnerModule
+    FileUploadModule
   ],
   providers: [AuthService, NavigationService, TennistatService, ProfileService, AuthGuard, ImportGuard,
               {

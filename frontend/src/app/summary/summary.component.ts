@@ -23,6 +23,7 @@ export class SummaryComponent implements OnInit {
     userProfile: any;
     userChoicesSubscription: Subscription;
     playerProfiles: any;
+    emptyPlayer: boolean = false;
     playerProfilesSubscription: Subscription;
     playerSummaries: any;
     playerSummariesSubscription: Subscription;
@@ -147,13 +148,25 @@ export class SummaryComponent implements OnInit {
     this.userProfileSubscription.unsubscribe();
   }
 
-  fromUserToData(){
-    this.chartData = new Object();
+  onUserChange(user:string){
+    this.emptyPlayer = true;
+    this.activeUser = user;
+    this.fromUserToData();
+    //if (this.activePeriod == 'all'){
+    //    this.onPeriodSelect(0);
+    //}
+  }
 
+  fromUserToData(){
+    this.emptyPlayer = true;
+    this.chartData = new Object();
     let weekLabels = [];
     let weekShotCount = [];
     let weekSessionCount = [];
     let playerProfile = this.playerProfiles[this.activeUser];
+    if (playerProfile.shot_count == 0){
+      return
+    }
     let nWeeks = playerProfile.periods.week.length;
     let itermax = 0
     if (nWeeks > 12){
@@ -261,6 +274,8 @@ export class SummaryComponent implements OnInit {
         this.surfacePieData['datasets'][0]['data'].push(label.session_count);
       }
     }
+
+    this.emptyPlayer = false;
   }
 
   getFastest(stroke:string, period:string){
