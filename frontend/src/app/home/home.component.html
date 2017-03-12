@@ -80,19 +80,11 @@
            <span *ngFor="let tag of session.labels" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
          </span>
       </div>
-      <!--
-      <div style="width:150px;">
-        <p>
-        <span *ngFor="let tag of session.labels" class="small" [innerHTML]="getFormattedTag(tag.name, tag.category)+' '"></span>
-      </p>
-        <button class="btn btn-secondary btn-sm" [class.active]="sessionsExpand[i]">View</button>
-      </div>
-      -->
     </div>
     <!-- The Session Stats -->
     <div class="col-12" *ngIf="sessionsExpand[i]">
-      <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
       <hr>
+      <display [stats1]="sessionsStats[i]" [stats2]="emptyResponse" [compare]="false"></display>
     </div>
   </div>
 </div>
