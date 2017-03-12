@@ -107,7 +107,7 @@ def sony_csv_to_db(csvfile, user_id):
     transaction.dollar_amount = dollar_amount
     transaction.save()
 
-    profile = user
+    profile = user.userprofile
     profile.last_change = timezone.now()
     profile.save()
 
