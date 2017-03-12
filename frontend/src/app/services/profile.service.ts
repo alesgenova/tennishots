@@ -81,7 +81,7 @@ export class ProfileService {
 
     checkShotCount(){
       let playerProfile = this.playerProfiles[this.myUsername];
-      if (typeof playerProfile == "undefined"){
+      if (playerProfile == null){
         return true
       }else{
         let count = playerProfile.shot_count;
@@ -122,7 +122,7 @@ export class ProfileService {
       if (this.authService.loggedIn()){
         this.myUsername = localStorage.getItem('username');
         this.userProfile = JSON.parse(localStorage.getItem('userProfile'));
-        if (this.userProfile !== null){
+        if (this.userProfile != null){
           this.playerProfiles[this.myUsername] = JSON.parse(localStorage.getItem(this.myUsername+'_playerProfile'));
           this.playerSummaries[this.myUsername] = JSON.parse(localStorage.getItem(this.myUsername+'_playerSummary'));
           for (let friend of this.userProfile.friends){
@@ -164,7 +164,7 @@ export class ProfileService {
                 .subscribe(res => {
                   for (let entry of res){
                     let flag = 0;
-                    if (typeof this.playerProfiles[entry.user] != "undefined") {
+                    if (this.playerProfiles[entry.user] != null) {
                       if (entry.lastchange == this.playerProfiles[entry.user].lastchange){
                         flag = 1
                       }

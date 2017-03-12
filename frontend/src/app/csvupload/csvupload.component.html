@@ -2,26 +2,28 @@
   <h4>Import shots</h4>
 </div>
 
-<div class="container content2 white-bg text-center">
-  <div *ngIf="!uploaded">
-    <p class="lead">
-      Upload the CSV file you have exported from the sensor app. The shots database will be updated if new data is detected.
-    </p>
-    <p>
-      If you don't know hot to export your shot data from the sensor app to your computer, <a href="#">watch this quick tutorial</a>.
-    </p>
-    <p-fileUpload name="sonycsv" url="https://api.tennishots.com/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
-    <!--
-    <p-fileUpload name="sonycsv" url="http://localhost:8000/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
-    -->
-  </div>
-  <div *ngIf="uploaded">
-    <p class="lead">
-      We are processing your shots data. You will be automatically redirected upon completion.
-    </p>
-    <p class="text-muted">
-      Processing may take from a few seconds to a few minutes, depending on the amount of data and traffic.
-    </p>
-    <h1 class="red-text"><i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></h1>
+<div class="container">
+  <div class="content2 white-bg text-center">
+    <div *ngIf="!uploaded">
+      <p class="lead">
+        Upload the CSV file you have exported from the sensor app. The shots database will be updated if new data is detected.
+      </p>
+      <p>
+        If you don't know hot to export your shot data from the sensor app to your computer, <a href="#">watch this quick tutorial</a>.
+      </p>
+      <p-fileUpload name="sonycsv" url="https://api.tennishots.com/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
+      <!--
+      <p-fileUpload name="sonycsv" url="http://localhost:8000/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
+      -->
+    </div>
+    <div *ngIf="uploaded">
+      <p class="lead">
+        We are processing your shots data. You will be automatically redirected upon completion.
+      </p>
+      <p class="text-muted">
+        Processing may take from a few seconds to a few minutes, depending on the amount of data and traffic.
+      </p>
+      <h1 class="red-text"><i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></h1>
+    </div>
   </div>
 </div>

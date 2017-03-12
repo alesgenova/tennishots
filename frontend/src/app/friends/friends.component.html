@@ -2,25 +2,27 @@
   <h4>Friend requests</h4>
 </div>
 
-<div class="container content2 white-bg">
-  <div *ngIf="friendRequests.length < 1" class="text-center text-muted" style="height:50px;">
-    You're all caught up, there are no pending friend requests.
-  </div>
-  <div *ngFor="let request of friendRequests; let i=index" class="row">
-    <div *ngIf="i > 0" class="col-12">
-      <hr>
+<div class="container">
+  <div class=" content2 white-bg">
+    <div *ngIf="friendRequests.length < 1" class="text-center text-muted" style="height:50px;">
+      You're all caught up, there are no pending friend requests.
     </div>
-    <div class="col-12 friend-col">
-      <div style="width:75px;">
-        <img [src]="request.from_avatar" class="rounded" height="50px" >
+    <div *ngFor="let request of friendRequests; let i=index" class="row">
+      <div *ngIf="i > 0" class="col-12">
+        <hr>
       </div>
-      <div class="mr-auto">
-        {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
-         <span class="text-muted small">{{request.from_email}}</span>
-      </div>
-      <div>
-        <button (click)="respondRequest(request.from_user,'accept')" class="btn btn-primary btn-sm">Accept</button>
-        <button (click)="respondRequest(request.from_user,'refuse')" class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
+      <div class="col-12 friend-col">
+        <div style="width:75px;">
+          <img [src]="request.from_avatar" class="rounded" height="50px" >
+        </div>
+        <div class="mr-auto">
+          {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
+           <span class="text-muted small">{{request.from_email}}</span>
+        </div>
+        <div>
+          <button (click)="respondRequest(request.from_user,'accept')" class="btn btn-primary btn-sm">Accept</button>
+          <button (click)="respondRequest(request.from_user,'refuse')" class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
       </div>
     </div>
   </div>
@@ -29,21 +31,23 @@
 <div *ngIf="friends.length > 0"  class="floating text-muted text-center">
   <h4>Friends</h4>
 </div>
-<div *ngIf="friends.length > 0" class="container content2 white-bg">
-  <div *ngFor="let friend of friends; let i=index" role="button" (click)="onFriendClick(friend.user)" class="row">
-    <div *ngIf="i > 0" class="col-12">
-      <hr>
-    </div>
-    <div class="col-12 friend-col">
-      <div style="width:75px;">
-        <img [src]="friend.avatar" class="rounded" height="50px" >
+<div *ngIf="friends.length > 0" class="container">
+  <div class=" content2 white-bg">
+    <div *ngFor="let friend of friends; let i=index" role="button" (click)="onFriendClick(friend.user)" class="row">
+      <div *ngIf="i > 0" class="col-12">
+        <hr>
       </div>
-      <div class="mr-auto">
-        {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
-         <span class="text-muted small">{{friend.email}}</span>
-      </div>
-      <div>
-        <button class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
+      <div class="col-12 friend-col">
+        <div style="width:75px;">
+          <img [src]="friend.avatar" class="rounded" height="50px" >
+        </div>
+        <div class="mr-auto">
+          {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
+           <span class="text-muted small">{{friend.email}}</span>
+        </div>
+        <div>
+          <button class="btn btn-secondary btn-sm"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
       </div>
     </div>
   </div>
@@ -52,24 +56,26 @@
 <div class="floating text-muted text-center">
   <h4>Add friends</h4>
 </div>
-<div class="container content2 white-bg">
-  <div style="height:50px;">
-    <input [(ngModel)]="search" (ngModelChange)="searchUser(search)" type="text" class="form-control" placeholder="Search by name, username, or email address...">
-  </div>
-  <div *ngFor="let friend of users" class="row">
-    <div class="col-12">
-      <hr>
+<div class="container">
+  <div class=" content2 white-bg">
+    <div style="height:50px;">
+      <input [(ngModel)]="search" (ngModelChange)="searchUser(search)" type="text" class="form-control" placeholder="Search by name, username, or email address...">
     </div>
-    <div class="col-12 friend-col">
-      <div style="width:75px;">
-        <img [src]="friend.avatar" class="rounded" height="50px" >
+    <div *ngFor="let friend of users" class="row">
+      <div class="col-12">
+        <hr>
       </div>
-      <div class="mr-auto">
-        {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
-         <span class="text-muted small">{{friend.email}}</span>
-      </div>
-      <div>
-        <button (click)="addFriend(user.user)" class="btn btn-primary btn-sm">Add</button>
+      <div class="col-12 friend-col">
+        <div style="width:75px;">
+          <img [src]="friend.avatar" class="rounded" height="50px" >
+        </div>
+        <div class="mr-auto">
+          {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>
+           <span class="text-muted small">{{friend.email}}</span>
+        </div>
+        <div>
+          <button (click)="addFriend(friend.user)" class="btn btn-primary btn-sm">Add</button>
+        </div>
       </div>
     </div>
   </div>

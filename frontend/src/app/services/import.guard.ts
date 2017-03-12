@@ -13,7 +13,6 @@ export class ImportGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     // has the user already imported some shots?
     let check =  this.profileService.checkShotCount();
-
     if (check){
       return true
     }else{
