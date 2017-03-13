@@ -75,6 +75,7 @@ import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpasswor
 import { VerifyemailComponent } from './accounts/verifyemail/verifyemail.component';
 import { SidebarComponent } from './topbar/sidebar/sidebar.component';
 import { SummaryComponent } from './summary/summary.component';
+import { DummyComponent } from './dummy/dummy.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -120,7 +121,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     VerifyemailComponent,
     LoopObjectPipe,
     SidebarComponent,
-    SummaryComponent
+    SummaryComponent,
+    DummyComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -255,10 +255,12 @@ class YearSerializer(serializers.ModelSerializer):
 class SwingSerializer(serializers.Serializer):
     count_week = serializers.IntegerField()
     count_overall = serializers.IntegerField()
-    fastest_week = serializers.IntegerField(required=False)
-    fastest_overall = serializers.IntegerField(required=False)
-    above_week = serializers.IntegerField(required=False)
-    above_overall = serializers.IntegerField(required=False)
+    percentiles_week = serializers.ListField(child=serializers.IntegerField(), required=False)
+    percentiles_overall = serializers.ListField(child=serializers.IntegerField(), required=False)
+    #fastest_week = serializers.IntegerField(required=False)
+    #fastest_overall = serializers.IntegerField(required=False)
+    #above_week = serializers.IntegerField(required=False)
+    #above_overall = serializers.IntegerField(required=False)
 
 class SummarySerializer(serializers.Serializer):
     FH = SwingSerializer()

@@ -1,5 +1,7 @@
 import datetime as dt
 
+import numpy as np
+
 #from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -66,21 +68,35 @@ class SummaryView(generics.GenericAPIView):
             summary[swing] = {}
             shots = requested_user.shots.filter(data__swing_type=swing)
             week_shots = last_week.shots.filter(data__swing_type=swing)
-            summary[swing]['count_overall'] = shots.count()
-            summary[swing]['count_week'] = week_shots.count()
-        for swing, threshold in zip(['FH', 'BH', 'SE'],[105,105,145]):
-            summary[swing]['fastest_overall'] = -1
-            summary[swing]['fastest_week'] = -1
-            summary[swing]['above_overall'] = -1
-            summary[swing]['above_week'] = -1
-            shots = requested_user.shots.filter(data__swing_type=swing)
-            week_shots = last_week.shots.filter(data__swing_type=swing)
-            if (shots.count() > 0):
-                summary[swing]['fastest_overall'] = max(shots.values_list('data__swing_speed', flat=True))
-                summary[swing]['above_overall'] = shots.filter(data__swing_speed__gte=threshold).count()
-                if (week_shots.count() > 0):
-                    summary[swing]['fastest_week'] = max(week_shots.values_list('data__swing_speed', flat=True))
-                    summary[swing]['above_week'] = week_shots.filter(data__swing_speed__gte=threshold).count()
+            count_week = week_shots.count()
+            count_overall = shots.count()
+            summary[swing]['count_overall'] = count_overall
+            summary[swing]['count_week'] = count_week
+            if swing in ['FH', 'BH', 'SE']:
+                percentiles = [50,75,90,100]
+                percentiles_overall = [-1, -1, -1, -1]
+                percentiles_week = [-1, -1, -1, -1]
+                if count_overall > 0:
+                    percentiles_overall = np.percentile(shots.values_list('data__ball_speed', flat=True), percentiles)
+                    if count_week > 0:
+                        percentiles_week = np.percentile(week_shots.values_list('data__ball_speed', flat=True), percentiles)
+                summary[swing]['percentiles_overall'] = percentiles_overall
+                summary[swing]['percentiles_week'] = percentiles_week
+
+
+        #for swing, threshold in zip(['FH', 'BH', 'SE'],[105,105,145]):
+        #    summary[swing]['fastest_overall'] = -1
+        #    summary[swing]['fastest_week'] = -1
+        #    summary[swing]['above_overall'] = -1
+        #    summary[swing]['above_week'] = -1
+        #    shots = requested_user.shots.filter(data__swing_type=swing)
+        #    week_shots = last_week.shots.filter(data__swing_type=swing)
+        #    if (shots.count() > 0):
+        #        summary[swing]['fastest_overall'] = max(shots.values_list('data__swing_speed', flat=True))
+        #        summary[swing]['above_overall'] = shots.filter(data__swing_speed__gte=threshold).count()
+        #        if (week_shots.count() > 0):
+        #            summary[swing]['fastest_week'] = max(week_shots.values_list('data__swing_speed', flat=True))
+        #            summary[swing]['above_week'] = week_shots.filter(data__swing_speed__gte=threshold).count()
 
         serializer = SummarySerializer(summary)
         return Response(serializer.data, status=status.HTTP_200_OK)

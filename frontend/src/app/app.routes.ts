@@ -21,6 +21,8 @@ import { VideocollectionComponent } from './videocollection/videocollection.comp
 import { LandingComponent } from './landing/landing.component';
 import { SummaryComponent } from './summary/summary.component';
 
+import { DummyComponent } from './dummy/dummy.component';
+
 import { AuthGuard } from './services/auth.guard';
 import { ImportGuard } from './services/import.guard';
 //import { PaidGuard } from './services/auth.guard';
@@ -31,10 +33,11 @@ export const routes: Routes = [
   { path: 'login',  component: LoginComponent },
   { path: 'logout',  component: LogoutComponent, canActivate: [AuthGuard] },
   { path: 'register',  component: RegisterComponent },
-  { path: 'dashboard',  component: SummaryComponent, canActivate: [AuthGuard, ImportGuard]},
-  { path: 'summary',  component: SimpleanalysisComponent, canActivate: [AuthGuard, ImportGuard]},
-  { path: 'summary/:user',  component: SimpleanalysisComponent, canActivate: [AuthGuard, ImportGuard] },
-  { path: 'analyze',  component: AnalysisComponent, canActivate: [AuthGuard, ImportGuard] },
+  { path: 'summary',  component: SummaryComponent, canActivate: [AuthGuard, ImportGuard]},
+  { path: 'summary/:user',  component: SummaryComponent, canActivate: [AuthGuard, ImportGuard]},
+  { path: 'analysis',  component: SimpleanalysisComponent, canActivate: [AuthGuard, ImportGuard]},
+  { path: 'analysis/:user',  component: SimpleanalysisComponent, canActivate: [AuthGuard, ImportGuard] },
+  { path: 'advanced',  component: AnalysisComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'profile',  component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'friends',  component: FriendsComponent, canActivate: [AuthGuard] },
   { path: 'tags',  component: LabelsComponent, canActivate: [AuthGuard] },
@@ -48,6 +51,8 @@ export const routes: Routes = [
   { path: 'resetpassword',  component: ForgotpasswordComponent },
   { path: 'reset/:uid/:token',  component: PasswordresetComponent },
   { path: 'verify-email/:key',  component: VerifyemailComponent },
+  { path: '_dummy/:user',  component: DummyComponent },
+
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },
 //  { path: '**',     component: Login },
