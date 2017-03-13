@@ -43,7 +43,7 @@ import {FileUploadModule} from 'primeng/primeng';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 //import { NouisliderComponent } from 'ng2-nouislider';
-//import { NouisliderModule } from 'ng2-nouislider';
+import { NouisliderModule } from 'ng2-nouislider';
 //font-awesome
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 
@@ -132,7 +132,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     //bootstrap
     NgbModule.forRoot(),
-    //NouisliderModule,
+    NouisliderModule,
     //highcharts
     //ChartModule,
     ChartsModule,
