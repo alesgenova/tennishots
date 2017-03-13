@@ -32,10 +32,10 @@
         <h6 class="text-muted">{{count_week}} shots</h6>
         <div class="row">
           <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-            <canvas baseChart
+            <canvas #weekPie baseChart
                 [datasets]="weekPieData.datasets"
                 [labels]="weekPieData.labels"
-                [colors]="overallPieData.datasets"
+                [colors]="weekPieData.datasets"
                 [chartType]="'doughnut'"
                 [legend]="false"
                 [options]="pieOptions">
@@ -51,7 +51,7 @@
         <h6 class="text-muted">{{count_overall}} shots</h6>
         <div class="row">
           <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-            <canvas baseChart
+            <canvas #overallPie baseChart
                 [datasets]="overallPieData.datasets"
                 [labels]="overallPieData.labels"
                 [colors]="overallPieData.datasets"
@@ -79,27 +79,33 @@
 
     <div class="col-md-6 col-lg-4">
       <div class="white-bg content2 text-center dashboard-card">
-        <h5>Best forehands</h5>
+        <h5>Forehand</h5>
         <div class="row">
-          <div class="col-6">
+          <div class="col-4">
             <h6>This week</h6>
             <hr>
-            <h6 class="text-muted">Fastest:</h6>
-            <p>
-              {{getFastest('FH','week')}}
-            </p>
-            <h6 class="text-muted">Above {{getAboveLabel('FH')}}:</h6>
-            <p [innerHtml]="getAbove('FH','week')"></p>
           </div>
-          <div class="col-6">
+          <div class="col-4 offset-4">
             <h6>Overall</h6>
             <hr>
-            <h6 class="text-muted">Fastest:</h6>
-            <p>
-              {{getFastest('FH','overall')}}
-            </p>
-            <h6 class="text-muted">Above {{getAboveLabel('FH')}}:</h6>
-            <p [innerHtml]="getAbove('FH','overall')"></p>
+          </div>
+          <div class="col">
+            <p [innerHtml]="getPercentile('FH','week',0)"></p>
+            <p [innerHtml]="getPercentile('FH','week',1)"></p>
+            <p [innerHtml]="getPercentile('FH','week',2)"></p>
+            <p [innerHtml]="getPercentile('FH','week',3)"></p>
+          </div>
+          <div class="col">
+            <p class="text-muted"><strong>Median</strong></p>
+            <p class="text-muted"><strong>Top 25%</strong></p>
+            <p class="text-muted"><strong>Top 10%</strong></p>
+            <p class="text-muted"><strong>Fastest</strong></p>
+          </div>
+          <div class="col">
+            <p [innerHtml]="getPercentile('FH','overall',0)"></p>
+            <p [innerHtml]="getPercentile('FH','overall',1)"></p>
+            <p [innerHtml]="getPercentile('FH','overall',2)"></p>
+            <p [innerHtml]="getPercentile('FH','overall',3)"></p>
           </div>
         </div>
       </div>
@@ -107,27 +113,33 @@
 
     <div class="col-md-6 col-lg-4">
       <div class="white-bg content2 text-center dashboard-card">
-        <h5>Best backhands</h5>
+        <h5>Backhand</h5>
         <div class="row">
-          <div class="col-6">
+          <div class="col-4">
             <h6>This week</h6>
             <hr>
-            <h6 class="text-muted">Fastest:</h6>
-            <p>
-              {{getFastest('BH','week')}}
-            </p>
-            <h6 class="text-muted">Above {{getAboveLabel('BH')}}:</h6>
-            <p [innerHtml]="getAbove('BH','week')"></p>
           </div>
-          <div class="col-6">
+          <div class="col-4 offset-4">
             <h6>Overall</h6>
             <hr>
-            <h6 class="text-muted">Fastest:</h6>
-            <p>
-              {{getFastest('BH','overall')}}
-            </p>
-            <h6 class="text-muted">Above {{getAboveLabel('BH')}}:</h6>
-            <p [innerHtml]="getAbove('BH','overall')"></p>
+          </div>
+          <div class="col">
+            <p [innerHtml]="getPercentile('BH','week',0)"></p>
+            <p [innerHtml]="getPercentile('BH','week',1)"></p>
+            <p [innerHtml]="getPercentile('BH','week',2)"></p>
+            <p [innerHtml]="getPercentile('BH','week',3)"></p>
+          </div>
+          <div class="col">
+            <p class="text-muted"><strong>Median</strong></p>
+            <p class="text-muted"><strong>Top 25%</strong></p>
+            <p class="text-muted"><strong>Top 10%</strong></p>
+            <p class="text-muted"><strong>Fastest</strong></p>
+          </div>
+          <div class="col">
+            <p [innerHtml]="getPercentile('BH','overall',0)"></p>
+            <p [innerHtml]="getPercentile('BH','overall',1)"></p>
+            <p [innerHtml]="getPercentile('BH','overall',2)"></p>
+            <p [innerHtml]="getPercentile('BH','overall',3)"></p>
           </div>
         </div>
       </div>
@@ -135,27 +147,33 @@
 
     <div class="col-md-6 col-lg-4">
       <div class="white-bg content2 text-center dashboard-card">
-        <h5>Best serves</h5>
+        <h5>Serve</h5>
         <div class="row">
-          <div class="col-6">
+          <div class="col-4">
             <h6>This week</h6>
             <hr>
-            <h6 class="text-muted">Fastest:</h6>
-            <p>
-              {{getFastest('SE','week')}}
-            </p>
-            <h6 class="text-muted">Above {{getAboveLabel('SE')}}:</h6>
-            <p [innerHtml]="getAbove('SE','week')"></p>
           </div>
-          <div class="col-6">
+          <div class="col-4 offset-4">
             <h6>Overall</h6>
             <hr>
-            <h6 class="text-muted">Fastest:</h6>
-            <p>
-              {{getFastest('SE','overall')}}
-            </p>
-            <h6 class="text-muted">Above {{getAboveLabel('SE')}}:</h6>
-            <p [innerHtml]="getAbove('SE','overall')"></p>
+          </div>
+          <div class="col">
+            <p [innerHtml]="getPercentile('SE','week',0)"></p>
+            <p [innerHtml]="getPercentile('SE','week',1)"></p>
+            <p [innerHtml]="getPercentile('SE','week',2)"></p>
+            <p [innerHtml]="getPercentile('SE','week',3)"></p>
+          </div>
+          <div class="col">
+            <p class="text-muted"><strong>Median</strong></p>
+            <p class="text-muted"><strong>Top 25%</strong></p>
+            <p class="text-muted"><strong>Top 10%</strong></p>
+            <p class="text-muted"><strong>Fastest</strong></p>
+          </div>
+          <div class="col">
+            <p [innerHtml]="getPercentile('SE','overall',0)"></p>
+            <p [innerHtml]="getPercentile('SE','overall',1)"></p>
+            <p [innerHtml]="getPercentile('SE','overall',2)"></p>
+            <p [innerHtml]="getPercentile('SE','overall',3)"></p>
           </div>
         </div>
       </div>

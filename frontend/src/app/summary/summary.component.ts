@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+
+import {BaseChartDirective} from 'ng2-charts/ng2-charts';
 
 import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
@@ -15,6 +17,7 @@ import {Subscription} from 'rxjs/Subscription';
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
+
     mi2km = 1.60934;
     userChoices: any;
     myUsername: string;
@@ -112,9 +115,9 @@ export class SummaryComponent implements OnInit {
             if (this.requestedUser != this.myUsername){
                 if (this.userProfile.friends.some(x=>x.user==this.requestedUser)){
                     this.activeUser = this.requestedUser;
-                }else{
-                    this.activeUser = this.myUsername;
                 }
+            }else{
+                this.activeUser = this.myUsername;
             }
         });
 
@@ -149,9 +152,9 @@ export class SummaryComponent implements OnInit {
   }
 
   onUserChange(user:string){
-    this.emptyPlayer = true;
-    this.activeUser = user;
-    this.fromUserToData();
+    this.router.navigate(['/_dummy',user], { skipLocationChange: true });
+    //this.router.navigate(['/dashboard',user])
+    //this.fromUserToData();
     //if (this.activePeriod == 'all'){
     //    this.onPeriodSelect(0);
     //}
@@ -179,7 +182,7 @@ export class SummaryComponent implements OnInit {
       weekShotCount.push(playerProfile.periods.week[nWeeks-i].shot_count);
       weekSessionCount.push(playerProfile.periods.week[nWeeks-i].session_count);
     }
-    this.chartData['labels'] = weekLabels;
+    this.chartData['labels'] = weekLabels
     this.chartData['datasets'] = [];
     this.chartData['datasets'].push({
       label: "Shots",
@@ -193,6 +196,7 @@ export class SummaryComponent implements OnInit {
       yAxisID: "y-axis-1",
       data: weekSessionCount
     });
+    this.chartData['datasets'] = this.chartData['datasets']
     this.count_overall = 0;
     this.overallPieData = new Object();
     this.overallPieData['labels'] = [];
@@ -276,6 +280,24 @@ export class SummaryComponent implements OnInit {
     }
 
     this.emptyPlayer = false;
+  }
+
+  getPercentile(stroke:string, period:string, percentile:number){
+    let imperial_units = (this.userProfile.units == "M");
+    let speed = 0;
+    if (period == 'week'){
+      speed = this.playerSummaries[this.activeUser][stroke].percentiles_week[percentile];
+    }else if (period == 'overall'){
+      speed = this.playerSummaries[this.activeUser][stroke].percentiles_overall[percentile]
+    }
+    if (speed == -1){
+      return "<span class='small'>N/A</span>"
+    }
+    if (imperial_units){
+      return Math.round(speed/this.mi2km) + " <span class='small'>mi/h</span>"
+    }else{
+      return speed + " <span class='small'>km/h</span>"
+    }
   }
 
   getFastest(stroke:string, period:string){

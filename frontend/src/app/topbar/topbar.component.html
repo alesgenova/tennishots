@@ -9,14 +9,14 @@
         </ul>
         <ul *ngIf="loggedIn()" class="nav hidden-sm-down flex-row ml-auto mr-auto">
           <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
-            <a class="nav-link" [routerLink]="['dashboard']">Summary</a>
+            <a class="nav-link" [routerLink]="['summary']">Summary</a>
           </li>
           <li class="nav-item" [class.active-nav-item]="activeSection=='analysis'"   (mouseenter)="$event.stopPropagation(); analyzeDrop.open();" (mouseleave)="$event.stopPropagation(); analyzeDrop.close();">
             <div  ngbDropdown #analyzeDrop="ngbDropdown">
-              <a class="nav-link" id="dropdownMenu1" ngbDropdownToggle [routerLink]="['summary']">Analysis</a>
+              <a class="nav-link" id="dropdownMenu1" ngbDropdownToggle [routerLink]="['analysis']">Analysis</a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <button class="dropdown-item" [routerLink]="['summary']">Basic</button>
-                <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
+                <button class="dropdown-item" [routerLink]="['analysis']">Basic</button>
+                <button class="dropdown-item" [routerLink]="['advanced']">Advanced</button>
               </div>
             </div>
           </li>
@@ -73,13 +73,13 @@
       <div *ngIf="loggedIn()" class="hidden-md-up red-top mobile-header" [ngClass]="bottomShadow">
           <ul  class="nav nav-justified">
             <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
-              <a class="nav-link" role="button" [routerLink]="['dashboard']">Summary</a>
+              <a class="nav-link" role="button" [routerLink]="['summary']">Summary</a>
             </li>
             <li class="nav-item dropdown" [class.active-nav-item]="activeSection=='analysis'">
                 <a class="nav-link" role="button" id="dropdownMenu1" data-toggle="dropdown">Analysis</a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <button class="dropdown-item" [routerLink]="['summary']">Basic</button>
-                  <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
+                  <button class="dropdown-item" [routerLink]="['analysis']">Basic</button>
+                  <button class="dropdown-item" [routerLink]="['advanced']">Advanced</button>
                 </div>
             </li>
             <li class="nav-item dropdown" [class.active-nav-item]="activeSection=='progress'">
@@ -106,13 +106,13 @@
 <div *ngIf="loggedIn() && false" class="hidden-md-up mobile-footer red-top " [ngClass]="bottomShadow">
     <ul  class="nav nav-justified" style="height:3rem;">
       <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
-        <a class="nav-link" role="button" [routerLink]="['dashboard']">Summary</a>
+        <a class="nav-link" role="button" [routerLink]="['summary']">Summary</a>
       </li>
       <li class="nav-item dropup" [class.active-nav-item]="activeSection=='analysis'">
           <a class="nav-link" role="button" id="dropdownMenu1" data-toggle="dropdown">Analysis</a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <button class="dropdown-item" [routerLink]="['summary']">Basic</button>
-            <button class="dropdown-item" [routerLink]="['analyze']">Advanced</button>
+            <button class="dropdown-item" [routerLink]="['analysis']">Basic</button>
+            <button class="dropdown-item" [routerLink]="['advanced']">Advanced</button>
           </div>
       </li>
       <li class="nav-item dropup" [class.active-nav-item]="activeSection=='progress'">
