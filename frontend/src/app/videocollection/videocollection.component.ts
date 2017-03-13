@@ -37,6 +37,8 @@ export class VideocollectionComponent implements OnInit {
     timezoneString: string = "";
     doCreate = false;
 
+    imperial_units: boolean = false;
+
     listOfPeriods = new UserPeriodsList();
     tagList: Label[] = [];
     filter: SonyFilter = new SonyFilter();
@@ -71,10 +73,13 @@ export class VideocollectionComponent implements OnInit {
             if (this.requestedUser != this.myUsername){
                 if (this.userProfile.friends.some(x=>x.user==this.requestedUser)){
                     this.activeUser = this.requestedUser;
-                }else{
-                    this.activeUser = this.myUsername;
                 }
+            }else{
+                this.activeUser = this.myUsername;
             }
+            this.imperial_units = (this.userProfile.units == 'M');
+            this.filter.username = this.userProfile.user;
+            this.filter.imperial_units = this.imperial_units;
         });
 
       // subscribe to changes in the player profiles
@@ -91,8 +96,6 @@ export class VideocollectionComponent implements OnInit {
           //console.log("userChoices");
           //console.log(this.userChoices);
         });
-
-      this.filter.username = this.myUsername;
 
       this.createVideoCollectionForm();
   }
@@ -188,7 +191,8 @@ export class VideocollectionComponent implements OnInit {
                 this.fromProfileToPagination();
                 this.doCreate = false;
                 this.filter = new SonyFilter();
-                this.filter.username = this.myUsername;
+                this.filter.username = this.userProfile.user;
+                this.filter.imperial_units = this.imperial_units;
             });
   }
 

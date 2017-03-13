@@ -64,6 +64,8 @@ export class AnalysisComponent implements OnInit {
         .subscribe(profile => {
             this.userProfile = profile;
             this.imperial_units = (this.userProfile.units == 'M');
+            this.filter1.imperial_units = this.imperial_units;
+            this.filter2.imperial_units = this.imperial_units;
         });
 
       // subscribe to changes in the player profiles
@@ -116,10 +118,12 @@ export class AnalysisComponent implements OnInit {
             this.filter1 = new SonyFilter();
             //this.gotPeriods1 = false;
             this.filter1.username = user;
+            this.filter1.imperial_units = this.imperial_units;
         }else if (num == 2){
             this.filter2 = new SonyFilter();
             //this.gotPeriods2 = false;
             this.filter2.username = user;
+            this.filter2.imperial_units = this.imperial_units;
         }
         this.populatePeriods(num);
     }
