@@ -3,11 +3,11 @@
     <div class="container">
       <nav class="nav  title-bar">
         <a class="navbar-brand" [routerLink]="['']"><img src="{{navbarLogoUrl}}" height="24px" alt="TENNISHOTS"></a>
-        <ul *ngIf="!loggedIn()" class="nav flex-row ml-auto">
+        <ul *ngIf="!loggedIn()" class="nav flex-row ml-auto mt-auto mb-auto">
           <li class="nav-item"><a class="nav-link" [routerLink]="['login']">Login</a></li>
           <li class="nav-item"><a class="nav-link" [routerLink]="['register']">Register</a></li>
         </ul>
-        <ul *ngIf="loggedIn()" class="nav hidden-sm-down flex-row ml-auto mr-auto">
+        <ul *ngIf="loggedIn()" class="nav hidden-sm-down flex-row ml-auto mr-auto  mt-auto mb-auto">
           <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
             <a class="nav-link" [routerLink]="['summary']">Summary</a>
           </li>
@@ -40,7 +40,7 @@
             </div>
           </li>
         </ul>
-        <ul *ngIf="loggedIn()" class="nav flex-row ml-auto">
+        <ul *ngIf="loggedIn()" class="nav flex-row ml-auto mt-auto mb-auto">
           <li class="nav-item">
             <a role="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
               <img [src]="userProfile?.avatar" class="rounded-circle" height="35px">
@@ -71,7 +71,7 @@
     </div>
     <div class="container">
       <div *ngIf="loggedIn()" class="hidden-md-up red-top mobile-header" [ngClass]="bottomShadow">
-          <ul  class="nav nav-justified">
+          <ul  class="nav nav-justified  mt-auto mb-auto">
             <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
               <a class="nav-link" role="button" [routerLink]="['summary']">Summary</a>
             </li>
