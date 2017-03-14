@@ -1,16 +1,12 @@
-<div class="container floating">
-  <div class="row">
-    <div class="col-12" style="display:flex;">
-      <div class="mr-auto">
-        <img [src]="userChoices[activeUser]?.avatar" class="rounded" height="37px" >
-        <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
-              <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
-        </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
-      </div>
-      <div>
-        <button [routerLink]="['','videocollection']" class="btn btn-secondary" role="button">Video collections</button>
-      </div>
-    </div>
+<div class="container floating flex-div">
+  <div class="mr-auto">
+    <img [src]="userChoices[activeUser]?.avatar" class="rounded" height="37px" >
+    <select id="userpicker" [ngModel]="activeUser" (ngModelChange)="onUserChange($event)" class="custom-select">
+          <option *ngFor="let user of userChoices|loopobject" [value]="user.username">{{user.first_name}} {{user.last_name}}</option>
+    </select><!--<span class="text-muted">({{userChoices[activeUser].username}})</span>-->
+  </div>
+  <div>
+    <button [routerLink]="['','videocollection']" class="btn btn-secondary" role="button">Video collections</button>
   </div>
 </div>
 
@@ -71,8 +67,8 @@
       <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
         <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
             <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
-            <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img" height="100px" style="background-color:#61707d;">
-            <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px" style="background-color:rgba(255,255,255,0);">
+            <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img dark-gray-bg" height="100px">
+            <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px">
           <div class="card-img-overlay">
             <h6 class="card-title">
               {{video.timestamp+timezoneString|date:'shortTime'}}
@@ -101,7 +97,7 @@
             <div>Upload <strong>{{activeVideo.filename}}</strong> to Tennishots</div>
         </template>
         <template pTemplate="content">
-            <div><span style="color:red;">{{fileUploadError}}</span></div>
+            <div><span class="red-text">{{fileUploadError}}</span></div>
         </template>
       </p-fileUpload>
     </div>
