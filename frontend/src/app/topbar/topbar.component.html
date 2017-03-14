@@ -43,7 +43,7 @@
         <ul *ngIf="loggedIn()" class="nav flex-row ml-auto">
           <li class="nav-item">
             <a role="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-              <img style="margin-top:4px;" [src]="userProfile?.avatar" class="rounded-circle" height="35px">
+              <img [src]="userProfile?.avatar" class="rounded-circle" height="35px">
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu4">
               <button class="dropdown-item" [routerLink]="['profile']">
@@ -104,7 +104,7 @@
 </div>
 
 <div *ngIf="loggedIn() && false" class="hidden-md-up mobile-footer red-top " [ngClass]="bottomShadow">
-    <ul  class="nav nav-justified" style="height:3rem;">
+    <ul  class="nav nav-justified" class="height-3r">
       <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">
         <a class="nav-link" role="button" [routerLink]="['summary']">Summary</a>
       </li>

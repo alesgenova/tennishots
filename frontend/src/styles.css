@@ -318,3 +318,31 @@ body {
 .card{
     /*box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.09);*/
 }
+
+.inline-div{
+    display:inline-block;
+}
+
+.flex-div{
+    display:flex;
+}
+
+.width-75{
+    width: 75px;
+}
+
+.width-100{
+    width: 100px;
+}
+
+.height-50{
+    height: 50px;
+}
+
+.height-3r{
+    height: 3rem;
+}
+
+.dark-gray-bg{
+    background-color:#61707d;
+}

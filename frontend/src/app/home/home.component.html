@@ -6,8 +6,8 @@
 <div class="container">
   <div class=" content2 white-bg">
     <div class="row">
-      <div class="col-12" style="display:flex;">
-        <div class="ml-auto" style="width:100px;">
+      <div class="col-12" class="flex-div">
+        <div class="ml-auto" class="width-100">
           <img [src]="userProfile?.avatar" height="100px" class="rounded" alt="Profile Pic">
         </div>
         <div class="pl-3 mr-auto">
@@ -73,7 +73,7 @@
         <hr>
       </div>
       <div class="col-12 recent-col" role="button" (click)="onSessionExpand(i)">
-        <div style="width:75px;">
+        <div class="width-75">
           <img [src]="session.player.avatar" class="rounded" height="50px" >
         </div>
         <div class="mr-auto">

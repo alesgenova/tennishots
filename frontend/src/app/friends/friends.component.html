@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class=" content2 white-bg">
-    <div *ngIf="friendRequests.length < 1" class="text-center text-muted" style="height:50px;">
+    <div *ngIf="friendRequests.length < 1" class="text-center text-muted" class="height-50">
       You're all caught up, there are no pending friend requests.
     </div>
     <div *ngFor="let request of friendRequests; let i=index" class="row">
@@ -12,8 +12,8 @@
         <hr>
       </div>
       <div class="col-12 friend-col">
-        <div style="width:75px;">
-          <img [src]="request.from_avatar" class="rounded" height="50px" >
+        <div class="width-75">
+          <img [src]="request.from_avatar" class="rounded" class="height-50" >
         </div>
         <div class="mr-auto">
           {{request.from_first_name}} {{request.from_last_name}} <span class="text-muted small">({{request.from_user}})</span><br>
@@ -38,7 +38,7 @@
         <hr>
       </div>
       <div class="col-12 friend-col">
-        <div style="width:75px;">
+        <div class="width-75">
           <img [src]="friend.avatar" class="rounded" height="50px" >
         </div>
         <div class="mr-auto">
@@ -58,7 +58,7 @@
 </div>
 <div class="container">
   <div class=" content2 white-bg">
-    <div style="height:50px;">
+    <div class="height-50">
       <input [(ngModel)]="search" (ngModelChange)="searchUser(search)" type="text" class="form-control" placeholder="Search by name, username, or email address...">
     </div>
     <div *ngFor="let friend of users" class="row">
@@ -66,8 +66,8 @@
         <hr>
       </div>
       <div class="col-12 friend-col">
-        <div style="width:75px;">
-          <img [src]="friend.avatar" class="rounded" height="50px" >
+        <div class="width-75">
+          <img [src]="friend.avatar" class="rounded" class="height-50">
         </div>
         <div class="mr-auto">
           {{friend.first_name}} {{friend.last_name}} <span class="text-muted small">({{friend.user}})</span><br>

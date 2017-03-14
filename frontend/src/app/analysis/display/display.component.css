@@ -33,3 +33,7 @@
     background-color: rgba(217,237,247,1);
     color: rgb(49,112,143);
 }
+
+.racket-img{
+    max-height:85px;   
+}
