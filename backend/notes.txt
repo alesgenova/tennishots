@@ -37,3 +37,4 @@ def get_email_confirmation_url(self, request, emailconfirmation):
     ret = "https://tennistat.xyz/verify-email/"+emailconfirmation.key
     return ret
 
+# Count number of lines of code: git ls-files | grep -P ".py$" | xargs wc -l
