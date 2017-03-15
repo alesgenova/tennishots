@@ -12,6 +12,18 @@
 
 <div class="container">
   <div class=" content2 white-bg text-center">
+    <div class="row text-center">
+      <div class="col-4">
+        <button class="btn btn-sm btn-block" (click)="onBySessionToggle()" [class.btn-danger]="grouBySession" [class.btn-secondary]="!grouBySession">Group by session</button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-sm btn-block" (click)="onUploadedToggle()" [class.btn-danger]="uploadedOnly" [class.btn-secondary]="!uploadedOnly">Uploaded only</button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-sm btn-block" (click)="onMissingToggle()" [class.btn-danger]="missingOnly" [class.btn-secondary]="!missingOnly">Missing only</button>
+      </div>
+    </div>
+    <br>
     <p class="lead">
       <span *ngFor="let tag of tagList">
         <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
@@ -22,7 +34,7 @@
   </div>
 </div>
 
-<div class="container">
+<div *ngIf="grouBySession" class="container">
   <div class=" content2 white-bg">
     <div class="row">
       <div *ngIf="periodsSubset?.length == 0" class="col-12">

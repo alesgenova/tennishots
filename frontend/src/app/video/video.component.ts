@@ -31,11 +31,13 @@ export class VideoComponent implements OnInit {
     doSessionPagination: boolean;
     nPeriods: number;
     periodsPerPage: number = 4;
+    videosPerPage: number = 4;
     currPageSession: number;
     doVideoPagination: boolean;
     nVideos: number;
     currPageVideo: number;
     videoSubset: any[] = [];
+    videoList: any[] = [];
     sessionList: Period[];
     filteredSession: Period[];
     periodsSubset: Period[];
@@ -46,6 +48,10 @@ export class VideoComponent implements OnInit {
     uploadSourceUrl: string;
     timezoneString: string = "";
     fileUploadError = "";
+
+    grouBySession: boolean = true;
+    uploadedOnly: boolean = true;
+    missingOnly: boolean = false;
 
     playerProfilesSubscription: Subscription;
     userChoicesSubscription: Subscription;
@@ -74,9 +80,9 @@ export class VideoComponent implements OnInit {
             if (this.requestedUser != this.myUsername){
                 if (this.userProfile.friends.some(x=>x.user==this.requestedUser)){
                     this.activeUser = this.requestedUser;
-                }else{
-                    this.activeUser = this.myUsername;
                 }
+            }else{
+                this.activeUser = this.myUsername;
             }
         });
 
@@ -117,15 +123,89 @@ export class VideoComponent implements OnInit {
   fromProfileToPagination() {
       let activePlayer = this.playerProfiles[this.activeUser];
       this.tagList = activePlayer.labels;
-      this.getUserSessionsVideos(activePlayer.periods.session)
+      this.selectedTags = [];
+      if (this.grouBySession){
+        this.getUserSessionsVideos(activePlayer.periods.session);
+      }else{
+        this.getUserVideos(activePlayer.periods.session);
+    }
   }
 
+  onBySessionToggle(){
+      this.grouBySession = !this.grouBySession;
+      if (this.grouBySession){
+          this.videosPerPage = 4;
+      }else{
+          this.videosPerPage = 8;
+      }
+      this.fromProfileToPagination();
+  }
+
+  onUploadedToggle(){
+      this.uploadedOnly = !this.uploadedOnly;
+      if (this.uploadedOnly){
+        this.missingOnly = false;
+      }
+      this.fromProfileToPagination();
+  }
+
+  onMissingToggle(){
+      this.missingOnly = !this.missingOnly;
+      if (this.missingOnly){
+        this.uploadedOnly = false;
+      }
+      this.fromProfileToPagination();
+  }
+
+  getUserVideos(sessions:Period[]){
+      this.videoList = [];
+      for (let session of sessions){
+          if (session.video_count > 0){
+              for (let video of session.videos){
+                  if (!this.uploadedOnly && !this.missingOnly){
+                      this.videoList.push(video);
+                  }else if (this.uploadedOnly){
+                      if (video.status == "C" || video.status == "P" || video.status == "F"){
+                          this.videoList.push(video);
+                      }
+                  }else if (this.missingOnly){
+                      if (video.status == "U"){
+                          this.videoList.push(video);
+                      }
+                  }
+              }
+          }
+      }
+      this.onVideoPagination();
+  }
 
   getUserSessionsVideos(sessions:Period[]) {
       this.sessionList = [];
       for (let session of sessions){
           if (session.video_count > 0){
-              this.sessionList.push(session)
+              if (!this.uploadedOnly && !this.missingOnly){
+                  this.sessionList.push(session);
+              }else if (this.uploadedOnly){
+                  let count = 0;
+                  for (let video of session.videos){
+                      if (video.status == "C" || video.status == "P" || video.status == "F"){
+                          count += 1;
+                      }
+                  }
+                  if (count > 0){
+                      this.sessionList.push(session);
+                  }
+              }else if (this.missingOnly){
+                  let count = 0;
+                  for (let video of session.videos){
+                      if (video.status == "U"){
+                          count += 1;
+                      }
+                  }
+                  if (count > 0){
+                      this.sessionList.push(session);
+                  }
+              }
           }
       }
       this.filteredSession = this.sessionList;
@@ -143,6 +223,9 @@ export class VideoComponent implements OnInit {
       }
       if (this.nPeriods > 0){
           this.activeSession = this.filteredSession[0];
+          let sessions = [];
+          sessions.push(this.activeSession);
+          this.getUserVideos(sessions);
           this.onVideoPagination();
       }
   }
@@ -214,7 +297,13 @@ export class VideoComponent implements OnInit {
               }
           }
       }
-      this.onSessionPagination()
+      this.getUserVideos(this.filteredSession);
+      if (this.grouBySession){
+          this.onSessionPagination();
+      }else{
+          this.onVideoPagination();
+      }
+
   }
 
   getCheckClass(pk:number) {
@@ -230,27 +319,30 @@ export class VideoComponent implements OnInit {
       if (!(this.activeSession.pk == session.pk)){
           this.activeVideo = null;
           this.activeSession = session;
+          let sessions = [];
+          sessions.push(this.activeSession);
+          this.getUserVideos(sessions);
           this.onVideoPagination();
       }
   }
 
   onVideoPagination(){
-      this.nVideos = this.activeSession.videos.length;
-      this.doVideoPagination = (this.nVideos > this.periodsPerPage);
+      this.nVideos = this.videoList.length;
+      this.doVideoPagination = (this.nVideos > this.videosPerPage);
       this.currPageVideo = 1;
       if (this.doVideoPagination){
-          this.videoSubset = this.activeSession.videos.slice(0,this.periodsPerPage);
+          this.videoSubset = this.videoList.slice(0,this.videosPerPage);
       }else{
-          this.videoSubset = this.activeSession.videos;
+          this.videoSubset = this.videoList;
       }
   }
 
   onVideoPageChange(){
       var start: number;
       var stop: number;
-      start = (this.currPageVideo-1)*this.periodsPerPage;
-      stop = start+this.periodsPerPage;
-      this.videoSubset = this.activeSession.videos.slice(start,stop);
+      start = (this.currPageVideo-1)*this.videosPerPage;
+      stop = start+this.videosPerPage;
+      this.videoSubset = this.videoList.slice(start,stop);
   }
 
   onVideoSelect(video:any){
@@ -270,10 +362,7 @@ export class VideoComponent implements OnInit {
       let uploadFile = event.files[0];
       if (uploadFile.name == this.activeVideo.filename){
           this.uploadSourceUrl = 'https://api.tennishots.com/api/sourceupload/'+this.activeVideo.pk+'/';
-          console.log("Same!")
       }else{
-          console.log("Different!")
-
           this.fileUploadError = "Please make sure you are selecting the correct video."
           //let actVid = this.activeVideo;
           //this.activeVideo = null;
