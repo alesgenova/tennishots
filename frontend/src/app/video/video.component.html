@@ -112,7 +112,7 @@
         <br>
       </div>
       <div *ngIf="doVideoPagination"  class="col-12">
-        <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="periodsPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
+        <ngb-pagination [disabled]="!doVideoPagination" [collectionSize]="nVideos" [pageSize]="videosPerPage" [(page)]="currPageVideo" (pageChange)="onVideoPageChange()" size="sm"></ngb-pagination>
       </div>
     </div>
   </div>
