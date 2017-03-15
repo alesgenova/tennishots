@@ -31,7 +31,7 @@ export class VideoComponent implements OnInit {
     doSessionPagination: boolean;
     nPeriods: number;
     periodsPerPage: number = 4;
-    videosPerPage: number = 4;
+    videosPerPage: number = 8;
     currPageSession: number;
     doVideoPagination: boolean;
     nVideos: number;
@@ -49,8 +49,8 @@ export class VideoComponent implements OnInit {
     timezoneString: string = "";
     fileUploadError = "";
 
-    grouBySession: boolean = true;
-    uploadedOnly: boolean = true;
+    grouBySession: boolean = false;
+    uploadedOnly: boolean = false;
     missingOnly: boolean = false;
 
     playerProfilesSubscription: Subscription;
