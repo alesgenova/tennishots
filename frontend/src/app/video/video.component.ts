@@ -49,8 +49,8 @@ export class VideoComponent implements OnInit {
     timezoneString: string = "";
     fileUploadError = "";
 
-    grouBySession: boolean = true;
-    uploadedOnly: boolean = true;
+    grouBySession: boolean = false;
+    uploadedOnly: boolean = false;
     missingOnly: boolean = false;
 
     playerProfilesSubscription: Subscription;
