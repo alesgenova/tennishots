@@ -17,27 +17,48 @@
   </div>
 </div>
 <div class="container">
-  <div class=" content2 white-bg">
-    <div class="row no-gutters text-center">
-      <div class="col-2">
-        Show
-      </div>
-      <div class="col-2">
-        <button class="btn btn-sm btn-block" (click)="onPeriodChange('session')" [class.btn-danger]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>
-      </div>
-      <div class="col-2">
-        <button class="btn btn-sm btn-block" (click)="onPeriodChange('week')" [class.btn-danger]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>
-      </div>
-      <div class="col-2">
-        <button class="btn btn-sm btn-block" (click)="onPeriodChange('month')" [class.btn-danger]="activePeriod=='month'" [class.btn-secondary]="activePeriod!='month'">Months</button>
-      </div>
-      <div class="col-2">
-        <button class="btn btn-sm btn-block" (click)="onPeriodChange('year')" [class.btn-danger]="activePeriod=='year'" [class.btn-secondary]="activePeriod!='year'">Years</button>
-      </div>
-      <div class="col-2">
-        <button class="btn btn-sm btn-block" (click)="onPeriodChange('all')" [class.btn-danger]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>
-      </div>
+  <div class=" content2 white-bg text-center">
+
+    <!--<button class="btn btn-sm btn-block" (click)="onPeriodChange('session')" [class.btn-danger]="activePeriod=='session'" [class.btn-secondary]="activePeriod!='session'">Sessions</button>-->
+    <div class="form-check  form-check-inline">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" [checked]="activePeriod=='session'" (click)="onPeriodChange('session')">
+        Sessions
+      </label>
     </div>
+
+    <!--<button class="btn btn-sm btn-block" (click)="onPeriodChange('week')" [class.btn-danger]="activePeriod=='week'" [class.btn-secondary]="activePeriod!='week'">Weeks</button>-->
+    <div class="form-check  form-check-inline">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" [checked]="activePeriod=='week'" (click)="onPeriodChange('week')">
+        Weeks
+      </label>
+    </div>
+
+    <!--<button class="btn btn-sm btn-block" (click)="onPeriodChange('month')" [class.btn-danger]="activePeriod=='month'" [class.btn-secondary]="activePeriod!='month'">Months</button>-->
+    <div class="form-check  form-check-inline">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" [checked]="activePeriod=='month'" (click)="onPeriodChange('month')">
+        Months
+      </label>
+    </div>
+
+    <!--<button class="btn btn-sm btn-block" (click)="onPeriodChange('year')" [class.btn-danger]="activePeriod=='year'" [class.btn-secondary]="activePeriod!='year'">Years</button>-->
+    <div class="form-check  form-check-inline">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" [checked]="activePeriod=='year'" (click)="onPeriodChange('year')">
+        Years
+      </label>
+    </div>
+
+    <!--<button class="btn btn-sm btn-block" (click)="onPeriodChange('all')" [class.btn-danger]="activePeriod=='all'" [class.btn-secondary]="activePeriod!='all'">All</button>-->
+    <div class="form-check  form-check-inline">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" [checked]="activePeriod=='all'" (click)="onPeriodChange('all')">
+        All
+      </label>
+    </div>
+
     <div *ngIf="activePeriod=='session'" class="text-center">
       <br>
       <p  class="lead">

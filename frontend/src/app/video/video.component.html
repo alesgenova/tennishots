@@ -12,34 +12,28 @@
 
 <div class="container">
   <div class=" content2 white-bg text-center">
-    <div class="row text-center">
-      <div class="col-4">
-        <!--<button class="btn btn-sm btn-block" (click)="onBySessionToggle()" [class.btn-danger]="grouBySession" [class.btn-secondary]="!grouBySession">Group by session</button>-->
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" [ngModel]="grouBySession" (ngModelChange)="onBySessionToggle()">
-            Group by session
-          </label>
-        </div>
-      </div>
-      <div class="col-4">
-        <!--<button class="btn btn-sm btn-block" (click)="onUploadedToggle()" [class.btn-danger]="uploadedOnly" [class.btn-secondary]="!uploadedOnly">Uploaded only</button>-->
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" [ngModel]="uploadedOnly" (ngModelChange)="onUploadedToggle()">
-            Uploaded only
-          </label>
-        </div>
-      </div>
-      <div class="col-4">
-        <!--<button class="btn btn-sm btn-block" (click)="onMissingToggle()" [class.btn-danger]="missingOnly" [class.btn-secondary]="!missingOnly">Missing only</button>-->
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" [ngModel]="missingOnly" (ngModelChange)="onMissingToggle()">
-            Missing only
-          </label>
-        </div>
-      </div>
+    <!--<button class="btn btn-sm btn-block" (click)="onBySessionToggle()" [class.btn-danger]="grouBySession" [class.btn-secondary]="!grouBySession">Group by session</button>-->
+    <div class="form-check form-check-inline">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [ngModel]="grouBySession" (ngModelChange)="onBySessionToggle()">
+        Group by session
+      </label>
+    </div>
+
+    <!--<button class="btn btn-sm btn-block" (click)="onUploadedToggle()" [class.btn-danger]="uploadedOnly" [class.btn-secondary]="!uploadedOnly">Uploaded only</button>-->
+    <div class="form-check form-check-inline">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [ngModel]="uploadedOnly" (ngModelChange)="onUploadedToggle()">
+        Uploaded only
+      </label>
+    </div>
+
+    <!--<button class="btn btn-sm btn-block" (click)="onMissingToggle()" [class.btn-danger]="missingOnly" [class.btn-secondary]="!missingOnly">Missing only</button>-->
+    <div class="form-check form-check-inline">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [ngModel]="missingOnly" (ngModelChange)="onMissingToggle()">
+        Missing only
+      </label>
     </div>
     <br>
     <p class="lead">
