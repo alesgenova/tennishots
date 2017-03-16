@@ -40,6 +40,10 @@ export class SimpleanalysisComponent implements OnInit {
     tagList: Label[] = [];
     selectedTags: number[] = [];
 
+    isActive = {
+      session:false
+    }
+
     playerProfilesSubscription: Subscription;
     userChoicesSubscription: Subscription;
     playerProfiles: any;

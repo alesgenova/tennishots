@@ -75,6 +75,13 @@ body {
     */
 }
 
+.content3{
+    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1), 0 0 8px 0 rgba(0, 0, 0, 0.09);
+}
+
 .content-header{
   margin-top: -1.1rem;
   margin-left: -1rem;
