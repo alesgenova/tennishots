@@ -58,17 +58,14 @@
         All
       </label>
     </div>
-
-    <div *ngIf="activePeriod=='session'" class="text-center">
-      <br>
-      <p  class="lead">
-        <span *ngFor="let tag of tagList">
-          <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
-            <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
-          </span>
+    <hr *ngIf="activePeriod=='session'">
+    <p *ngIf="activePeriod=='session'" class="lead text-center">
+      <span *ngFor="let tag of tagList">
+        <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
+          <i [ngClass]="['fa', getCheckClass(tag.pk)]" aria-hidden="true"></i>&nbsp;&nbsp;{{tag.name}}
         </span>
-      </p>
-    </div>
+      </span>
+    </p>
   </div>
 </div>
 <div *ngIf="activePeriod !='all'" class="container">

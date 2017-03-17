@@ -127,6 +127,7 @@ export class VideoComponent implements OnInit {
       if (this.grouBySession){
         this.getUserSessionsVideos(activePlayer.periods.session);
       }else{
+        this.getUserSessionsVideos(activePlayer.periods.session);
         this.getUserVideos(activePlayer.periods.session);
     }
   }

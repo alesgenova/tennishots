@@ -22,10 +22,9 @@
         </p>
       </div>
       <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
-        <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
-            <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
-            <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img dark-gray-bg" height="100px">
-            <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px">
+        <div class="card card-inverse text-center dark-gray-bg" [class.big-shadow-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
+            <img *ngIf="video.thumbnail" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
+            <img *ngIf="!video.thumbnail" class="card-img" src="assets/img/transparent-pixel.png"  height="100px">
           <div class="card-img-overlay">
             <h6 class="card-title">
               {{video.title}}
