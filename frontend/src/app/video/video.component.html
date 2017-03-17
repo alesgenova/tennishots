@@ -35,7 +35,7 @@
         Missing only
       </label>
     </div>
-    <br>
+    <hr>
     <p class="lead">
       <span *ngFor="let tag of tagList">
         <span [ngClass]="['badge', getTagClass(tag.category)]" (click)="addPkToPks(tag.pk)" role="button">
@@ -85,16 +85,21 @@
   </div>
 </div>
   <!-- Video list -->
-<div class="container">
+<div *ngIf="videoSubset?.length > 0 || !grouBySession" class="container">
   <div class=" content2 white-bg">
     <div class="row">
+      <div *ngIf="videoSubset?.length == 0 && !grouBySession" class="col-12">
+        No matching video recordings
+      </div>
       <div *ngFor="let video of videoSubset" class="col-6 col-sm-3">
-        <div class="card card-inverse text-center" [class.card-primary]="video.pk==activeVideoPk" (click)="onVideoSelect(video)" role="button">
-            <img *ngIf="video.thumbnail && video.pk!=activeVideoPk" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
-            <img *ngIf="!video.thumbnail && video.pk!=activeVideoPk" class="card-img dark-gray-bg" height="100px">
-            <img *ngIf="video.pk==activeVideoPk" class="card-img" height="100px">
+        <div class="card card-inverse text-center dark-gray-bg" [class.big-shadow-primary]="video.pk==activeVideoPk"  (click)="onVideoSelect(video)" role="button">
+            <img *ngIf="video.thumbnail" class="card-img" src="{{video.thumbnail}}" height="100px" alt="Video thumbnail">
+            <img *ngIf="!video.thumbnail" class="card-img" src="assets/img/transparent-pixel.png"  height="100px">
           <div class="card-img-overlay">
             <h6 class="card-title">
+              {{video.timestamp+timezoneString|date}}
+            </h6>
+            <h6 class="card-subtitle mb-1">
               {{video.timestamp+timezoneString|date:'shortTime'}}
             </h6>
             <p *ngIf="video.status == 'U'" class="card-text"><span class="badge badge-danger">Upload</span></p>
