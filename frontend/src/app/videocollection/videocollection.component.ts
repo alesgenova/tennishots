@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormControl, FormBuilder, FormGroup, Validators }  from '@angular/forms';
 
@@ -50,6 +50,8 @@ export class VideocollectionComponent implements OnInit {
     userChoicesSubscription: Subscription;
     playerProfiles: any;
     userProfileSubscription: Subscription;
+
+    @ViewChild('videoPlayer') videoPlayer;
 
   constructor(  private route: ActivatedRoute,
                 private router: Router,
@@ -146,9 +148,14 @@ export class VideocollectionComponent implements OnInit {
   }
 
   onVideoSelect(video:any){
-      this.activeVideo = null;
+      //this.activeVideo = null;
       this.activeVideo = video;
       this.activeVideoPk = video.pk;
+      if (this.videoPlayer != null){
+          if (this.activeVideo['status'] == "C"){
+              this.videoPlayer.nativeElement.load();
+          }
+      }
   }
 
   onRetry(pk: number){
