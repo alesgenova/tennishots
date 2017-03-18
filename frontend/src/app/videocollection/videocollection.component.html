@@ -55,7 +55,7 @@
 <div *ngIf="!doCreate && activeVideo?.status=='C'" class="container">
   <div class=" content2 white-bg text-center">
     <p>
-      <video  width="100%" height='auto' controls>
+      <video #videoPlayer width="100%" height='auto' controls>
         <source [src]="activeVideo.processed_file" type="video/mp4">
         Your browser does not support HTML5 video.
       </video>

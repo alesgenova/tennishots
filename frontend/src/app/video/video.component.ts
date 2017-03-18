@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { ProfileService } from '../services/profile.service';
@@ -56,6 +56,8 @@ export class VideoComponent implements OnInit {
     playerProfilesSubscription: Subscription;
     userChoicesSubscription: Subscription;
     playerProfiles: any;
+
+    @ViewChild('videoPlayer') videoPlayer;
 
   constructor(  private route: ActivatedRoute,
                 private router: Router,
@@ -347,9 +349,16 @@ export class VideoComponent implements OnInit {
   }
 
   onVideoSelect(video:any){
-      this.activeVideo = null;
+      //this.activeVideo = new Object();
+      //this.activeVideo['status'] = "P";
+      //let videoP = document.getElementById("videoPlayer");
       this.activeVideo = video;
       this.activeVideoPk = video.pk;
+      if (this.videoPlayer != null){
+          if (this.activeVideo['status'] == "C"){
+              this.videoPlayer.nativeElement.load();
+          }
+      }
   }
 
   onBeforeSend(event) {
