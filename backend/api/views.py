@@ -128,6 +128,7 @@ class PlayerProfileView(generics.GenericAPIView):
         username = self.kwargs['username']
         requested_user = get_object_or_404(User, username=username)
         permission = is_owner_or_friend(self.request, username)
+        self._check_failed_videos(requested_user)
         player_profile = {}
         player_profile['user'] = username
         player_profile['lastchange'] = requested_user.userprofile.last_change
@@ -144,6 +145,38 @@ class PlayerProfileView(generics.GenericAPIView):
         player_profile['labels'] = requested_user.labels.all().order_by('category')
         serializer = PlayerProfileSerializer(player_profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def _check_failed_videos(self,user):
+        check_flag = 0
+        video_collections = VideoCollection.objects.filter(user=user)
+        video_sources = VideoSource.objects.filter(user=user)
+        if len(video_collections) > 0:
+            for video in video_collections:
+                if video.status == 'P':
+                    try:
+                        status = TaskResult.objects.get(task_id=video.task_id).status
+                        if status == 'FAILURE':
+                            video.status = 'F'
+                            video.save()
+                            check_flag += 1
+                    except Exception:
+                        pass
+        if len(video_sources) > 0:
+            for video in video_collections:
+                if video.status == 'P':
+                    try:
+                        status = TaskResult.objects.get(task_id=video.task_id).status
+                        if status == 'FAILURE':
+                            video.status = 'F'
+                            video.save()
+                            check_flag += 1
+                    except Exception:
+                        pass
+        if check_flag > 0:
+            profile = user.userprofile
+            profile.last_change = timezone.now()
+            profile.save()
+
 
 class CreateVideoCollection(generics.GenericAPIView):
     serializer_class = CreateVideoCollectionSerializer
