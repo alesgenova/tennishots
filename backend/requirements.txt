@@ -14,8 +14,8 @@ django-celery-results
 matplotlib
 Pillow
 pandas
-#git+https://github.com/Zulko/moviepy.git
-moviepy
+git+https://github.com/Zulko/moviepy.git
+#moviepy
 #django-paypal
 colour
 

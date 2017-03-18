@@ -45,7 +45,6 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
     for ishot, shot in enumerate(shots):
         curr_clip = shot.video
         curr_sec_in_video = shot.seconds
-        print(curr_clip, curr_sec_in_video, continue_curr_clip)
 
         if not continue_curr_clip:
 
@@ -69,7 +68,7 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
                 continue_curr_clip = True
 
             else:
-                video_stop = curr_sec_in_video + new_clip_offset
+                video_stop = min(curr_sec_in_video + new_clip_offset,curr_clip.duration.total_seconds())
                 shot_overlay_duration = min(overlay_duration_max, new_clip_offset - overlay_anticipation)
                 clips.append(VideoFileClip(curr_clip.original_file.path)
                              .subclip(video_start,video_stop)
@@ -79,9 +78,10 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
                              .fadeout(fade_duration))
                 master_duration += video_stop - video_start
                 continue_curr_clip = False
+
         else:
             shot_overlay_duration = min(overlay_duration_max, new_clip_offset - overlay_anticipation)
-            video_stop = curr_sec_in_video + new_clip_offset
+            video_stop = min(curr_sec_in_video + new_clip_offset,curr_clip.duration.total_seconds())
             clips.append(VideoFileClip(curr_clip.original_file.path)
                          .subclip(video_start,video_stop)
                          .set_start(master_duration)
@@ -89,6 +89,8 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
                          .fadein(fade_duration)
                          .fadeout(fade_duration))
             master_duration += video_stop - video_start
+            continue_curr_clip = False # not really needed
+
 
         swing_type = shot.shot.data.swing_type
         impact_position = int(shot.shot.data.impact_position)
@@ -108,6 +110,7 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
                                             video_resolution=sizeout))
 
     print(master_duration)
+
 
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip(clips + shot_overlay_clips)
