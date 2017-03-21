@@ -20,6 +20,7 @@ import { VideoComponent } from './video/video.component';
 import { VideocollectionComponent } from './videocollection/videocollection.component';
 import { LandingComponent } from './landing/landing.component';
 import { SummaryComponent } from './summary/summary.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 import { DummyComponent } from './dummy/dummy.component';
 
@@ -46,6 +47,7 @@ export const routes: Routes = [
   { path: 'progress',  component: ProgressComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'progress/:period',  component: ProgressComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'video',  component: VideoComponent, canActivate: [AuthGuard, ImportGuard] },
+  { path: 'checkout',  component: CheckoutComponent, canActivate: [AuthGuard] },
   { path: 'videocollection',  component: VideocollectionComponent, canActivate: [AuthGuard, ImportGuard] },
   { path: 'landing',  component: LandingComponent, canActivate: [AuthGuard] },
   { path: 'resetpassword',  component: ForgotpasswordComponent },
