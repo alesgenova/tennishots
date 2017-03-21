@@ -35,6 +35,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'paypal.standard.ipn',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'profiles',
-    'customers',
+    'customers.apps.CustomersConfig',
     'shot',
     'video',
     'api',
@@ -202,3 +203,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'tennishots.com@gmail.com'
 EMAIL_HOST_PASSWORD = 'vitellOtonnatO87'
 EMAIL_PORT = 587
+
+
+# django-paypal settings
+PAYPAL_RECEIVER_EMAIL = 'tennistat.xyz-facilitator@gmail.com'
+PAYPAL_TEST = True

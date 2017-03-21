@@ -6,7 +6,7 @@ import numpy as np
 import os
 from tennishots.settings import MEDIA_ROOT
 from video.tasks import make_shots_video_multi
-#from payment.models import CustomerProfile
+from customers.models import CustomerProfile, Transaction
 
 def match_shots_to_source(user, video_source):
     start = video_source.timestamp
@@ -14,7 +14,12 @@ def match_shots_to_source(user, video_source):
     shots = user.shots.filter(timestamp__range=(start,stop))
     new_shots = []
     for shot in shots:
-        new_shots.append(VideoShot(shot=shot, user=user, video=video_source,
+        try:
+            # Just in case make sure the videoshot doesn't exist already
+            # from a previous attempt or we'll get an error from the OneToOneField
+            VideoShot.objects.get(shot=shot)
+        except VideoShot.DoesNotExist:
+            new_shots.append(VideoShot(shot=shot, user=user, video=video_source,
                          seconds = (shot.timestamp - start).total_seconds()))
         #video_shot = VideoShot()
         #video_shot.shot = shot
@@ -23,12 +28,22 @@ def match_shots_to_source(user, video_source):
         #video_shot.seconds = (shot.timestamp - start).seconds
         #video_shot.save()
 
-    #new_shots_billed = shots.count()
     VideoShot.objects.bulk_create(new_shots)
-    #customer = CustomerProfile.objects.get(user=user)
-    #customer.new_videoshots += new_shots_billed
-    #customer.amount_due += new_shots_billed*customer.videoshot_rate
-    #customer.save()
+    # Billing
+    new_shots_billed = len(new_shots)
+    customer = CustomerProfile.objects.get(user=user)
+    dollar_amount = new_shots_billed*customer.videoshot_rate
+    customer.outstanding_videoshots += new_shots_billed
+    customer.amount_due += dollar_amount
+    customer.save()
+    transaction = Transaction()
+    transaction.user = user
+    transaction.videoshot_count = new_shots_billed
+    transaction.shot_count = 0
+    transaction.shot_rate = customer.shot_rate
+    transaction.videoshot_rate = customer.videoshot_rate
+    transaction.dollar_amount = dollar_amount
+    transaction.save()
 
     return shots.count()
 

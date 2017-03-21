@@ -104,6 +104,8 @@ def sony_csv_to_db(csvfile, user_id):
     transaction.user = user
     transaction.shot_count = new_shots_billed
     transaction.videoshot_count = 0
+    transaction.shot_rate = customer.shot_rate
+    transaction.videoshot_rate = customer.videoshot_rate
     transaction.dollar_amount = dollar_amount
     transaction.save()
 

@@ -41,6 +41,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              VideoUploadSerializer, VideoRetrySerializer,
                              VideoCollectionSerializer, CreateVideoCollectionSerializer,
                              LastChangeSerializer, SummarySerializer,
+                             CustomerProfileSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from api.permissions import is_owner_or_friend, is_owner
@@ -48,6 +49,22 @@ from api.permissions import is_owner_or_friend, is_owner
 from sony.routines import apply_sonyfilter, SonyShotSetDetail
 from sony.boxplot import box_plot
 
+
+
+
+
+class CustomerProfileView(generics.GenericAPIView):
+    """
+    List all friends profiles, or create own user profile.
+    """
+    serializer_class = CustomerProfileSerializer
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner(self.request, username)
+        customer_profile = requested_user.customerprofile
+        serializer = CustomerProfileSerializer(customer_profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class SummaryView(generics.GenericAPIView):
     """

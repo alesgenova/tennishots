@@ -26,6 +26,8 @@ class Transaction(models.Model):
     user = models.ForeignKey(User)
     shot_count = models.IntegerField()
     videoshot_count = models.IntegerField()
+    shot_rate = models.FloatField(null=True, blank=True) # if it's an order transaction, don't fill this in
+    videoshot_rate = models.FloatField(null=True, blank=True)
     dollar_amount = models.FloatField()
     order = models.OneToOneField(Order, null=True, blank=True) # only payment events will have an associated order
 
@@ -46,6 +48,7 @@ class CustomerProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     # Additional items we are interested in for a customer
     amount_due = models.FloatField()
+    trial_end = models.DateTimeField()
     shot_rate = models.FloatField()
     videoshot_rate = models.FloatField()
     outstanding_shots = models.IntegerField()
