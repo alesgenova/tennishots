@@ -51,7 +51,7 @@ export class CartComponent implements OnInit {
       this.order = new Order();
     }else{
       this.acknowledge = true;
-      if (!this.freeTrial){
+      if (!this.freeTrial && this.customerProfile.amount_due >= 5.0){
         this.tennistatService.get_unpaid_order(this.myUsername)
               .subscribe(order => {
                 this.order = order;
