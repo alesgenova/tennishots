@@ -12,7 +12,7 @@ from shot.models import Year, Month, Week, Day, Session, Shot, SessionLabel
 from shot.tasks import sony_csv_to_db
 from video.models import VideoSource, VideoCollection, VideoShot
 from profiles.models import UserProfile, FriendRequest
-from customers.models import CustomerProfile, RateChange
+from customers.models import CustomerProfile, RateChange, Order
 
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -41,7 +41,7 @@ from api.serializers import (YearSerializer, MonthSerializer,
                              VideoUploadSerializer, VideoRetrySerializer,
                              VideoCollectionSerializer, CreateVideoCollectionSerializer,
                              LastChangeSerializer, SummarySerializer,
-                             CustomerProfileSerializer,
+                             CustomerProfileSerializer, OrderSerializer,
                              ShotGroup, ShotGroupSerializer, InputSerializer, OutputSerializer)
 
 from api.permissions import is_owner_or_friend, is_owner
@@ -51,6 +51,38 @@ from sony.boxplot import box_plot
 
 
 
+class MakeOrderView(generics.GenericAPIView):
+    """
+    Retrieve the last order of the user. If the order has been paid, create a new order.
+    If it wasn't paid, update the order to reflect the latest amounts.
+    """
+    serializer_class = OrderSerializer
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        requested_user = get_object_or_404(User, username=username)
+        permission = is_owner(self.request, username)
+        user_orders = Order.objects.filter(user=requested_user)
+        customer = requested_user.customerprofile
+        if len(user_orders) > 0:
+            order = user_orders.order_by("-timestamp")[0]
+            if not order.paid and order.txn_id is None:
+                pass
+            else:
+                order = Order()
+        else:
+            order = Order()
+        order.timestamp = timezone.now()
+        order.user = requested_user
+        order.shots = customer.outstanding_shots
+        order.videoshots = customer.outstanding_videoshots
+        order.amount = customer.amount_due
+        order.outstanding_amount = customer.amount_due
+        order.paid_amount = 0.0
+        order.paid = False
+        order.txn_ide = ""
+        order.save()
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CustomerProfileView(generics.GenericAPIView):

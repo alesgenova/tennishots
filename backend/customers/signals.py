@@ -24,7 +24,7 @@ def payment_notification(sender, **kwargs):
         order_already_paid = order.paid
         # mark the order as paid
         order.paid_amount = paid_amount
-        order.outstanding_amount = order.amount - paid_amount
+        order.outstanding_amount -= paid_amount
         order.paid = True
         order.txn_id = ipn_obj.txn_id
         order.save()

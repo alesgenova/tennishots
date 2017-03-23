@@ -15,7 +15,8 @@
             <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/tags']">Tags</a>
             <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/friends']">Friends</a>
             <a role="button" class="btn btn-sm btn-secondary" [routerLink]="['/import']">Import Shots</a>
-            <a role="button" class="btn btn-sm btn-secondary">Subscription</a>
+            <a *ngIf="!freeTrial" role="button" class="btn btn-sm btn-secondary" [routerLink]="['/cart']">{{ customerProfile.amount_due | currency:'USD':true }} due</a>
+            <a *ngIf="freeTrial" role="button" class="btn btn-sm btn-secondary" [routerLink]="['/cart']">Free Trial</a>
           </p>
         </div>
     </div>

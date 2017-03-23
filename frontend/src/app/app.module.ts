@@ -76,7 +76,9 @@ import { VerifyemailComponent } from './accounts/verifyemail/verifyemail.compone
 import { SidebarComponent } from './topbar/sidebar/sidebar.component';
 import { SummaryComponent } from './summary/summary.component';
 import { DummyComponent } from './dummy/dummy.component';
-import { CheckoutComponent } from './checkout/checkout.component';
+import { CartComponent } from './customer/cart/cart.component';
+import { SuccessComponent } from './customer/success/success.component';
+import { CanceledComponent } from './customer/canceled/canceled.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -124,7 +126,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SidebarComponent,
     SummaryComponent,
     DummyComponent,
-    CheckoutComponent
+    CartComponent,
+    SuccessComponent,
+    CanceledComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
