@@ -3,9 +3,17 @@ from rest_auth.serializers import UserDetailsSerializer
 from generic.constants import PERIODS, SENSORS
 from sony.constants import SWING_TYPES
 from profiles.models import UserProfile, FriendRequest
-from customers.models import CustomerProfile
+from customers.models import CustomerProfile, Order
 from shot.models import Year, Month, Week, Day, Session, SessionLabel, Shot
 from video.models import VideoSource, VideoCollection
+
+class OrderSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ["user", "amount", "pk"]
+
 
 class CustomerProfileSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', read_only=True)

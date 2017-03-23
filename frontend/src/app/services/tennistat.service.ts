@@ -119,6 +119,18 @@ export class TennistatService {
           .map(res => res.json());
   }
 
+  get_customer_profile(user:string){
+      return this.authHttp
+          .get(this.ApiUrl+user+'/customer/')
+          .map(res => res.json());
+  }
+
+  get_unpaid_order(user:string){
+      return this.authHttp
+          .get(this.ApiUrl+user+'/order/')
+          .map(res => res.json());
+  }
+
   get_player_summary(user:string){
       return this.authHttp
           .get(this.ApiUrl+user+'/summary/')
@@ -128,12 +140,6 @@ export class TennistatService {
   get_last_changes(){
       return this.authHttp
           .get(this.ApiUrl+'lastchanges/')
-          .map(res => res.json());
-  }
-
-  get_customer_profile(){
-      return this.authHttp
-          .get(this.ApiUrl+'customer/')
           .map(res => res.json());
   }
 

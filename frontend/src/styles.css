@@ -345,6 +345,11 @@ body {
     display:flex;
 }
 
+.bare-div{
+  margin: 0;
+  padding: 0;
+}
+
 .width-75{
     width: 75px;
 }

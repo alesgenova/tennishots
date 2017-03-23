@@ -3,6 +3,7 @@ import { TennistatService } from './tennistat.service';
 import { AuthService } from './auth.service';
 import { PlayerProfile } from '../objects/playerprofile';
 import { UserProfile } from '../objects/registration';
+import { CustomerProfile } from '../objects/customer';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
@@ -13,7 +14,7 @@ export class ProfileService {
     private loggedIn:boolean;
     private userChoices:any = new Object();
     private userProfile:UserProfile = new UserProfile();
-    private customerProfile:any = null;
+    private customerProfile:CustomerProfile = new CustomerProfile();
     //private playerProfile:any = null;
     private timezoneString: string = '';
     private playerProfiles: any = new Object();
@@ -25,6 +26,9 @@ export class ProfileService {
     private playerProfilesSubject = new BehaviorSubject<any>({});
     playerProfiles$ = this.playerProfilesSubject.asObservable();
 
+    private customerProfileSubject = new BehaviorSubject<any>({});
+    customerProfile$ = this.customerProfileSubject.asObservable();
+
     private userChoicesSubject = new BehaviorSubject<any>({});
     userChoices$ = this.userChoicesSubject.asObservable();
 
@@ -32,6 +36,10 @@ export class ProfileService {
     playerSummaries$ = this.playerSummariesSubject.asObservable();
 
     constructor(private authService:AuthService, private tennistatService:TennistatService) {}
+
+    updatedCustomerProfile(){
+      this.customerProfileSubject.next(this.customerProfile);
+    }
 
     updatedUserProfile(){
       this.userProfileSubject.next(this.userProfile);
@@ -57,6 +65,12 @@ export class ProfileService {
                       localStorage.setItem('userProfile', JSON.stringify(res));
                       this.refreshUserChoices();
                       this.updatedUserProfile();
+                  });
+            this.tennistatService.get_customer_profile(this.myUsername)
+                  .subscribe(res => {
+                      this.customerProfile = res;
+                      localStorage.setItem('customerProfile', JSON.stringify(this.customerProfile));
+                      this.updatedCustomerProfile();
                   });
         }
     }
@@ -125,6 +139,10 @@ export class ProfileService {
         if (this.userProfile != null){
           this.playerProfiles[this.myUsername] = JSON.parse(localStorage.getItem(this.myUsername+'_playerProfile'));
           this.playerSummaries[this.myUsername] = JSON.parse(localStorage.getItem(this.myUsername+'_playerSummary'));
+          this.customerProfile = JSON.parse(localStorage.getItem('customerProfile'));
+          if (this.customerProfile == null){
+            this.customerProfile = new CustomerProfile();
+          }
           for (let friend of this.userProfile.friends){
             this.playerProfiles[friend.user] = JSON.parse(localStorage.getItem(friend.user+'_playerProfile'));
             this.playerSummaries[friend.user] = JSON.parse(localStorage.getItem(friend.user+'_playerSummary'));
@@ -140,6 +158,7 @@ export class ProfileService {
         this.updatedPlayerProfiles();
         this.updatedPlayerSummaries();
         this.updatedUserProfile();
+        this.updatedCustomerProfile();
         //console.log("on initialize")
         //console.log(this.playerProfiles)
       }
@@ -150,6 +169,7 @@ export class ProfileService {
         this.playerSummaries = new Object();
         this.userProfile = new UserProfile();
         this.userChoices = new Object();
+        this.customerProfile = new CustomerProfile();
     }
 
 

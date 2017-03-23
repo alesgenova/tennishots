@@ -5,6 +5,8 @@ import { ProfileService } from '../services/profile.service';
 import { TennistatService } from '../services/tennistat.service';
 import { NavigationService } from '../services/navigation.service';
 
+import { UserProfile } from '../objects/registration';
+import { CustomerProfile } from '../objects/customer';
 import { SonyFilter } from '../objects/sonyfilter';
 import { SonyResponse } from '../objects/sonyresponse';
 
@@ -18,14 +20,17 @@ import {Subscription} from 'rxjs/Subscription';
 export class HomeComponent implements OnInit {
 
   user: string;
-  userProfile: any;
+  userProfile = new UserProfile();
+  customerProfile = new CustomerProfile();
   playerProfile: any;
   recentActivity:any[];
   sessionsStats: SonyResponse[] = [];
   sessionsExpand: boolean[] = [];
+  freeTrial: boolean = false;
   emptyResponse = new SonyResponse();
   playerProfileSubscription: Subscription;
   userProfileSubscription: Subscription;
+  customerProfileSubscription: Subscription;
 
   constructor(private router: Router,
               private tennistatService: TennistatService,
@@ -39,6 +44,12 @@ export class HomeComponent implements OnInit {
       this.userProfileSubscription = this.profileService.userProfile$
         .subscribe(profile => {
             this.userProfile = profile;
+        });
+
+      this.customerProfileSubscription = this.profileService.customerProfile$
+        .subscribe(profile => {
+            this.customerProfile = profile;
+            this.freeTrial = ( new Date().valueOf() < new Date(this.customerProfile.trial_end).valueOf() );
         });
 
       this.playerProfileSubscription = this.profileService.playerProfiles$
@@ -56,6 +67,7 @@ export class HomeComponent implements OnInit {
     // prevent memory leak when component is destroyed
     this.playerProfileSubscription.unsubscribe();
     this.userProfileSubscription.unsubscribe();
+    this.customerProfileSubscription.unsubscribe();
   }
 
   getRecentActivity(){

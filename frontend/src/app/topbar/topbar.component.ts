@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
 import { NavigationService } from '../services/navigation.service';
+
 import { UserProfile } from '../objects/registration';
+import { CustomerProfile } from '../objects/customer';
 
 import {Subscription} from 'rxjs/Subscription';
 
@@ -16,15 +18,18 @@ import {Subscription} from 'rxjs/Subscription';
 export class TopbarComponent implements OnInit {
 
   //@Input() Profile: any;
-  @Input() menuState: string[];
+  //@Input() menuState: string[];
   //loggedOut: boolean = false;
   //loggedIn: boolean = false;
   username: string;
   activeSection: string;
+  freeTrial: boolean = false;
   userProfile = new UserProfile();
+  customerProfile = new CustomerProfile();
   navbarLogoUrl = "assets/img/tennishots_logo_nav6.svg"
   navigationSubscription: Subscription;
   userProfileSubscription: Subscription;
+  customerProfileSubscription: Subscription;
   topShadow: string = 'down-shadow';
   bottomShadow: string = 'up-shadow';
   colorTop: string = '';
@@ -49,12 +54,19 @@ export class TopbarComponent implements OnInit {
           this.activeSection = section;
           this.setShadows();
         });
+
+      this.customerProfileSubscription = this.profileService.customerProfile$
+        .subscribe(profile => {
+            this.customerProfile = profile;
+            this.freeTrial = ( new Date().valueOf() < new Date(this.customerProfile.trial_end).valueOf() );
+        });
   }
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.userProfileSubscription.unsubscribe();
     this.navigationSubscription.unsubscribe();
+    this.customerProfileSubscription.unsubscribe();
   }
 
   loggedIn(){
@@ -70,7 +82,7 @@ export class TopbarComponent implements OnInit {
   }
 
   toggleSidebar(){
-      this.menuState[0] = this.menuState[0] === 'out' ? 'in' : 'out';
+      //this.menuState[0] = this.menuState[0] === 'out' ? 'in' : 'out';
   }
 
   setShadows(){
