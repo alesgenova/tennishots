@@ -5,10 +5,21 @@
 <div *ngIf="freeTrial" class="container text-center">
   <div class=" content2 white-bg">
     <p class=lead>
-      As a new user, you are have a week-long free trial.
+      As a new user, you are enjoying a week-long free trial.
     </p>
     <p>
       Your free trial is set to expire on {{customerProfile.trial_end|date}} at {{customerProfile.trial_end|date:"shortTime"}}.
+    </p>
+  </div>
+</div>
+
+<div *ngIf="customerProfile.amount_due > 10. && !freeTrial" class="container text-center">
+  <div class=" content2 white-bg">
+    <p class="lead">
+      Your outstanding balance of <b><strong>{{customerProfile.amount_due|currency:"USD":true}}</strong></b> excedes the $10 credit limit we provide our users.
+    </p>
+    <p>
+      In order to continue using the service, we kindly ask you to proceed to checkout. Upon successful payment, all functionalities will be immediately restored.
     </p>
   </div>
 </div>

@@ -26,25 +26,80 @@
       </div>
       <div class="card-block" *ngIf="expanded[stroke.name]">
         <div class="row">
+          <div class="col-12">
+            <div class="form-check  form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" [checked]="showGraph" (click)="onSwitchDisplay(true)">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+              </label>
+            </div>
+            &nbsp;
+            <div class="form-check  form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" [checked]="!showGraph" (click)="onSwitchDisplay(false)">
+                <span class="small"><b>123</b></span>
+              </label>
+            </div>
+
+          </div>
           <div *ngFor="let stat of ['swing_speed', 'ball_speed', 'ball_spin']" class="col-md-10 offset-md-1">
             <hr>
-            <canvas *ngIf="!compare || stats2.count < 1" baseChart
-                      [data]="stats1?.strokes[i+j*4]?.stats[stat].y"
-                      [labels]="stats1?.strokes[i+j*4]?.stats[stat].x"
-                      [options]="chartOptions"
-                      [colors]="chartColors"
-                      [legend]="chartLegend"
-                      [chartType]="chartType">
+            <div *ngIf="showGraph">
+              <h6>{{getStatLabel(stat, true)}}</h6>
+              <canvas *ngIf="!compare || stats2.count < 1" baseChart
+                        [data]="stats1?.strokes[i+j*4]?.stats[stat].y"
+                        [labels]="stats1?.strokes[i+j*4]?.stats[stat].x"
+                        [options]="chartOptions"
+                        [colors]="chartColors"
+                        [legend]="chartLegend"
+                        [chartType]="chartType">
               </canvas>
               <canvas *ngIf="compare && stats2.count > 0" baseChart
-                      [data]="[stats1?.strokes[i+j*4]?.stats[stat].y,stats2?.strokes[i+j*4]?.stats[stat].y]"
-                      [labels]="stats1?.strokes[i+j*4]?.stats[stat].x"
-                      [options]="chartOptions"
-                      [colors]="chartColors"
-                      [legend]="chartLegend"
-                      [chartType]="chartType">
+                        [data]="[stats1?.strokes[i+j*4]?.stats[stat].y,stats2?.strokes[i+j*4]?.stats[stat].y]"
+                        [labels]="stats1?.strokes[i+j*4]?.stats[stat].x"
+                        [options]="chartOptions"
+                        [colors]="chartColors"
+                        [legend]="chartLegend"
+                        [chartType]="chartType">
               </canvas>
-              {{getStatLabel(stat)}}
+            </div>
+            <div *ngIf="!showGraph">
+              <h6>{{getStatLabel(stat, false)}}</h6>
+              <div *ngIf="!compare" class="row">
+                <div class="col">
+                  <p class="text-muted"><strong>Median:</strong></p>
+                  <p class="text-muted"><strong>Top 25%:</strong></p>
+                  <p class="text-muted"><strong>Top 10%:</strong></p>
+                  <p class="text-muted"><strong>Best:</strong></p>
+                </div>
+                <div class="col">
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[0], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[1], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[2], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[3], stat)"></p>
+                </div>
+              </div>
+              <div *ngIf="compare" class="row no-gutters">
+                <div class="col selection1 no-margin inline-div">
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[0], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[1], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[2], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats1?.strokes[i+j*4]?.stats[stat].percentiles[3], stat)"></p>
+                </div>
+                <div class="col no-margin inline-div">
+                  <p class="text-muted">Median</p>
+                  <p class="text-muted">Top 25%</p>
+                  <p class="text-muted">Top 10%</p>
+                  <p class="text-muted">Best</p>
+                </div>
+                <div class="col selection2 no-margin inline-div">
+                  <p [innerHtml]="renderPercentile(stats2?.strokes[i+j*4]?.stats[stat].percentiles[0], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats2?.strokes[i+j*4]?.stats[stat].percentiles[1], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats2?.strokes[i+j*4]?.stats[stat].percentiles[2], stat)"></p>
+                  <p [innerHtml]="renderPercentile(stats2?.strokes[i+j*4]?.stats[stat].percentiles[3], stat)"></p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

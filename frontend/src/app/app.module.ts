@@ -13,7 +13,8 @@ import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 import { ImportGuard } from './services/import.guard';
-//import { PaidGuard } from './services/paid.guard';
+import { CustomerGuard } from './services/customer.guard';
+
 import { NavigationService } from './services/navigation.service';
 import { TennistatService } from './services/tennistat.service';
 import { ProfileService } from './services/profile.service';
@@ -146,7 +147,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     Angular2FontawesomeModule,
     FileUploadModule
   ],
-  providers: [AuthService, NavigationService, TennistatService, ProfileService, AuthGuard, ImportGuard,
+  providers: [AuthService, NavigationService,
+              TennistatService, ProfileService,
+              AuthGuard, ImportGuard,
+              CustomerGuard,
               {
                 provide: AuthHttp,
                 useFactory: authHttpServiceFactory,
