@@ -93,6 +93,19 @@ export class ProfileService {
             });
     }
 
+    checkAmountDue(){
+      if (this.customerProfile.amount_due > 10.){
+        let freeTrial = ( new Date().valueOf() < new Date(this.customerProfile.trial_end).valueOf() );
+        if (freeTrial){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return true
+      }
+    }
+
     checkShotCount(){
       let playerProfile = this.playerProfiles[this.myUsername];
       if (playerProfile == null){

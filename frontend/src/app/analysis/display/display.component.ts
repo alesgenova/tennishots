@@ -11,7 +11,9 @@ export class DisplayComponent implements OnInit {
   @Input() stats1: SonyResponse;
   @Input() stats2: SonyResponse;
   @Input() compare: boolean;
+  mi2km = 1.60934;
   options: Object;
+  showGraph = true;
   STROKES = SONY_STROKES;
   expanded: any;
 
@@ -61,12 +63,21 @@ export class DisplayComponent implements OnInit {
       }
   }
 
-  getStatLabel(stat:string){
-      var units_label: string = " (km/h)";
-      //var label: string = " (km/h)";
-      if (this.stats1.imperial_units){
-          units_label = " (mi/h)";
+  onSwitchDisplay(bool:boolean){
+    this.showGraph = bool;
+  }
+
+  getStatLabel(stat:string, showUnits:boolean){
+      var units_label: string = "";
+
+      if (showUnits){
+        if (this.stats1.imperial_units){
+            units_label = " (mi/h)";
+        }else{
+            units_label = " (km/h)";
+        }
       }
+
       if (stat == "swing_speed"){
           return "Swing Speed"+units_label
       }else if (stat == "ball_speed"){
@@ -74,5 +85,24 @@ export class DisplayComponent implements OnInit {
       }else if (stat == "ball_spin"){
           return "Ball Spin"
       }
+  }
+
+  renderPercentile(value:number, stat:string){
+    if (value == -100){
+      return "<span class='small'>N/A</span>"
+    }
+    if (stat == 'ball_spin'){
+      if (value > 0){
+        return "+"+Math.round(value)
+      }else{
+        return Math.round(value)
+      }
+    }
+    let imperial_units = this.stats1.imperial_units;
+    if (imperial_units){
+      return Math.round(value/this.mi2km) + " <span class='small'>mi/h</span>"
+    }else{
+      return Math.round(value) + " <span class='small'>km/h</span>"
+    }
   }
 }

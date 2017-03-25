@@ -125,6 +125,13 @@ class SonyShotSetDetail(object):
                     vals = stroke_shots.values_list('data__'+stat)
                     vals = np.asarray(vals).flatten()
                     labels = []
+                    #  calculate some percentiles to display stats without graphs
+                    # convert from km to mi in the frontend if needed
+                    percentiles = [50,75,90,100]
+                    if stat == 'ball_spin' and stroke in ['FS','BS','FV','BV']:
+                        statdict['percentiles'] = - np.percentile(-vals, percentiles)
+                    else:
+                        statdict['percentiles'] = np.percentile(vals, percentiles)
                     if stat == 'ball_spin':
                         bins=21
                         rang = (-10,11)
@@ -163,6 +170,7 @@ class SonyShotSetDetail(object):
             elif len(stroke_shots) == 0:  # include empty so it's easier on the frontend
                 for stat in stats:
                     statdict = OrderedDict()
+                    statdict['percentiles'] = [-100,-100,-100,-100]
                     labels = []
                     if stat == 'ball_spin':
                         bins=21
