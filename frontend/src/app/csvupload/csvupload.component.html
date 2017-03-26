@@ -9,7 +9,7 @@
         Upload the CSV file you have exported from the sensor app. The shots database will be updated if new data is detected.
       </p>
       <p>
-        If you don't know hot to export your shot data from the sensor app to your computer, <a href="#">watch this quick tutorial</a>.
+        If you don't know hot to export your shot data from the sensor app, watch this quick tutorial for <a [routerLink]="['/tutorials']" fragment="android">Android</a> or <a [routerLink]="['/tutorials']" fragment="iphone">iPhone</a>.
       </p>
       <p-fileUpload name="sonycsv" url="https://api.tennishots.com/api/csvupload/" (onBeforeSend)="onBeforeSend($event)" (onUpload)="onUpload()" accept=".csv" maxFileSize="10000000"></p-fileUpload>
       <!--

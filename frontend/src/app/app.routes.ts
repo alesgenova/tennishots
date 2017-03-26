@@ -23,6 +23,10 @@ import { SummaryComponent } from './summary/summary.component';
 import { SuccessComponent } from './customer/success/success.component';
 import { CanceledComponent } from './customer/canceled/canceled.component';
 import { CartComponent } from './customer/cart/cart.component';
+import { AboutComponent } from './footer/about/about.component';
+import { TutorialsComponent } from './footer/tutorials/tutorials.component';
+import { ContactComponent } from './footer/contact/contact.component';
+import { PricingComponent } from './home-anonym/pricing/pricing.component';
 
 import { DummyComponent } from './dummy/dummy.component';
 
@@ -58,6 +62,10 @@ export const routes: Routes = [
   { path: 'reset/:uid/:token',  component: PasswordresetComponent },
   { path: 'verify-email/:key',  component: VerifyemailComponent },
   { path: '_dummy/:user',  component: DummyComponent },
+  { path: 'about',  component: AboutComponent },
+  { path: 'tutorials',  component: TutorialsComponent },
+  { path: 'contact',  component: ContactComponent },
+  { path: 'pricing',  component: PricingComponent },
 
 //  { path: 'signup', component: Signup },
 //  { path: 'home',   component: Home, canActivate: [AuthGuard] },

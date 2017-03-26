@@ -4,8 +4,9 @@
       <nav class="nav  title-bar">
         <a class="navbar-brand" [routerLink]="['']"><img src="{{navbarLogoUrl}}" height="24px" alt="TENNISHOTS"></a>
         <ul *ngIf="!loggedIn()" class="nav flex-row ml-auto mt-auto mb-auto">
-          <li class="nav-item"><a class="nav-link" [routerLink]="['login']">Login</a></li>
-          <li class="nav-item"><a class="nav-link" [routerLink]="['register']">Register</a></li>
+          <li class="nav-item"><a class="nav-link" [routerLink]="['/pricing']">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" [routerLink]="['/login']">Login</a></li>
+          <li class="nav-item"><a class="nav-link" [routerLink]="['/register']">Register</a></li>
         </ul>
         <ul *ngIf="loggedIn()" class="nav hidden-sm-down flex-row ml-auto mr-auto">
           <li class="nav-item" [class.active-nav-item]="activeSection=='summary'">

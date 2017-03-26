@@ -80,6 +80,10 @@ import { DummyComponent } from './dummy/dummy.component';
 import { CartComponent } from './customer/cart/cart.component';
 import { SuccessComponent } from './customer/success/success.component';
 import { CanceledComponent } from './customer/canceled/canceled.component';
+import { AboutComponent } from './footer/about/about.component';
+import { TutorialsComponent } from './footer/tutorials/tutorials.component';
+import { ContactComponent } from './footer/contact/contact.component';
+import { PricingComponent } from './home-anonym/pricing/pricing.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({'headerPrefix':'JWT'}), http, options);
@@ -129,7 +133,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DummyComponent,
     CartComponent,
     SuccessComponent,
-    CanceledComponent
+    CanceledComponent,
+    AboutComponent,
+    TutorialsComponent,
+    ContactComponent,
+    PricingComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
