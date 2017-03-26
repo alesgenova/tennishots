@@ -28,10 +28,8 @@ import { ChartsModule } from 'ng2-charts';
 import { routes } from './app.routes';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './accounts/login/login.component';
-import { TestComponent } from './test/test.component';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { FilterComponent } from './analysis/filter/filter.component';
-import { ResultsComponent } from './analysis/results/results.component';
 
 // file uploader
 //import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
@@ -46,12 +44,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 //import { NouisliderComponent } from 'ng2-nouislider';
 import { NouisliderModule } from 'ng2-nouislider';
 //font-awesome
-import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
+//import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 
 import { PeriodlistComponent } from './analysis/periodlist/periodlist.component';
 import { DisplayComponent } from './analysis/display/display.component';
 import { TopbarComponent } from './topbar/topbar.component';
-import { LogoutComponent } from './accounts/logout/logout.component';
 import { RegisterComponent } from './accounts/register/register.component';
 import { FriendsComponent } from './friends/friends.component';
 import { LabelsComponent } from './labels/labels.component';
@@ -66,15 +63,12 @@ import { MainComponent } from './main/main.component';
 import { HomeAnonymComponent } from './home-anonym/home-anonym.component';
 import { FooterComponent } from './footer/footer.component';
 import { VideoComponent } from './video/video.component';
-import { UploadComponent } from './video/upload/upload.component';
-import { PlayComponent } from './video/play/play.component';
 import { VideocollectionComponent } from './videocollection/videocollection.component';
 import { StrokelistComponent } from './analysis/strokelist/strokelist.component';
 import { LandingComponent } from './landing/landing.component';
 import { PasswordresetComponent } from './accounts/passwordreset/passwordreset.component';
 import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpassword.component';
 import { VerifyemailComponent } from './accounts/verifyemail/verifyemail.component';
-import { SidebarComponent } from './topbar/sidebar/sidebar.component';
 import { SummaryComponent } from './summary/summary.component';
 import { DummyComponent } from './dummy/dummy.component';
 import { CartComponent } from './customer/cart/cart.component';
@@ -93,15 +87,12 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   declarations: [
     AppComponent,
     LoginComponent,
-    TestComponent,
     AnalysisComponent,
     FilterComponent,
-    ResultsComponent,
     //NouisliderComponent,
     PeriodlistComponent,
     DisplayComponent,
     TopbarComponent,
-    LogoutComponent,
     RegisterComponent,
     FriendsComponent,
     LabelsComponent,
@@ -119,8 +110,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HomeAnonymComponent,
     FooterComponent,
     VideoComponent,
-    UploadComponent,
-    PlayComponent,
     VideocollectionComponent,
     StrokelistComponent,
     LandingComponent,
@@ -128,7 +117,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ForgotpasswordComponent,
     VerifyemailComponent,
     LoopObjectPipe,
-    SidebarComponent,
     SummaryComponent,
     DummyComponent,
     CartComponent,
@@ -152,7 +140,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     //ChartModule,
     ChartsModule,
     //font-awesome
-    Angular2FontawesomeModule,
+    //Angular2FontawesomeModule,
     FileUploadModule
   ],
   providers: [AuthService, NavigationService,
