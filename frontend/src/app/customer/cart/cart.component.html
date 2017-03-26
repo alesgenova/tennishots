@@ -63,11 +63,12 @@
           <!--<a *ngIf="customerProfile.amount_due >= 5.0 && freeTrial" class="btn btn-primary" [class.disabled]="!acknowledge" [routerLink]="['/checkout']" role="button">Checkout with PayPal <i class="fa fa-paypal" aria-hidden="true"></i></a>-->
           <a *ngIf="customerProfile.amount_due < 5.0 || freeTrial || !acknowledge || order.amount < 5.0" class="form-inline btn btn-primary disabled" [routerLink]="['/home']" role="button">Checkout with PayPal <i class="fa fa-paypal" aria-hidden="true"></i></a>
 
-          <form *ngIf="order.amount >= 5.0" #form class="form-inline" name="_xclick" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+          <form *ngIf="order.amount >= 5.0" #form class="form-inline" name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
              <input type="hidden" name="cmd" value="_xclick">
-             <input type="hidden" name="business" value="tennistat.xyz-facilitator@gmail.com">
+             <input type="hidden" name="business" value="sales@tennishots.com">
              <input type="hidden" name="amount" [value]="order.amount">
              <input type="hidden" name="currency_code" value="USD">
+             <input type="hidden" name="no_shipping" value="1">
              <input type="hidden" name="item_name" value="Tennishots Order {{order.pk}}">
              <input type="hidden" name="invoice" [value]="order.pk">
              <input type="hidden" name="return" value="https://tennishots.com/payment/success/" />

@@ -206,5 +206,6 @@ EMAIL_PORT = 587
 
 
 # django-paypal settings
-PAYPAL_RECEIVER_EMAIL = 'tennistat.xyz-facilitator@gmail.com'
-PAYPAL_TEST = True
+#PAYPAL_RECEIVER_EMAIL = 'tennistat.xyz-facilitator@gmail.com'
+PAYPAL_RECEIVER_EMAIL = 'sales@tennishots.com'
+PAYPAL_TEST = False
