@@ -123,9 +123,9 @@ def make_shots_video_multi_bare(shots, fileout, stitching='lax', sizeout=(1920,1
                           codec='libx264',
                           preset='fast',
                           ffmpeg_params=['-crf','23'],
-                          audio_codec='libmp3lame',
-                          audio_fps=44100,
-                          audio_bitrate='128k',
+                          audio_codec='aac',
+                          #audio_fps=48000,
+                          #audio_bitrate='128k',
                           threads=0)
                           #write_logfile=True)
 
