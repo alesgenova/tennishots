@@ -937,11 +937,13 @@ def _create_default_labels(user):
     return
 
 def _create_customer_profile(user):
+    triale_end_date = timezone.now() + dt.timedelta(days=7)
     customer_profile = CustomerProfile(user=user,
                                        outstanding_shots=0,
                                        outstanding_videoshots=0,
                                        shot_rate=0.001,
                                        videoshot_rate=0.002,
+                                       trial_end=triale_end_date,
                                        amount_due=0.)
     customer_profile.save()
     rate_change = RateChange(user=user,

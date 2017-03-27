@@ -34,7 +34,22 @@ def get_email_confirmation_url(self, request, emailconfirmation):
     #ret = build_absolute_uri(
     #    request,
     #    url)
-    ret = "https://tennistat.xyz/verify-email/"+emailconfirmation.key
+    ret = "https://tennishots.com/verify-email/"+emailconfirmation.key
     return ret
 
 # Count number of lines of code: git ls-files | grep -P ".py$" | xargs wc -l
+
+# Enable gzip in nginx.conf
+##
+# Gzip Settings
+##
+
+gzip on;
+gzip_disable "msie6";
+
+gzip_vary on;
+gzip_proxied any;
+gzip_comp_level 5;
+# gzip_buffers 16 8k;
+gzip_http_version 1.1;
+gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript font/opentype image/svg+xml image/x-icon text/css text/plain text/x-component;
