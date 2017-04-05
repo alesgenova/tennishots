@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { TestComponent } from './test/test.component';
 import { LoginComponent } from './accounts/login/login.component';
-import { LogoutComponent } from './accounts/logout/logout.component';
 import { RegisterComponent } from './accounts/register/register.component';
 import { PasswordresetComponent } from './accounts/passwordreset/passwordreset.component';
 import { ForgotpasswordComponent } from './accounts/forgotpassword/forgotpassword.component';
