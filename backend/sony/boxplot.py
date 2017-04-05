@@ -24,6 +24,7 @@ def box_plot( periods, stat, swing, imperial_units ):
     ngroups = periods.count()
     if ngroups > max_boxes:
         all_periods = periods.all()[ngroups-max_boxes:]
+        ngroups = max_boxes
     else:
         all_periods = periods.all()
     for period in all_periods:
