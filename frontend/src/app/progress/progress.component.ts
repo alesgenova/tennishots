@@ -31,7 +31,7 @@ export class ProgressComponent implements OnInit {
     previousSwing: string = '';
     //userProfile: any;
     //userProfileSubscription: Subscription;
-    plots: any[];
+    plots: any[] = [];
     SONY_STROKES_CHOICES = SONY_STROKES_CHOICES;
     PERIOD_CHOICES = PERIOD_CHOICES;
 
@@ -62,7 +62,9 @@ export class ProgressComponent implements OnInit {
           //console.log("userChoices");
           //console.log(this.userChoices);
         });
+        
       this.get_progress_plots();
+
   }
 
   ngOnDestroy() {
