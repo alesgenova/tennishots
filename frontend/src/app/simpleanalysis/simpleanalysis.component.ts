@@ -128,11 +128,12 @@ export class SimpleanalysisComponent implements OnInit {
       }else{
           this.nPeriods = this.listOfPeriods[name].length;
           this.doPagination = (this.nPeriods > this.periodsPerPage);
+          this.filteredPeriods = this.listOfPeriods[name]
           //this.currPage = 1;
           if (this.doPagination){
               this.onPageChange();
           }else{
-              this.periodsSubset = this.listOfPeriods[name]
+              this.periodsSubset = this.filteredPeriods
           }
       }
   }
@@ -142,7 +143,8 @@ export class SimpleanalysisComponent implements OnInit {
       var stop: number;
       start = (this.currPage-1)*this.periodsPerPage;
       stop = start+this.periodsPerPage;
-      this.periodsSubset = this.listOfPeriods[this.activePeriod].slice(start,stop);
+      //this.periodsSubset = this.listOfPeriods[this.activePeriod].slice(start,stop);
+      this.periodsSubset = this.filteredPeriods.slice(start,stop);
   }
 
   getFormattedTag(name:string, category:number){
