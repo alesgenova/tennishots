@@ -201,11 +201,11 @@ CELERY_RESULT_BACKEND = 'django-db'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'tennishots.com@gmail.com'
-EMAIL_HOST_PASSWORD = 'vitellOtonnatO87'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 
 
 # django-paypal settings
 #PAYPAL_RECEIVER_EMAIL = 'tennistat.xyz-facilitator@gmail.com'
-PAYPAL_RECEIVER_EMAIL = 'sales@tennishots.com'
-PAYPAL_TEST = False
+#PAYPAL_RECEIVER_EMAIL = 'sales@tennishots.com'
+PAYPAL_TEST = True
