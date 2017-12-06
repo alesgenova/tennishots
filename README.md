@@ -1,6 +1,6 @@
 # tennishots.com
 
-Tennishots.com was an ambitious interactive website to generate an advanced statistical analysis of the data obtained by the Sony Smart Tennis Sensor.
+Tennishots.com was an ambitious interactive website get advanced statistical analysis of the data gathered by the Sony Smart Tennis Sensor.
 
 It could even be used to generate video collection of the best shots recorded during play.
 
