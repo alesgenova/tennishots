@@ -8,6 +8,8 @@ I have a physical sciences background, and this project was my first contact wit
 
 Looking back, the code is a bit of a mess, and definitely not polished, indicative of the fact that I was learning while doing.
 
+Portions of the tennishots code live on in the official app (and the cloud backend) I created for the [In/Out tennis camera](https://support.inout.tennis/companion-app).
+
 See what Tennishots could do:
 
 [![Tennishots Promo](https://img.youtube.com/vi/mfhU6Y2vWd0/0.jpg)](https://www.youtube.com/watch?v=mfhU6Y2vWd0)
